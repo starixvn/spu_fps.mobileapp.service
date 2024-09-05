@@ -85,6 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   Future<void> initPlatformState() async {
     var deviceData = <String, dynamic>{};
+    final fps = FpsMobileClient(apiUrl: "http://10.23.10.11:5250/fps/mobiletrans");
+    var statusCode = await fps.getDeviceInfo();
+    print(statusCode);
 
     try {
       if (kIsWeb) {
@@ -120,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
-    final fps = FpsMobileClient();
+
     return <String, dynamic>{
       'version.securityPatch': build.version.securityPatch,
       'version.sdkInt': build.version.sdkInt,
@@ -150,8 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'systemFeatures': build.systemFeatures,
       'serialNumber': build.serialNumber,
       'isLowRamDevice': build.isLowRamDevice,
-      'androidId': _androidId,
-      'androidVersion': fps.getDeviceInfo()
+      'androidId': _androidId
     };
   }
 
