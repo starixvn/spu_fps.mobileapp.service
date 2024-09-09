@@ -1,16 +1,19 @@
 package fps.mobile.client
 import android.app.ActivityManager
-import android.bluetooth.BluetoothClass.Device
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Build
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.util.DisplayMetrics
 import java.util.Locale
 import java.util.TimeZone
+import java.util.UUID
+
 
 data class DeviceInfo(val name:String, val value: String)
 object DeviceIdentify {
@@ -42,6 +45,7 @@ object DeviceIdentify {
 
         // RAM Info
         val totalRam = getTotalRam(context)
+        val userID = getUUID(context)
 
         val androidID = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID);
 
@@ -60,6 +64,8 @@ object DeviceIdentify {
         deviceInfoList.add(DeviceInfo("Battery Level", "$batteryLevel%"))
         deviceInfoList.add(DeviceInfo("Total RAM", "$totalRam MB"))
         deviceInfoList.add(DeviceInfo("Available Sensors", "${sensors.size}"))
+        deviceInfoList.add(DeviceInfo("UUID", "${userID}"))
+        //deviceInfoList.add(DeviceInfo("MAC wifi address from file", "${getMacAddressFromFile()}"))
 
         return deviceInfoList
         //return
@@ -101,5 +107,15 @@ object DeviceIdentify {
 
     private fun getBuildInfo(): String {
         return "Manufacturer: ${Build.MANUFACTURER}, Model: ${Build.MODEL}, Device: ${Build.DEVICE}"
+    }
+
+    private fun getUUID(context: Context): String {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        var uuid = sharedPreferences.getString("unique_id", null)
+        if (uuid == null) {
+            uuid = UUID.randomUUID().toString()
+            sharedPreferences.edit().putString("unique_id", uuid).apply()
+        }
+        return uuid
     }
 }
