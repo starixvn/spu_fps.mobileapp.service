@@ -9,6 +9,7 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.util.DisplayMetrics
 import fps.mobile.client.DeviceIdProviders.AndroidIdProvider
+import fps.mobile.client.DeviceIdProviders.GsfIdProvider
 import fps.mobile.client.DeviceIdProviders.MediaDrmIdProvider
 import java.util.Locale
 import java.util.TimeZone
@@ -49,11 +50,13 @@ object DeviceIdentify {
 
         val androidIdProvider =  AndroidIdProvider(context.contentResolver)
         val mediaDrmIdProvider = MediaDrmIdProvider(context.contentResolver)
+        val gsfIdProvider = GsfIdProvider(context.contentResolver)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
 
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
         deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
+        deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getGsfId() ?: "unknown"))
         deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
         deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
         deviceInfoList.add(DeviceInfo("Android Version", "$androidVersion (API $apiLevel)"))
