@@ -13,6 +13,7 @@ import fps.mobile.client.DeviceIdProviders.GsfIdProvider
 import fps.mobile.client.DeviceIdProviders.MediaDrmIdProvider
 import fps.mobile.client.InfoProviders.BatteryInfoProvider
 import fps.mobile.client.InfoProviders.CameraInfoProvider
+import fps.mobile.client.InfoProviders.CpuInfoProvider
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
@@ -54,6 +55,7 @@ object DeviceIdentify {
         val googleAdIdProvider = GoogleAdIdProvider(context)
         val batteryInfoProvider = BatteryInfoProvider(context)
         val cameraInfoProvider = CameraInfoProvider(context)
+        val cpuInfoProvider = CpuInfoProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
@@ -71,6 +73,11 @@ object DeviceIdentify {
         cameraList.forEach {
             deviceInfoList.add(DeviceInfo("Camera ${it.cameraName}", it.cameraType + "x" + it.cameraOrientation))
         }
+
+        deviceInfoList.add(DeviceInfo("CPU Cores", cpuInfoProvider.getNumberOfCores().toString()))
+        deviceInfoList.add(DeviceInfo("CPU Abi", cpuInfoProvider.getAbiType()))
+//        deviceInfoList.add(DeviceInfo("CPU Info", cpuInfoProvider.getCpuInfo().toString()))
+
 //        deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
 //        deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
 //        deviceInfoList.add(DeviceInfo("Android Version", "$androidVersion (API $apiLevel)"))

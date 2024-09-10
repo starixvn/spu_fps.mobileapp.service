@@ -1,8 +1,10 @@
 package fps.mobile.client.InfoProviders
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.Camera
 import android.hardware.camera2.CameraManager
+import android.os.Build
 import java.util.LinkedList
 
 public data class CameraInfo (
@@ -16,7 +18,7 @@ interface ICameraInfoProvider {
     public fun getCameraList(): List<CameraInfo>
 }
 
-class CameraInfoProvider(
+internal class CameraInfoProvider(
     private  val context: Context
 ) : ICameraInfoProvider {
 
