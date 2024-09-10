@@ -10,6 +10,7 @@ import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.DisplayMetrics
+import fps.mobile.client.DeviceIdProviders.AndroidIdProvider
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
@@ -47,11 +48,11 @@ object DeviceIdentify {
         val totalRam = getTotalRam(context)
         val userID = getUUID(context)
 
-        val androidID = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID);
+        val androidIdProvider: AndroidIdProvider =  AndroidIdProvider(context.contentResolver)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
 
-        deviceInfoList.add(DeviceInfo("AndroidID", androidID))
+        deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
         deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
         deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
         deviceInfoList.add(DeviceInfo("Android Version", "$androidVersion (API $apiLevel)"))
