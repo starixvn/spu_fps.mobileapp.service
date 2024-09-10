@@ -15,6 +15,7 @@ import fps.mobile.client.InfoProviders.BatteryInfoProvider
 import fps.mobile.client.InfoProviders.CameraInfoProvider
 import fps.mobile.client.InfoProviders.CpuInfoProvider
 import fps.mobile.client.InfoProviders.GpuInfoProvider
+import fps.mobile.client.InfoProviders.MemoryInfoProvider
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
@@ -58,6 +59,7 @@ object DeviceIdentify {
         val cameraInfoProvider = CameraInfoProvider(context)
         val cpuInfoProvider = CpuInfoProvider(context)
         val gpuInfoProvider = GpuInfoProvider(context)
+        val memoryInfoProvider = MemoryInfoProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
@@ -80,7 +82,10 @@ object DeviceIdentify {
         deviceInfoList.add(DeviceInfo("CPU Abi", cpuInfoProvider.getAbiType()))
 //        deviceInfoList.add(DeviceInfo("CPU Info", cpuInfoProvider.getCpuInfo().toString()))
 
-        deviceInfoList.add(DeviceInfo("Gles Version", gpuInfoProvider.getGlesVersion().toString()))
+        deviceInfoList.add(DeviceInfo("Gles Version", gpuInfoProvider.getGlesVersion()))
+        deviceInfoList.add(DeviceInfo("Total RAM", memoryInfoProvider.getTotalRam().toString()))
+        deviceInfoList.add(DeviceInfo("Internal Storage", memoryInfoProvider.getInternalStorage().toString()))
+        deviceInfoList.add(DeviceInfo("External Storage", memoryInfoProvider.getExternalStorage().toString()))
 
 //        deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
 //        deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
