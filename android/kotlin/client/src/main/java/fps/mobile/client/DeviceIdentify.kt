@@ -1,8 +1,6 @@
 package fps.mobile.client
 import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.hardware.Sensor
 import android.hardware.SensorManager
@@ -14,7 +12,7 @@ import fps.mobile.client.DeviceIdProviders.GoogleAdIdProvider
 import fps.mobile.client.DeviceIdProviders.GsfIdProvider
 import fps.mobile.client.DeviceIdProviders.MediaDrmIdProvider
 import fps.mobile.client.InfoProviders.BatteryInfoProvider
-import fps.mobile.client.InfoProviders.IBatteryInfoProvider
+import fps.mobile.client.InfoProviders.CameraInfoProvider
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
@@ -55,6 +53,7 @@ object DeviceIdentify {
         val deviceIdProvider = DeviceIdProvider(context)
         val googleAdIdProvider = GoogleAdIdProvider(context)
         val batteryInfoProvider = BatteryInfoProvider(context)
+        val cameraInfoProvider = CameraInfoProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
@@ -67,6 +66,11 @@ object DeviceIdentify {
         deviceInfoList.add(DeviceInfo("Battery Total Capacity", batteryInfoProvider.getBatteryTotalCapacity()))
         deviceInfoList.add(DeviceInfo("Battery Level", batteryInfoProvider.getBatteryLevel()))
 
+        deviceInfoList.add(DeviceInfo("Is Camera Present", cameraInfoProvider.isCameraPresent().toString()))
+        val cameraList = cameraInfoProvider.getCameraList()
+        cameraList.forEach {
+            deviceInfoList.add(DeviceInfo("Camera ${it.cameraName}", it.cameraType + "x" + it.cameraOrientation))
+        }
 //        deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
 //        deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
 //        deviceInfoList.add(DeviceInfo("Android Version", "$androidVersion (API $apiLevel)"))
