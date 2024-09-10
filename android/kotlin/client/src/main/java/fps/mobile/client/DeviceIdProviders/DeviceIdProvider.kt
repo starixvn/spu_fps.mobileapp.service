@@ -64,17 +64,17 @@ class DeviceIdProvider(
         }
 
         if(deviceIMEI != null && !TextUtils.isEmpty(deviceIMEI))
-            return deviceIMEI + "IMEI"
+            return deviceIMEI
 
         val androidIdProvider = AndroidIdProvider(context.contentResolver)
         val androidId = androidIdProvider.getAndroidId()
 
         if(!TextUtils.isEmpty(androidId) && !androidId.equals(FIXED_ANDROID_ID, ignoreCase = true))
-            return androidId + "Android ID"
+            return androidId
 
         val serialBuildId = Build.SERIAL
         if (!TextUtils.isEmpty(serialBuildId))
-            return serialBuildId + "SERIAL"
+            return serialBuildId
 
         return getRandomId()
     }
