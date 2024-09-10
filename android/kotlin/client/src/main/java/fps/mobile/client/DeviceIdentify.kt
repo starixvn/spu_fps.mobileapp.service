@@ -10,8 +10,11 @@ import android.os.Build
 import android.util.DisplayMetrics
 import fps.mobile.client.DeviceIdProviders.AndroidIdProvider
 import fps.mobile.client.DeviceIdProviders.DeviceIdProvider
+import fps.mobile.client.DeviceIdProviders.GoogleAdIdProvider
 import fps.mobile.client.DeviceIdProviders.GsfIdProvider
 import fps.mobile.client.DeviceIdProviders.MediaDrmIdProvider
+import fps.mobile.client.InfoProviders.BatteryInfoProvider
+import fps.mobile.client.InfoProviders.IBatteryInfoProvider
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
@@ -39,9 +42,6 @@ object DeviceIdentify {
         val screenHeight = displayMetrics.heightPixels
         val densityDpi = displayMetrics.densityDpi
 
-        // Battery Level
-        val batteryLevel = getBatteryLevel(context)
-
         // Sensors
         val sensors = getAvailableSensors(context)
 
@@ -53,13 +53,20 @@ object DeviceIdentify {
         val mediaDrmIdProvider = MediaDrmIdProvider(context.contentResolver)
         val gsfIdProvider = GsfIdProvider(context.contentResolver)
         val deviceIdProvider = DeviceIdProvider(context)
+        val googleAdIdProvider = GoogleAdIdProvider(context)
+        val batteryInfoProvider = BatteryInfoProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
-
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
         deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
         deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getGsfId() ?: "unknown"))
         deviceInfoList.add(DeviceInfo("Device ID", deviceIdProvider.getDeviceId() ?: "unknown"))
+        deviceInfoList.add(DeviceInfo("Google Ad ID", googleAdIdProvider.getGoogleAdId() ?: "unknown"))
+
+        deviceInfoList.add(DeviceInfo("Battery Health", batteryInfoProvider.getBatteryHealth()))
+        deviceInfoList.add(DeviceInfo("Battery Total Capacity", batteryInfoProvider.getBatteryTotalCapacity()))
+        deviceInfoList.add(DeviceInfo("Battery Level", batteryInfoProvider.getBatteryLevel()))
+
 //        deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
 //        deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
 //        deviceInfoList.add(DeviceInfo("Android Version", "$androidVersion (API $apiLevel)"))
@@ -87,18 +94,6 @@ object DeviceIdentify {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics
-    }
-
-    private fun getBatteryLevel(context: Context): Int {
-        val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        val batteryStatus = context.registerReceiver(null, intentFilter)
-        val level = batteryStatus?.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1) ?: -1
-        val scale = batteryStatus?.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1) ?: -1
-        return if (level != -1 && scale != -1) {
-            (level.toFloat() / scale.toFloat() * 100).toInt()
-        } else {
-            -1
-        }
     }
 
     private fun getAvailableSensors(context: Context): List<Sensor> {
