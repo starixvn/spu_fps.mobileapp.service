@@ -16,6 +16,7 @@ import fps.mobile.client.InfoProviders.CameraInfoProvider
 import fps.mobile.client.InfoProviders.CpuInfoProvider
 import fps.mobile.client.InfoProviders.GpuInfoProvider
 import fps.mobile.client.InfoProviders.MemoryInfoProvider
+import fps.mobile.client.InfoProviders.SensorInfoProvider
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
@@ -43,9 +44,6 @@ object DeviceIdentify {
         val screenHeight = displayMetrics.heightPixels
         val densityDpi = displayMetrics.densityDpi
 
-        // Sensors
-        val sensors = getAvailableSensors(context)
-
         // RAM Info
         val totalRam = getTotalRam(context)
         val userID = getUUID(context)
@@ -60,6 +58,7 @@ object DeviceIdentify {
         val cpuInfoProvider = CpuInfoProvider(context)
         val gpuInfoProvider = GpuInfoProvider(context)
         val memoryInfoProvider = MemoryInfoProvider(context)
+        val sensorInfoProvider = SensorInfoProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
@@ -87,6 +86,10 @@ object DeviceIdentify {
         deviceInfoList.add(DeviceInfo("Internal Storage", memoryInfoProvider.getInternalStorage().toString()))
         deviceInfoList.add(DeviceInfo("External Storage", memoryInfoProvider.getExternalStorage().toString()))
 
+        val sensors = sensorInfoProvider.getSensorList()
+        sensors.forEach {
+            deviceInfoList.add(DeviceInfo("Sensor ${it.sensorName}", it.vendorName))
+        }
 //        deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
 //        deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
 //        deviceInfoList.add(DeviceInfo("Android Version", "$androidVersion (API $apiLevel)"))
