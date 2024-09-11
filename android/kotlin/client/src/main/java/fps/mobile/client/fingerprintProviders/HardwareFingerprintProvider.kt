@@ -1,7 +1,21 @@
 package fps.mobile.client.fingerprintProviders
 
 import android.content.Context
-import fps.mobile.client.infoProviders.*
+import fps.mobile.client.infoProviders.BatteryInfoProvider
+import fps.mobile.client.infoProviders.CameraInfoProvider
+import fps.mobile.client.infoProviders.CpuInfo
+import fps.mobile.client.infoProviders.CpuInfoProvider
+import fps.mobile.client.infoProviders.DisplayInfoProvider
+import fps.mobile.client.infoProviders.IBatteryInfoProvider
+import fps.mobile.client.infoProviders.ICameraInfoProvider
+import fps.mobile.client.infoProviders.ICpuInfoProvider
+import fps.mobile.client.infoProviders.IDisplayInfoProvider
+import fps.mobile.client.infoProviders.IMemoryInfoProvider
+import fps.mobile.client.infoProviders.IOsBuildInfoProvider
+import fps.mobile.client.infoProviders.ISensorInfoProvider
+import fps.mobile.client.infoProviders.MemoryInfoProvider
+import fps.mobile.client.infoProviders.OsBuildInfoProvider
+import fps.mobile.client.infoProviders.SensorInfoProvider
 import fps.mobile.client.utils.StringExtension.hashingMd5
 
 private val CPUINFO_IGNORED_COMMON_PROPS = setOf(

@@ -19,7 +19,7 @@ interface ICameraInfoProvider {
 }
 
 class CameraInfoProvider(
-    private val context: Context
+    context: Context
 ) : ICameraInfoProvider {
 
     private val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
