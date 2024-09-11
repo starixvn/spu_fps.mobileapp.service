@@ -6,10 +6,12 @@ import fps.mobile.client.infoProviders.CameraInfoProvider
 import fps.mobile.client.infoProviders.CpuInfo
 import fps.mobile.client.infoProviders.CpuInfoProvider
 import fps.mobile.client.infoProviders.DisplayInfoProvider
+import fps.mobile.client.infoProviders.GpuInfoProvider
 import fps.mobile.client.infoProviders.IBatteryInfoProvider
 import fps.mobile.client.infoProviders.ICameraInfoProvider
 import fps.mobile.client.infoProviders.ICpuInfoProvider
 import fps.mobile.client.infoProviders.IDisplayInfoProvider
+import fps.mobile.client.infoProviders.IGpuInfoProvider
 import fps.mobile.client.infoProviders.IMemoryInfoProvider
 import fps.mobile.client.infoProviders.IOsBuildInfoProvider
 import fps.mobile.client.infoProviders.ISensorInfoProvider
@@ -34,6 +36,7 @@ class HardwareFingerprintProvider(
     private val batteryInfoProvider: IBatteryInfoProvider = BatteryInfoProvider(context)
     private val cameraInfoProvider: ICameraInfoProvider = CameraInfoProvider(context)
     private val cpuInfoProvider: ICpuInfoProvider = CpuInfoProvider()
+    private val gpuInfoProvider: IGpuInfoProvider = GpuInfoProvider(context)
     private val memoryInfoProvider: IMemoryInfoProvider = MemoryInfoProvider(context)
     private var sensorInfoProvider: ISensorInfoProvider = SensorInfoProvider(context)
     private val displayInfoProvider: IDisplayInfoProvider = DisplayInfoProvider(context)
@@ -65,6 +68,8 @@ class HardwareFingerprintProvider(
 
         stringBuilder.append(cpuInfo.commonInfo.toString())
         stringBuilder.append(cpuInfo.perProcessorInfo.toString())
+
+        stringBuilder.append(gpuInfoProvider.getGlesVersion())
 
         stringBuilder.append(memoryInfoProvider.getTotalRamInMB().toString())
 
