@@ -3,6 +3,7 @@ package fps.mobile.client.FingerprintProviders
 import android.content.Context
 import fps.mobile.client.InfoProviders.BatteryInfoProvider
 import fps.mobile.client.InfoProviders.CameraInfoProvider
+import fps.mobile.client.InfoProviders.CpuInfo
 import fps.mobile.client.InfoProviders.CpuInfoProvider
 import fps.mobile.client.InfoProviders.ICpuInfoProvider
 import fps.mobile.client.InfoProviders.IBatteryInfoProvider
@@ -12,6 +13,15 @@ import fps.mobile.client.InfoProviders.ISensorInfoProvider
 import fps.mobile.client.InfoProviders.MemoryInfoProvider
 import fps.mobile.client.InfoProviders.SensorInfoProvider
 import fps.mobile.client.utils.StringExtension.HashingMd5
+
+private val CPUINFO_IGNORED_COMMON_PROPS = setOf(
+    "processor",
+)
+
+private val CPUINFO_IGNORED_PER_PROC_PROPS = setOf(
+    "bogomips",
+    "cpu mhz",
+)
 
 internal class HardwareFingerprintProvider(
     private val context: Context
@@ -40,14 +50,25 @@ internal class HardwareFingerprintProvider(
 
         stringBuilder.append(cpuInfoProvider.getNumberOfCores())
         stringBuilder.append(cpuInfoProvider.getAbiType())
-//        stringBuilder.append(cpuInfoProvider.getCpuInfo().toString())
-//        stringBuilder.append(memoryInfoProvider.getTotalRam().toString())
+
+        val rawCpuInfo = cpuInfoProvider.getCpuInfo()
+        val cpuInfo = CpuInfo(
+            commonInfo = rawCpuInfo.commonInfo.filter { it.first.lowercase() !in CPUINFO_IGNORED_COMMON_PROPS },
+            perProcessorInfo = rawCpuInfo.perProcessorInfo.map { procInfo -> procInfo.filter { it.first.lowercase() !in CPUINFO_IGNORED_PER_PROC_PROPS } }
+        )
+
+        stringBuilder.append(cpuInfo.commonInfo.toString())
+        stringBuilder.append(cpuInfo.perProcessorInfo.toString())
+
+        stringBuilder.append(memoryInfoProvider.getTotalRaminMB().toString())
+
         stringBuilder.append(memoryInfoProvider.getExternalStorage().toString())
         stringBuilder.append(memoryInfoProvider.getInternalStorage().toString())
         val sensors = sensorInfoProvider.getSensorList()
         sensors.forEach{
             stringBuilder.append(it.sensorName).append(it.vendorName)
         }
+
         return stringBuilder.toString().HashingMd5()
     }
 }
