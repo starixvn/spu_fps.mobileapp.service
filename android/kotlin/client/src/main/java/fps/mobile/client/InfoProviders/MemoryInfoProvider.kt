@@ -8,7 +8,7 @@ import java.math.BigInteger
 
 
 interface IMemoryInfoProvider {
-    public fun getTotalRaminMB(): Long
+    public fun getTotalRamInMB(): Long
 
     public fun getInternalStorage(): Long
     public fun getExternalStorage(): Long
@@ -20,7 +20,7 @@ internal class MemoryInfoProvider(
 
     private val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
-    override fun getTotalRaminMB(): Long {
+    override fun getTotalRamInMB(): Long {
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo)
         return memoryInfo.totalMem / (1024 * 1024)

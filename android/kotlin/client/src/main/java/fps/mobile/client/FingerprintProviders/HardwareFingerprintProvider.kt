@@ -5,9 +5,11 @@ import fps.mobile.client.InfoProviders.BatteryInfoProvider
 import fps.mobile.client.InfoProviders.CameraInfoProvider
 import fps.mobile.client.InfoProviders.CpuInfo
 import fps.mobile.client.InfoProviders.CpuInfoProvider
+import fps.mobile.client.InfoProviders.DisplayInfoProvider
 import fps.mobile.client.InfoProviders.ICpuInfoProvider
 import fps.mobile.client.InfoProviders.IBatteryInfoProvider
 import fps.mobile.client.InfoProviders.ICameraInfoProvider
+import fps.mobile.client.InfoProviders.IDisplayInfoProvider
 import fps.mobile.client.InfoProviders.IMemoryInfoProvider
 import fps.mobile.client.InfoProviders.ISensorInfoProvider
 import fps.mobile.client.InfoProviders.MemoryInfoProvider
@@ -31,7 +33,8 @@ internal class HardwareFingerprintProvider(
     private val cameraInfoProvider: ICameraInfoProvider = CameraInfoProvider(context)
     private val cpuInfoProvider: ICpuInfoProvider = CpuInfoProvider(context)
     private val memoryInfoProvider: IMemoryInfoProvider = MemoryInfoProvider(context)
-    private var sensorInfoProvider: ISensorInfoProvider= SensorInfoProvider(context)
+    private var sensorInfoProvider: ISensorInfoProvider = SensorInfoProvider(context)
+    private val displayInfoProvider: IDisplayInfoProvider = DisplayInfoProvider(context)
 
     public fun getFingerprint(): String {
         val stringBuilder = StringBuilder()
@@ -60,7 +63,7 @@ internal class HardwareFingerprintProvider(
         stringBuilder.append(cpuInfo.commonInfo.toString())
         stringBuilder.append(cpuInfo.perProcessorInfo.toString())
 
-        stringBuilder.append(memoryInfoProvider.getTotalRaminMB().toString())
+        stringBuilder.append(memoryInfoProvider.getTotalRamInMB().toString())
 
         stringBuilder.append(memoryInfoProvider.getExternalStorage().toString())
         stringBuilder.append(memoryInfoProvider.getInternalStorage().toString())
@@ -69,6 +72,8 @@ internal class HardwareFingerprintProvider(
             stringBuilder.append(it.sensorName).append(it.vendorName)
         }
 
+        val displayInfo = displayInfoProvider.getDisplayInfo()
+        stringBuilder.append(displayInfo.heightPixel).append(displayInfo.widthPixel).append(displayInfo.densityDpi)
         return stringBuilder.toString().HashingMd5()
     }
 }
