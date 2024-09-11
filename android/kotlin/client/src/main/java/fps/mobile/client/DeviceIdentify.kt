@@ -15,6 +15,7 @@ import fps.mobile.client.FingerprintProviders.HardwareFingerprintProvider
 import fps.mobile.client.InfoProviders.BatteryInfoProvider
 import fps.mobile.client.InfoProviders.CameraInfoProvider
 import fps.mobile.client.InfoProviders.CpuInfoProvider
+import fps.mobile.client.InfoProviders.DisplayInfoProvider
 import fps.mobile.client.InfoProviders.GpuInfoProvider
 import fps.mobile.client.InfoProviders.MemoryInfoProvider
 import fps.mobile.client.InfoProviders.SensorInfoProvider
@@ -32,20 +33,21 @@ object DeviceIdentify {
         val gsfIdProvider = GsfIdProvider(context.contentResolver)
         val deviceIdProvider = DeviceIdProvider(context)
         val googleAdIdProvider = GoogleAdIdProvider(context)
-        val batteryInfoProvider = BatteryInfoProvider(context)
-        val cameraInfoProvider = CameraInfoProvider(context)
-        val cpuInfoProvider = CpuInfoProvider(context)
-        val gpuInfoProvider = GpuInfoProvider(context)
-        val memoryInfoProvider = MemoryInfoProvider(context)
-        val sensorInfoProvider = SensorInfoProvider(context)
+//        val batteryInfoProvider = BatteryInfoProvider(context)
+//        val cameraInfoProvider = CameraInfoProvider(context)
+//        val cpuInfoProvider = CpuInfoProvider(context)
+//        val gpuInfoProvider = GpuInfoProvider(context)
+//        val memoryInfoProvider = MemoryInfoProvider(context)
+//        val sensorInfoProvider = SensorInfoProvider(context)
+        val displayInfoProvider = DisplayInfoProvider(context)
         val hardwareFingerprintProvider = HardwareFingerprintProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
-//        deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
-//        deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
-//        deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getGsfId() ?: "unknown"))
-//        deviceInfoList.add(DeviceInfo("Device ID", deviceIdProvider.getDeviceId() ?: "unknown"))
-//        deviceInfoList.add(DeviceInfo("Google Ad ID", googleAdIdProvider.getGoogleAdId() ?: "unknown"))
+        deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
+        deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
+        deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getGsfId() ?: "unknown"))
+        deviceInfoList.add(DeviceInfo("Device ID", deviceIdProvider.getDeviceId() ?: "unknown"))
+        deviceInfoList.add(DeviceInfo("Google Ad ID", googleAdIdProvider.getGoogleAdId() ?: "unknown"))
 
 //        deviceInfoList.add(DeviceInfo("Battery Health", batteryInfoProvider.getBatteryHealth()))
 //        deviceInfoList.add(DeviceInfo("Battery Total Capacity", batteryInfoProvider.getBatteryTotalCapacity()))
@@ -62,7 +64,7 @@ object DeviceIdentify {
 //        deviceInfoList.add(DeviceInfo("CPU Info", cpuInfoProvider.getCpuInfo().toString()))
 //
 //        deviceInfoList.add(DeviceInfo("Gles Version", gpuInfoProvider.getGlesVersion()))
-        deviceInfoList.add(DeviceInfo("Total RAM", memoryInfoProvider.getTotalRaminMB().toString()))
+//        deviceInfoList.add(DeviceInfo("Total RAM", memoryInfoProvider.getTotalRaminMB().toString()))
 //        deviceInfoList.add(DeviceInfo("Internal Storage", memoryInfoProvider.getInternalStorage().toString()))
 //        deviceInfoList.add(DeviceInfo("External Storage", memoryInfoProvider.getExternalStorage().toString()))
 //
@@ -70,7 +72,8 @@ object DeviceIdentify {
 //        sensors.forEach {
 //            deviceInfoList.add(DeviceInfo("Sensor ${it.sensorName}", it.vendorName))
 //        }
-
+        val displayInfo = displayInfoProvider.getDisplayInfo()
+        deviceInfoList.add(DeviceInfo("Display Info", displayInfo.heightPixel.toString() + "x" + displayInfo.widthPixel + ":" + displayInfo.densityDpi))
         deviceInfoList.add(DeviceInfo("Hardware Fingerprint", hardwareFingerprintProvider.getFingerprint()))
 
         return deviceInfoList
