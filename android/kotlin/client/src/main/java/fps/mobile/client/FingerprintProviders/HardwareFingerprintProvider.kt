@@ -11,8 +11,10 @@ import fps.mobile.client.InfoProviders.IBatteryInfoProvider
 import fps.mobile.client.InfoProviders.ICameraInfoProvider
 import fps.mobile.client.InfoProviders.IDisplayInfoProvider
 import fps.mobile.client.InfoProviders.IMemoryInfoProvider
+import fps.mobile.client.InfoProviders.IOsBuildInfoProvider
 import fps.mobile.client.InfoProviders.ISensorInfoProvider
 import fps.mobile.client.InfoProviders.MemoryInfoProvider
+import fps.mobile.client.InfoProviders.OsBuildInfoProvider
 import fps.mobile.client.InfoProviders.SensorInfoProvider
 import fps.mobile.client.utils.StringExtension.HashingMd5
 
@@ -35,6 +37,7 @@ internal class HardwareFingerprintProvider(
     private val memoryInfoProvider: IMemoryInfoProvider = MemoryInfoProvider(context)
     private var sensorInfoProvider: ISensorInfoProvider = SensorInfoProvider(context)
     private val displayInfoProvider: IDisplayInfoProvider = DisplayInfoProvider(context)
+    private val osBuildInfoProvider: IOsBuildInfoProvider = OsBuildInfoProvider()
 
     public fun getFingerprint(): String {
         val stringBuilder = StringBuilder()
@@ -74,6 +77,9 @@ internal class HardwareFingerprintProvider(
 
         val displayInfo = displayInfoProvider.getDisplayInfo()
         stringBuilder.append(displayInfo.heightPixel).append(displayInfo.widthPixel).append(displayInfo.densityDpi)
+
+        stringBuilder.append(osBuildInfoProvider.getManufacturerName())
+        stringBuilder.append(osBuildInfoProvider.getModelName())
         return stringBuilder.toString().HashingMd5()
     }
 }

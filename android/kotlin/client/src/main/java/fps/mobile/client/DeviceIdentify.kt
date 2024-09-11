@@ -1,27 +1,11 @@
 package fps.mobile.client
-import android.app.ActivityManager
 import android.content.Context
-import android.content.SharedPreferences
-import android.hardware.Sensor
-import android.hardware.SensorManager
-import android.os.Build
-import android.util.DisplayMetrics
 import fps.mobile.client.DeviceIdProviders.AndroidIdProvider
 import fps.mobile.client.DeviceIdProviders.DeviceIdProvider
 import fps.mobile.client.DeviceIdProviders.GoogleAdIdProvider
 import fps.mobile.client.DeviceIdProviders.GsfIdProvider
 import fps.mobile.client.DeviceIdProviders.MediaDrmIdProvider
 import fps.mobile.client.FingerprintProviders.HardwareFingerprintProvider
-import fps.mobile.client.InfoProviders.BatteryInfoProvider
-import fps.mobile.client.InfoProviders.CameraInfoProvider
-import fps.mobile.client.InfoProviders.CpuInfoProvider
-import fps.mobile.client.InfoProviders.DisplayInfoProvider
-import fps.mobile.client.InfoProviders.GpuInfoProvider
-import fps.mobile.client.InfoProviders.MemoryInfoProvider
-import fps.mobile.client.InfoProviders.SensorInfoProvider
-import java.util.Locale
-import java.util.TimeZone
-import java.util.UUID
 
 
 data class DeviceInfo(val name:String, val value: String)
@@ -39,7 +23,9 @@ object DeviceIdentify {
 //        val gpuInfoProvider = GpuInfoProvider(context)
 //        val memoryInfoProvider = MemoryInfoProvider(context)
 //        val sensorInfoProvider = SensorInfoProvider(context)
-        val displayInfoProvider = DisplayInfoProvider(context)
+//        val displayInfoProvider = DisplayInfoProvider(context)
+//        val osBuildInfoProvider = OsBuildInfoProvider()
+
         val hardwareFingerprintProvider = HardwareFingerprintProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
@@ -72,8 +58,10 @@ object DeviceIdentify {
 //        sensors.forEach {
 //            deviceInfoList.add(DeviceInfo("Sensor ${it.sensorName}", it.vendorName))
 //        }
-        val displayInfo = displayInfoProvider.getDisplayInfo()
-        deviceInfoList.add(DeviceInfo("Display Info", displayInfo.heightPixel.toString() + "x" + displayInfo.widthPixel + ":" + displayInfo.densityDpi))
+//        val displayInfo = displayInfoProvider.getDisplayInfo()
+//        deviceInfoList.add(DeviceInfo("Display Info", displayInfo.heightPixel.toString() + "x" + displayInfo.widthPixel + ":" + displayInfo.densityDpi))
+//        deviceInfoList.add(DeviceInfo("Manufacturer", osBuildInfoProvider.getManufacturerName()))
+//        deviceInfoList.add(DeviceInfo("Model", osBuildInfoProvider.getModelName()))
         deviceInfoList.add(DeviceInfo("Hardware Fingerprint", hardwareFingerprintProvider.getFingerprint()))
 
         return deviceInfoList
