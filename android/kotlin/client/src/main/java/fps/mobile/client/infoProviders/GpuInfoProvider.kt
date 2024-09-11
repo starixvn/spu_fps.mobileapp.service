@@ -1,13 +1,13 @@
-package fps.mobile.client.InfoProviders
+package fps.mobile.client.infoProviders
 
 import android.app.ActivityManager
 import android.content.Context
 
 interface  IGpuInfoProvider {
-    public fun getGlesVersion(): String
+    fun getGlesVersion(): String
 }
 
-internal class GpuInfoProvider(
+class GpuInfoProvider(
     private val context: Context
 ) : IGpuInfoProvider {
     override fun getGlesVersion(): String {

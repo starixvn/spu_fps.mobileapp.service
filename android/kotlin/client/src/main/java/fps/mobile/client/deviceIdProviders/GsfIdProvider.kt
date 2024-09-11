@@ -1,4 +1,4 @@
-package fps.mobile.client.DeviceIdProviders
+package fps.mobile.client.deviceIdProviders
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -10,12 +10,12 @@ class GsfIdProvider(
     private val contentResolver: ContentResolver?
 ) {
 
-    public fun getGsfId(): String? {
-        val URI = Uri.parse(URI_GSF_CONTENT_PROVIDER)
+    fun getGsfId(): String? {
+        val uri = Uri.parse(URI_GSF_CONTENT_PROVIDER)
         val params = arrayOf(ID_KEY)
         return try {
             val cursor = contentResolver!!
-                .query(URI, null, null, params, null)
+                .query(uri, null, null, params, null)
 
             if (cursor == null) {
                 return null

@@ -1,25 +1,25 @@
-package fps.mobile.client.InfoProviders
+@file:Suppress("DEPRECATION")
 
-import android.annotation.SuppressLint
+package fps.mobile.client.infoProviders
+
 import android.content.Context
 import android.hardware.Camera
 import android.hardware.camera2.CameraManager
-import android.os.Build
 import java.util.LinkedList
 
-public data class CameraInfo (
+data class CameraInfo (
     val cameraName: String,
     val cameraType: String,
     val cameraOrientation: String
 )
 
 interface ICameraInfoProvider {
-    public fun isCameraPresent(): Boolean
-    public fun getCameraList(): List<CameraInfo>
+    fun isCameraPresent(): Boolean
+    fun getCameraList(): List<CameraInfo>
 }
 
-internal class CameraInfoProvider(
-    private  val context: Context
+class CameraInfoProvider(
+    private val context: Context
 ) : ICameraInfoProvider {
 
     private val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager

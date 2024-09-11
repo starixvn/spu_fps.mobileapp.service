@@ -1,12 +1,14 @@
-package fps.mobile.client.DeviceIdProviders
+package fps.mobile.client.deviceIdProviders
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.Settings
 
 class AndroidIdProvider(
     private val contentResolver: ContentResolver?
 ) {
-    public fun getAndroidId(): String {
-        return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
+    @SuppressLint("HardwareIds")
+    fun getAndroidId(): String {
+        return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
     }
 }

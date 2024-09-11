@@ -1,22 +1,8 @@
-package fps.mobile.client.FingerprintProviders
+package fps.mobile.client.fingerprintProviders
 
 import android.content.Context
-import fps.mobile.client.InfoProviders.BatteryInfoProvider
-import fps.mobile.client.InfoProviders.CameraInfoProvider
-import fps.mobile.client.InfoProviders.CpuInfo
-import fps.mobile.client.InfoProviders.CpuInfoProvider
-import fps.mobile.client.InfoProviders.DisplayInfoProvider
-import fps.mobile.client.InfoProviders.ICpuInfoProvider
-import fps.mobile.client.InfoProviders.IBatteryInfoProvider
-import fps.mobile.client.InfoProviders.ICameraInfoProvider
-import fps.mobile.client.InfoProviders.IDisplayInfoProvider
-import fps.mobile.client.InfoProviders.IMemoryInfoProvider
-import fps.mobile.client.InfoProviders.IOsBuildInfoProvider
-import fps.mobile.client.InfoProviders.ISensorInfoProvider
-import fps.mobile.client.InfoProviders.MemoryInfoProvider
-import fps.mobile.client.InfoProviders.OsBuildInfoProvider
-import fps.mobile.client.InfoProviders.SensorInfoProvider
-import fps.mobile.client.utils.StringExtension.HashingMd5
+import fps.mobile.client.infoProviders.*
+import fps.mobile.client.utils.StringExtension.hashingMd5
 
 private val CPUINFO_IGNORED_COMMON_PROPS = setOf(
     "processor",
@@ -27,19 +13,19 @@ private val CPUINFO_IGNORED_PER_PROC_PROPS = setOf(
     "cpu mhz",
 )
 
-internal class HardwareFingerprintProvider(
-    private val context: Context
+class HardwareFingerprintProvider(
+    context: Context
 ) {
 
     private val batteryInfoProvider: IBatteryInfoProvider = BatteryInfoProvider(context)
     private val cameraInfoProvider: ICameraInfoProvider = CameraInfoProvider(context)
-    private val cpuInfoProvider: ICpuInfoProvider = CpuInfoProvider(context)
+    private val cpuInfoProvider: ICpuInfoProvider = CpuInfoProvider()
     private val memoryInfoProvider: IMemoryInfoProvider = MemoryInfoProvider(context)
     private var sensorInfoProvider: ISensorInfoProvider = SensorInfoProvider(context)
     private val displayInfoProvider: IDisplayInfoProvider = DisplayInfoProvider(context)
     private val osBuildInfoProvider: IOsBuildInfoProvider = OsBuildInfoProvider()
 
-    public fun getFingerprint(): String {
+    fun getFingerprint(): String {
         val stringBuilder = StringBuilder()
         stringBuilder.append(batteryInfoProvider.getBatteryTotalCapacity())
         stringBuilder.append(batteryInfoProvider.getBatteryHealth())
@@ -80,6 +66,6 @@ internal class HardwareFingerprintProvider(
 
         stringBuilder.append(osBuildInfoProvider.getManufacturerName())
         stringBuilder.append(osBuildInfoProvider.getModelName())
-        return stringBuilder.toString().HashingMd5()
+        return stringBuilder.toString().hashingMd5()
     }
 }

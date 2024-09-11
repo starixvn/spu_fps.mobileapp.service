@@ -1,4 +1,4 @@
-package fps.mobile.client.DeviceIdProviders
+package fps.mobile.client.deviceIdProviders
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,7 +15,6 @@ import java.io.IOException
 import java.io.RandomAccessFile
 import java.util.UUID
 
-
 private const val FIXED_ANDROID_ID = "ID_GOES_HERE"
 private const val INSTALLATION = "CONSTANT_INSTALLATION_APP_GENERATED_ID"
 private const val DEVICE_ID = "UNIQUE_ID"
@@ -23,7 +22,7 @@ private const val DEVICE_ID = "UNIQUE_ID"
 class DeviceIdProvider(
     private val context: Context
 ) {
-    public fun getDeviceId(): String? {
+    fun getDeviceId(): String? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         var deviceId: String? = sharedPreferences.getString(DEVICE_ID, null)
 
@@ -49,7 +48,7 @@ class DeviceIdProvider(
         return deviceId
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "HardwareIds")
     private fun getDeviceUniqueId(context: Context): String {
         var deviceIMEI: String? = null
         val mTelephonyManager =
@@ -60,6 +59,7 @@ class DeviceIdProvider(
                 Manifest.permission.READ_PHONE_STATE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+            @Suppress("DEPRECATION")
             deviceIMEI = mTelephonyManager.deviceId
         }
 
@@ -72,6 +72,7 @@ class DeviceIdProvider(
         if(!TextUtils.isEmpty(androidId) && !androidId.equals(FIXED_ANDROID_ID, ignoreCase = true))
             return androidId
 
+        @Suppress("DEPRECATION")
         val serialBuildId = Build.SERIAL
         if (!TextUtils.isEmpty(serialBuildId))
             return serialBuildId

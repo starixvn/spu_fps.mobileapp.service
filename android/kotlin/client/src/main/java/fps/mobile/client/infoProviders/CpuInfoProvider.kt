@@ -1,34 +1,24 @@
-package fps.mobile.client.InfoProviders
+package fps.mobile.client.infoProviders
 
-import android.content.Context
 import android.os.Build
 import java.io.File
 
 private const val CPU_INFO_PATH = "/proc/cpuinfo"
 private const val SINGLE_PROCESSOR_KEY = "processor"
 
-public data class CpuInfo(
+data class CpuInfo(
     val commonInfo: List<Pair<String, String>>,
     // except processor : x pairs. index in list may be considered as an index of a processor.
     val perProcessorInfo: List<List<Pair<String, String>>>,
-) {
-    public companion object {
-        public val EMPTY: CpuInfo = CpuInfo(
-            commonInfo = emptyList(),
-            perProcessorInfo = emptyList(),
-        )
-    }
-}
+)
 
 interface ICpuInfoProvider {
-    public fun getNumberOfCores(): Int
-    public fun getCpuInfo(): CpuInfo
-    public fun getAbiType(): String
+    fun getNumberOfCores(): Int
+    fun getCpuInfo(): CpuInfo
+    fun getAbiType(): String
 }
 
-internal class CpuInfoProvider(
-    private val context: Context
-) : ICpuInfoProvider{
+class CpuInfoProvider: ICpuInfoProvider{
 
     override fun getNumberOfCores(): Int {
         return Runtime.getRuntime()!!.availableProcessors()
@@ -44,7 +34,7 @@ internal class CpuInfoProvider(
     }
 }
 
-internal fun parseCpuInfo(contents: String): CpuInfo {
+private fun parseCpuInfo(contents: String): CpuInfo {
     // just for simplicity
     val linesStartEndBlankLine = listOf("") + contents.lines() + listOf("")
 
@@ -63,13 +53,13 @@ internal fun parseCpuInfo(contents: String): CpuInfo {
     // This is a list of lines that are divided to sections with single blank lines. Starts with a blank line. Ends with a
     // (potentially same) blank line.
     val linesWithSections = linesStartEndBlankLine
-        .filterIndexed { index, s -> index !in repeatedBlankLinesIndices }
+        .filterIndexed { index, _ -> index !in repeatedBlankLinesIndices }
 
     val sectionBreaksIndices = linesWithSections.mapIndexed { index, s -> index.takeIf { s.isBlank() } }.filterNotNull()
 
     // sections (which are lists of non-blank lines). Each section is not empty.
     val sectionsOfLines = sectionBreaksIndices.windowed(size = 2, step = 1, partialWindows = false) {
-        linesWithSections.slice(it[0] + 1..it[1] - 1)
+        linesWithSections.slice(it[0] + 1..<it[1])
     }
 
     fun parseLine(line: String): Pair<String, String>? {

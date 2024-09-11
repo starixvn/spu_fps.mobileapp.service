@@ -1,19 +1,19 @@
-package fps.mobile.client.InfoProviders
+package fps.mobile.client.infoProviders
 
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
 
-public data class SensorInfo(
+data class SensorInfo(
     val sensorName: String,
     val vendorName: String
 )
 
 interface ISensorInfoProvider {
-    public fun getSensorList(): List<SensorInfo>
+    fun getSensorList(): List<SensorInfo>
 }
 
-internal class SensorInfoProvider(
+class SensorInfoProvider(
     context: Context
 ) : ISensorInfoProvider {
     private val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager

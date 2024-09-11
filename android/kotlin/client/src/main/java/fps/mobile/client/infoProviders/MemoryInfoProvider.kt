@@ -1,20 +1,19 @@
-package fps.mobile.client.InfoProviders
+package fps.mobile.client.infoProviders
 
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Environment
 import android.os.StatFs
-import java.math.BigInteger
 
 
 interface IMemoryInfoProvider {
-    public fun getTotalRamInMB(): Long
+    fun getTotalRamInMB(): Long
 
-    public fun getInternalStorage(): Long
-    public fun getExternalStorage(): Long
+    fun getInternalStorage(): Long
+    fun getExternalStorage(): Long
 }
 
-internal class MemoryInfoProvider(
+class MemoryInfoProvider(
     private val context: Context
 ) : IMemoryInfoProvider {
 
@@ -34,7 +33,7 @@ internal class MemoryInfoProvider(
     override fun getExternalStorage(): Long {
         val root = context.getExternalFilesDir(null)
             ?.takeIf { it.canRead() }
-            ?.let { StatFs(it.absolutePath!!) }!!
+            ?.let { StatFs(it.absolutePath) }!!
         return root.totalBytes
     }
 }

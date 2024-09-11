@@ -1,4 +1,4 @@
-package fps.mobile.client.InfoProviders
+package fps.mobile.client.infoProviders
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,16 +6,16 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 
-public interface IBatteryInfoProvider {
-    public fun getBatteryHealth(): String?
-    public fun getBatteryTotalCapacity(): String
-    public fun getBatteryLevel(): String
+interface IBatteryInfoProvider {
+    fun getBatteryHealth(): String?
+    fun getBatteryTotalCapacity(): String
+    fun getBatteryLevel(): String
 }
 
 private const val POWER_PROFILE_CLASS_NAME = "com.android.internal.os.PowerProfile"
 private const val BATTERY_CAPACITY_METHOD_NAME = "getBatteryCapacity"
 
-internal class BatteryInfoProvider(
+class BatteryInfoProvider(
     private val context: Context
 ): IBatteryInfoProvider {
 
@@ -43,8 +43,8 @@ internal class BatteryInfoProvider(
     override fun getBatteryLevel(): String {
         val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         val batteryStatus = context.registerReceiver(null, intentFilter)
-        val level = batteryStatus?.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1) ?: -1
-        val scale = batteryStatus?.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1) ?: -1
+        val level = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
+        val scale = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
         if (level != -1 && scale != -1) {
             return (level.toFloat() / scale.toFloat() * 100).toInt().toString()
         }

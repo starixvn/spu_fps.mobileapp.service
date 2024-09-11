@@ -1,11 +1,12 @@
 package fps.mobile.client
 import android.content.Context
-import fps.mobile.client.DeviceIdProviders.AndroidIdProvider
-import fps.mobile.client.DeviceIdProviders.DeviceIdProvider
-import fps.mobile.client.DeviceIdProviders.GoogleAdIdProvider
-import fps.mobile.client.DeviceIdProviders.GsfIdProvider
-import fps.mobile.client.DeviceIdProviders.MediaDrmIdProvider
-import fps.mobile.client.FingerprintProviders.HardwareFingerprintProvider
+import fps.mobile.client.deviceIdProviders.AndroidIdProvider
+import fps.mobile.client.deviceIdProviders.DeviceIdProvider
+import fps.mobile.client.deviceIdProviders.GoogleAdIdProvider
+import fps.mobile.client.deviceIdProviders.GsfIdProvider
+import fps.mobile.client.deviceIdProviders.MediaDrmIdProvider
+import fps.mobile.client.fingerprintProviders.HardwareFingerprintProvider
+import fps.mobile.client.infoProviders.DisplayInfoProvider
 
 
 data class DeviceInfo(val name:String, val value: String)
@@ -13,7 +14,7 @@ object DeviceIdentify {
 
     fun getDeviceInfo(context: Context): ArrayList<DeviceInfo> {
         val androidIdProvider =  AndroidIdProvider(context.contentResolver)
-        val mediaDrmIdProvider = MediaDrmIdProvider(context.contentResolver)
+        val mediaDrmIdProvider = MediaDrmIdProvider()
         val gsfIdProvider = GsfIdProvider(context.contentResolver)
         val deviceIdProvider = DeviceIdProvider(context)
         val googleAdIdProvider = GoogleAdIdProvider(context)
@@ -23,12 +24,12 @@ object DeviceIdentify {
 //        val gpuInfoProvider = GpuInfoProvider(context)
 //        val memoryInfoProvider = MemoryInfoProvider(context)
 //        val sensorInfoProvider = SensorInfoProvider(context)
-//        val displayInfoProvider = DisplayInfoProvider(context)
+        val displayInfoProvider = DisplayInfoProvider(context)
 //        val osBuildInfoProvider = OsBuildInfoProvider()
 
         val hardwareFingerprintProvider = HardwareFingerprintProvider(context)
 
-        val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
+        val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
         deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
         deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getGsfId() ?: "unknown"))
@@ -58,8 +59,8 @@ object DeviceIdentify {
 //        sensors.forEach {
 //            deviceInfoList.add(DeviceInfo("Sensor ${it.sensorName}", it.vendorName))
 //        }
-//        val displayInfo = displayInfoProvider.getDisplayInfo()
-//        deviceInfoList.add(DeviceInfo("Display Info", displayInfo.heightPixel.toString() + "x" + displayInfo.widthPixel + ":" + displayInfo.densityDpi))
+        val displayInfo = displayInfoProvider.getDisplayInfo()
+        deviceInfoList.add(DeviceInfo("Display Info", displayInfo.heightPixel.toString() + "x" + displayInfo.widthPixel + ":" + displayInfo.densityDpi))
 //        deviceInfoList.add(DeviceInfo("Manufacturer", osBuildInfoProvider.getManufacturerName()))
 //        deviceInfoList.add(DeviceInfo("Model", osBuildInfoProvider.getModelName()))
         deviceInfoList.add(DeviceInfo("Hardware Fingerprint", hardwareFingerprintProvider.getFingerprint()))
