@@ -1,13 +1,15 @@
 package fps.mobile.client
 
 import android.content.Context
-import fps.mobile.client.deviceIdProviders.*
-import fps.mobile.client.deviceIdProviders.UuidProvider
+import fps.mobile.client.deviceIdProviders.AndroidIdProvider
 import fps.mobile.client.deviceIdProviders.GoogleAdIdProvider
 import fps.mobile.client.deviceIdProviders.GsfIdProvider
 import fps.mobile.client.deviceIdProviders.MediaDrmIdProvider
+import fps.mobile.client.deviceIdProviders.UuidProvider
 import fps.mobile.client.fingerprintProviders.HardwareFingerprintProvider
+import fps.mobile.client.fingerprintProviders.InstalledAppsFingerprintProvider
 import fps.mobile.client.fingerprintProviders.OsFingerprintProvider
+import fps.mobile.client.infoProviders.PackageInfoProvider
 
 
 data class DeviceInfo(val name: String, val value: String)
@@ -22,6 +24,9 @@ object DeviceIdentify {
 
         val hardwareFingerprintProvider = HardwareFingerprintProvider(context)
         val osFingerprintProvider = OsFingerprintProvider()
+        val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider(context)
+
+        val packageInfoProvider = PackageInfoProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
@@ -54,6 +59,17 @@ object DeviceIdentify {
                 osFingerprintProvider.getFingerprint()
             )
         )
+
+        deviceInfoList.add(
+            DeviceInfo("Installed Apps FP", installedAppsFingerprintProvider.getFingerprint())
+        )
+
+        val applications = packageInfoProvider.getApplications()
+        applications.forEach {
+            deviceInfoList.add(
+                DeviceInfo(it.packageName,it.uid)
+            )
+        }
 
         return deviceInfoList
     }

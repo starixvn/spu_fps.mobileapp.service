@@ -8,11 +8,7 @@ import fps.mobile.client.infoProviders.OsBuildInfoProvider
 import fps.mobile.client.infoProviders.SecurityInfoProvider
 import fps.mobile.client.utils.StringExtension.hashingMd5
 
-interface IOsFingerprintProvider {
-    fun getFingerprint(): String
-}
-
-class OsFingerprintProvider : IOsFingerprintProvider {
+class OsFingerprintProvider : IFingerprintProvider {
 
     private val osBuildInfoProvider : IOsBuildInfoProvider = OsBuildInfoProvider()
     private val codecInfoProvider: ICodecInfoProvider = CodecInfoProvider()

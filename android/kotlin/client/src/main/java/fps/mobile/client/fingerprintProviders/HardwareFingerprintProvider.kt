@@ -31,7 +31,7 @@ private val CPUINFO_IGNORED_PER_PROC_PROPS = setOf(
 
 class HardwareFingerprintProvider(
     context: Context
-) {
+): IFingerprintProvider {
 
     private val batteryInfoProvider: IBatteryInfoProvider = BatteryInfoProvider(context)
     private val cameraInfoProvider: ICameraInfoProvider = CameraInfoProvider(context)
@@ -42,7 +42,7 @@ class HardwareFingerprintProvider(
     private val displayInfoProvider: IDisplayInfoProvider = DisplayInfoProvider(context)
     private val osBuildInfoProvider: IOsBuildInfoProvider = OsBuildInfoProvider()
 
-    fun getFingerprint(): String {
+    override fun getFingerprint(): String {
         val stringBuilder = StringBuilder()
         stringBuilder.append(batteryInfoProvider.getBatteryTotalCapacity())
         stringBuilder.append(batteryInfoProvider.getBatteryHealth())
