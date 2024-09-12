@@ -16,9 +16,9 @@ class CodecInfoProvider : ICodecInfoProvider {
     override fun getCodecList(): List<MediaCodecInfo> {
         val codecList = MediaCodecList(MediaCodecList.ALL_CODECS)
 
-        return codecList!!.codecInfos.map {
+        return codecList.codecInfos.map {
             MediaCodecInfo(
-                it!!.name!!,
+                it!!.name,
                 it.supportedTypes!!.map { type: String? -> type.toString() },
             )
         }
