@@ -19,15 +19,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import fps.mobile.client.DeviceIdentify
 import java.util.Locale
 import java.util.TimeZone
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var txtName: EditText
+class MainActivity : AppCompatActivity() {
+    /*private lateinit var txtName: EditText
     private lateinit var btnSubmit: Button
     private lateinit var tvResult: TextView
-    private lateinit var gvDeviceInfo: GridView
+    private lateinit var gvDeviceInfo: GridView*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,29 +42,44 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             insets
         }
 
-        txtName = findViewById(R.id.txtInputText)
-        btnSubmit = findViewById(R.id.btnSubmit)
-        tvResult = findViewById(R.id.txtResult)
-        gvDeviceInfo = findViewById(R.id.gvDeviceInfo)
+        //txtName = findViewById(R.id.txtInputText)
+        //btnSubmit = findViewById(R.id.btnSubmit)
+        //tvResult = findViewById(R.id.txtResult)
+       // gvDeviceInfo = findViewById(R.id.gvDeviceInfo)
 
-        btnSubmit.setOnClickListener(this)
+        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+
+        // Set up the ViewPager with the adapter
+        val adapter = ViewPagerAdapter(this)
+        viewPager.adapter = adapter
+// Attach TabLayout with ViewPager2
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Device ID"
+                1 -> "FingerPrint"
+                else -> "Device ID"
+            }
+        }.attach()
+
+        //btnSubmit.setOnClickListener(this)
 
     }
 
-    override fun onClick(v: View?) {
+    /*override fun onClick(v: View?) {
         when(v?.id){
             R.id.btnSubmit->{
                 tvResult.text = "Hello ${txtName.text}"
 
-                val deviceInfoList = DeviceIdentify.getDeviceInfo(this)
+               *//* val deviceInfoList = DeviceIdentify.getDeviceInfo(this)
                 val newDeviceInfoList: List<DeviceInfoModel> = deviceInfoList.map {
                     DeviceInfoModel(it.name, it.value)
                 }
                 val adapter = PropertyAdapter(this, newDeviceInfoList )
-                gvDeviceInfo.adapter = adapter
+                gvDeviceInfo.adapter = adapter*//*
             }
         }
-    }
+    }*/
 
 
 }
