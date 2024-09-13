@@ -17,11 +17,11 @@ class InstalledAppsFingerprintProvider(
         val applications = packageInfoProvider.getApplications()
         applications
             .sortedBy { it.packageName }
-            .forEach { stringBuilder.append(it.packageName) }
+            .forEach { stringBuilder.append(it.packageName).append(it.uid) }
 
         val systemApplications = packageInfoProvider.getSystemApplications()
         systemApplications.sortedBy { it.packageName }
-            .forEach { stringBuilder.append(it.packageName) }
+            .forEach { stringBuilder.append(it.packageName).append(it.uid) }
 
         return stringBuilder.toString().hashingMd5()
     }

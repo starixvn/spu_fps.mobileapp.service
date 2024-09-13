@@ -26,8 +26,6 @@ object DeviceIdentify {
         val osFingerprintProvider = OsFingerprintProvider()
         val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider(context)
 
-        val packageInfoProvider = PackageInfoProvider(context)
-
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
         deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
@@ -63,13 +61,6 @@ object DeviceIdentify {
         deviceInfoList.add(
             DeviceInfo("Installed Apps FP", installedAppsFingerprintProvider.getFingerprint())
         )
-
-        val applications = packageInfoProvider.getApplications()
-        applications.forEach {
-            deviceInfoList.add(
-                DeviceInfo(it.packageName,it.uid)
-            )
-        }
 
         return deviceInfoList
     }
