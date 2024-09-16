@@ -6,10 +6,11 @@ import fps.mobile.client.deviceIdProviders.GoogleAdIdProvider
 import fps.mobile.client.deviceIdProviders.GsfIdProvider
 import fps.mobile.client.deviceIdProviders.MediaDrmIdProvider
 import fps.mobile.client.deviceIdProviders.UuidProvider
+import fps.mobile.client.fingerprintProviders.DeviceStateFingerprintProvider
 import fps.mobile.client.fingerprintProviders.HardwareFingerprintProvider
 import fps.mobile.client.fingerprintProviders.InstalledAppsFingerprintProvider
 import fps.mobile.client.fingerprintProviders.OsFingerprintProvider
-import fps.mobile.client.infoProviders.PackageInfoProvider
+import fps.mobile.client.infoProviders.SettingInfoProvider
 
 
 data class DeviceInfo(val name: String, val value: String)
@@ -25,6 +26,7 @@ object DeviceIdentify {
         val hardwareFingerprintProvider = HardwareFingerprintProvider(context)
         val osFingerprintProvider = OsFingerprintProvider()
         val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider(context)
+        val deviceStateFingerprintProvider = DeviceStateFingerprintProvider(context)
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
@@ -60,6 +62,10 @@ object DeviceIdentify {
 
         deviceInfoList.add(
             DeviceInfo("Installed Apps FP", installedAppsFingerprintProvider.getFingerprint())
+        )
+
+        deviceInfoList.add(
+            DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
         )
 
         return deviceInfoList
