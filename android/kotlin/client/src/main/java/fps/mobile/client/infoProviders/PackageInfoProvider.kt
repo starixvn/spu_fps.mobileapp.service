@@ -11,6 +11,8 @@ data class PackageInfo(
 interface IPackageInfoProvider {
     fun getApplications(): List<PackageInfo>
     fun getSystemApplications(): List<PackageInfo>
+
+    fun isPackageInstalled(name: String): Boolean
 }
 
 class PackageInfoProvider (
@@ -47,4 +49,13 @@ class PackageInfoProvider (
             }
     }
 
+    override fun isPackageInstalled(name: String): Boolean {
+        try{
+            packageManager!!.getPackageInfo(name, 0)
+            return true
+        } catch (_: PackageManager.NameNotFoundException) {
+
+        }
+        return false
+    }
 }

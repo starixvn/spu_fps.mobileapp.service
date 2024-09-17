@@ -75,6 +75,10 @@ object DeviceIdentify {
             DeviceInfo("Is Emulator", deviceInfoProvider.isEmulator().toString())
         )
 
+        deviceInfoList.add(
+            DeviceInfo("Is Rooted Device", deviceInfoProvider.isRootedDevice().toString())
+        )
+
         return deviceInfoList
     }
 }

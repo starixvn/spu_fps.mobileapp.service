@@ -1,5 +1,6 @@
 package fps.mobile.client.infoProviders
 
+import android.annotation.SuppressLint
 import android.os.Build
 
 interface IOsBuildInfoProvider {
@@ -74,6 +75,8 @@ class OsBuildInfoProvider : IOsBuildInfoProvider{
         return Build.DEVICE
     }
 
+    @Suppress("DEPRECATION")
+    @SuppressLint("HardwareIds")
     override fun getSerial(): String {
         return Build.SERIAL
     }
