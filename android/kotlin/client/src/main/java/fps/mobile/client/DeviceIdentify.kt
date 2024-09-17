@@ -69,16 +69,6 @@ object DeviceIdentify {
             DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
         )
 
-        val deviceInfoProvider = DeviceInfoProvider(context)
-
-        deviceInfoList.add(
-            DeviceInfo("Is Emulator", deviceInfoProvider.isEmulator().toString())
-        )
-
-        deviceInfoList.add(
-            DeviceInfo("Is Rooted Device", deviceInfoProvider.isRootedDevice().toString())
-        )
-
         return deviceInfoList
     }
 }

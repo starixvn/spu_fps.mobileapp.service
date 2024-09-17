@@ -22,6 +22,7 @@ interface ISettingInfoProvider {
     fun getFontScale(): String
     fun getRingtoneList(): List<RingtoneInfo>
     fun getRingtoneSource(): RingtoneInfo
+    fun getBrightnessMode(): String
 
     fun getScreenOffTimeout(): Long
 
@@ -29,6 +30,9 @@ interface ISettingInfoProvider {
     fun isAutoTime(): Boolean
     fun isAutoTimezone(): Boolean
     fun isNotifyAvailableWifi(): Boolean
+    fun isSoundEffectsEnable(): Boolean
+    fun isShowingPassword(): Boolean
+    fun isAutoRotation(): Boolean
 }
 
 class SettingInfoProvider(
@@ -94,6 +98,15 @@ class SettingInfoProvider(
         )
     }
 
+    override fun getBrightnessMode(): String {
+        val mode = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
+        return when (mode) {
+            Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL -> "Manual"
+            Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC -> "Auto"
+            else -> "unknown"
+        }
+    }
+
     override fun getScreenOffTimeout(): Long {
         return Settings.System.getLong(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT)
     }
@@ -111,7 +124,18 @@ class SettingInfoProvider(
     }
 
     override fun isNotifyAvailableWifi(): Boolean {
-        return Settings.Global.getString(contentResolver, Settings.Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON).toBoolean()
+        return Settings.Global.getString(contentResolver, Settings.Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON) == "1"
     }
 
+    override fun isSoundEffectsEnable(): Boolean {
+        return Settings.System.getString(contentResolver, Settings.System.SOUND_EFFECTS_ENABLED) == "1"
+    }
+
+    override fun isShowingPassword(): Boolean {
+        return Settings.System.getString(contentResolver, Settings.System.TEXT_SHOW_PASSWORD) == "1"
+    }
+
+    override fun isAutoRotation(): Boolean {
+        return Settings.System.getString(contentResolver, Settings.System.ACCELEROMETER_ROTATION) == "1"
+    }
 }
