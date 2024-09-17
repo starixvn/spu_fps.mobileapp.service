@@ -9,6 +9,15 @@ interface IOsBuildInfoProvider {
     fun getAndroidVersion(): String
     fun getSdkVersion(): String
     fun getKernelVersion(): String
+    fun getBuildTags(): String
+    fun getBuildProduct(): String
+    fun getHardware(): String
+    fun getDisplay(): String
+    fun getBoard(): String
+    fun getBootLoader(): String
+    fun getSerial(): String
+    fun getDevice(): String
+    fun getBrand(): String
 }
 
 class OsBuildInfoProvider : IOsBuildInfoProvider{
@@ -37,4 +46,39 @@ class OsBuildInfoProvider : IOsBuildInfoProvider{
         return System.getProperty("os.version")!!
     }
 
+    override fun getBuildTags(): String {
+        return Build.TAGS
+    }
+
+    override fun getBuildProduct(): String {
+        return Build.PRODUCT
+    }
+
+    override fun getHardware(): String {
+        return Build.HARDWARE
+    }
+
+    override fun getDisplay(): String {
+        return Build.DISPLAY
+    }
+
+    override fun getBoard(): String {
+        return Build.BOARD
+    }
+
+    override fun getBootLoader(): String {
+        return Build.BOOTLOADER
+    }
+
+    override fun getDevice(): String {
+        return Build.DEVICE
+    }
+
+    override fun getSerial(): String {
+        return Build.SERIAL
+    }
+
+    override fun getBrand(): String {
+        return Build.BRAND
+    }
 }

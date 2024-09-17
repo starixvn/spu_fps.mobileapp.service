@@ -10,6 +10,7 @@ import fps.mobile.client.fingerprintProviders.DeviceStateFingerprintProvider
 import fps.mobile.client.fingerprintProviders.HardwareFingerprintProvider
 import fps.mobile.client.fingerprintProviders.InstalledAppsFingerprintProvider
 import fps.mobile.client.fingerprintProviders.OsFingerprintProvider
+import fps.mobile.client.infoProviders.DeviceInfoProvider
 import fps.mobile.client.infoProviders.SettingInfoProvider
 
 
@@ -66,6 +67,12 @@ object DeviceIdentify {
 
         deviceInfoList.add(
             DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
+        )
+
+        val deviceInfoProvider = DeviceInfoProvider(context)
+
+        deviceInfoList.add(
+            DeviceInfo("Is Emulator", deviceInfoProvider.isEmulator().toString())
         )
 
         return deviceInfoList
