@@ -13,7 +13,7 @@ private const val FIXED_ANDROID_ID = "ID_GOES_HERE"
 private const val INSTALLATION = "CONSTANT_INSTALLATION_APP_GENERATED_ID"
 private const val DEVICE_ID = "UNIQUE_ID"
 
-class UuidProvider(
+internal class UuidProvider(
     private val context: Context
 ) {
 

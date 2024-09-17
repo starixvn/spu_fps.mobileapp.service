@@ -1,18 +1,13 @@
 package fps.mobile.client.fingerprintProviders
 
-import fps.mobile.client.infoProviders.CodecInfoProvider
-import fps.mobile.client.infoProviders.ICodecInfoProvider
-import fps.mobile.client.infoProviders.IOsBuildInfoProvider
-import fps.mobile.client.infoProviders.ISecurityInfoProvider
-import fps.mobile.client.infoProviders.OsBuildInfoProvider
-import fps.mobile.client.infoProviders.SecurityInfoProvider
+import fps.mobile.client.DeviceIdentifyFactory
 import fps.mobile.client.utils.StringExtension.hashingMd5
 
-class OsFingerprintProvider : IFingerprintProvider {
+internal class OsFingerprintProvider : IFingerprintProvider {
 
-    private val osBuildInfoProvider : IOsBuildInfoProvider = OsBuildInfoProvider()
-    private val codecInfoProvider: ICodecInfoProvider = CodecInfoProvider()
-    private val securityInfoProvider: ISecurityInfoProvider = SecurityInfoProvider()
+    private val osBuildInfoProvider = DeviceIdentifyFactory.getOsBuildInfoProvider()
+    private val codecInfoProvider = DeviceIdentifyFactory.getCodecInfoProvider()
+    private val securityInfoProvider= DeviceIdentifyFactory.getSecurityInfoProvider()
 
     override fun getFingerprint(): String {
         val stringBuilder = StringBuilder()

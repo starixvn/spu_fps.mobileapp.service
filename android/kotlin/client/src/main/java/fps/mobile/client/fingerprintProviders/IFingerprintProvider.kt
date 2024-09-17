@@ -1,5 +1,5 @@
 package fps.mobile.client.fingerprintProviders
 
-interface IFingerprintProvider {
+internal interface IFingerprintProvider {
     fun getFingerprint(): String
 }

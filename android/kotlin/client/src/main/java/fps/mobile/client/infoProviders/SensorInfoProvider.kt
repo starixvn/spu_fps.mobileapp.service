@@ -4,16 +4,16 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
 
-data class SensorInfo(
+internal data class SensorInfo(
     val sensorName: String,
     val vendorName: String
 )
 
-interface ISensorInfoProvider {
+internal interface ISensorInfoProvider {
     fun getSensorList(): List<SensorInfo>
 }
 
-class SensorInfoProvider(
+internal class SensorInfoProvider(
     context: Context
 ) : ISensorInfoProvider {
     private val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager

@@ -9,7 +9,7 @@ import java.util.UUID
 private const val WIDEWINE_UUID_MOST_SIG_BITS = -0x121074568629b532L
 private const val WIDEWINE_UUID_LEAST_SIG_BITS = -0x5c37d8232ae2de13L
 
-class MediaDrmIdProvider {
+internal class MediaDrmIdProvider {
     fun getMediaDrmId(): String {
         val widevineUUID = UUID(WIDEWINE_UUID_MOST_SIG_BITS, WIDEWINE_UUID_LEAST_SIG_BITS)
         val wvDrm: MediaDrm?

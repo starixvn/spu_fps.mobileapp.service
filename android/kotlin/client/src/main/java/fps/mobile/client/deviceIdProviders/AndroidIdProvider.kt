@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.Settings
 
-class AndroidIdProvider(
+internal class AndroidIdProvider(
     private val contentResolver: ContentResolver?
 ) {
     @SuppressLint("HardwareIds")

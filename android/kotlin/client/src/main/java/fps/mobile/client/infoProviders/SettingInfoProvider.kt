@@ -9,12 +9,12 @@ import java.util.LinkedList
 import java.util.Locale
 import java.util.TimeZone
 
-data class RingtoneInfo(
+internal data class RingtoneInfo(
     val title: String,
     val uri: String
 )
 
-interface ISettingInfoProvider {
+internal interface ISettingInfoProvider {
     fun getTimezone(): String
     fun getDateFormat(): String
     fun getWifiSleepPolicy(): String
@@ -35,7 +35,7 @@ interface ISettingInfoProvider {
     fun isAutoRotation(): Boolean
 }
 
-class SettingInfoProvider(
+internal class SettingInfoProvider(
     private val context: Context
 ) : ISettingInfoProvider {
 

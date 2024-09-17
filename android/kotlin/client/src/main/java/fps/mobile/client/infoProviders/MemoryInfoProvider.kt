@@ -6,14 +6,14 @@ import android.os.Environment
 import android.os.StatFs
 
 
-interface IMemoryInfoProvider {
+internal interface IMemoryInfoProvider {
     fun getTotalRamInMB(): Long
 
     fun getInternalStorage(): Long
     fun getExternalStorage(): Long
 }
 
-class MemoryInfoProvider(
+internal class MemoryInfoProvider(
     private val context: Context
 ) : IMemoryInfoProvider {
 

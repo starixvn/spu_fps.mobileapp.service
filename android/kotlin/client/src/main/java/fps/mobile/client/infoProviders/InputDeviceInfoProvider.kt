@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.inputmethod.InputMethodInfo
 import android.view.inputmethod.InputMethodManager
 
-interface  IInputDeviceInfoProvider {
+internal interface  IInputDeviceInfoProvider {
     fun hasKeyboard(name: String): Boolean
 }
 
-class InputDeviceInfoProvider(
+internal class InputDeviceInfoProvider(
     context: Context
 ) : IInputDeviceInfoProvider {
 

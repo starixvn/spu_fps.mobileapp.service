@@ -1,6 +1,6 @@
 package fps.mobile.client.utils
 
-object ByteArrayExtension {
+internal object ByteArrayExtension {
 
     fun ByteArray.toHexString(): String {
         return this.joinToString("") {

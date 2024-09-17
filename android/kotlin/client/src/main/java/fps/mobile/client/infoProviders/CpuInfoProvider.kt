@@ -6,19 +6,19 @@ import java.io.File
 private const val CPU_INFO_PATH = "/proc/cpuinfo"
 private const val SINGLE_PROCESSOR_KEY = "processor"
 
-data class CpuInfo(
+internal data class CpuInfo(
     val commonInfo: List<Pair<String, String>>,
     // except processor : x pairs. index in list may be considered as an index of a processor.
     val perProcessorInfo: List<List<Pair<String, String>>>,
 )
 
-interface ICpuInfoProvider {
+internal interface ICpuInfoProvider {
     fun getNumberOfCores(): Int
     fun getCpuInfo(): CpuInfo
     fun getAbiType(): String
 }
 
-class CpuInfoProvider: ICpuInfoProvider{
+internal class CpuInfoProvider: ICpuInfoProvider{
 
     override fun getNumberOfCores(): Int {
         return Runtime.getRuntime()!!.availableProcessors()

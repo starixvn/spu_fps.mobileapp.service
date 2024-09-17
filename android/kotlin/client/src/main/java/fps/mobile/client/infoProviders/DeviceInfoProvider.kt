@@ -115,12 +115,12 @@ private val PATHS_SHOULD_NOT_BE_WRITEABLE = arrayOf(
     //"/dev"
 )
 
-interface IDeviceInfoProvider {
+internal interface IDeviceInfoProvider {
     fun isRootedDevice(): Boolean
     fun isEmulator(): Boolean
 }
 
-class DeviceInfoProvider (
+internal class DeviceInfoProvider (
     context: Context
 ) : IDeviceInfoProvider {
 

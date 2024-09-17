@@ -6,7 +6,7 @@ import android.net.Uri
 private const val URI_GSF_CONTENT_PROVIDER = "content://com.google.android.gsf.gservices"
 private const val ID_KEY = "android_id"
 
-class GsfIdProvider(
+internal class GsfIdProvider(
     private val contentResolver: ContentResolver?
 ) {
 

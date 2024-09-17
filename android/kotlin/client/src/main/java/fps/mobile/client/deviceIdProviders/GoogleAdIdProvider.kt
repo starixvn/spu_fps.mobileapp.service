@@ -5,7 +5,7 @@ package fps.mobile.client.deviceIdProviders
 import android.content.Context
 import androidx.ads.identifier.AdvertisingIdClient
 
-class GoogleAdIdProvider(
+internal class GoogleAdIdProvider(
     private val context: Context
 ) {
     fun getGoogleAdId(): String? {

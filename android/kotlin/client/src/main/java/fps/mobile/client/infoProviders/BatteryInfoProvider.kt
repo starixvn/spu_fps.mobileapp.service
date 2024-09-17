@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 
-interface IBatteryInfoProvider {
+internal interface IBatteryInfoProvider {
     fun getBatteryHealth(): String?
     fun getBatteryTotalCapacity(): String
     fun getBatteryLevel(): String
@@ -15,7 +15,7 @@ interface IBatteryInfoProvider {
 private const val POWER_PROFILE_CLASS_NAME = "com.android.internal.os.PowerProfile"
 private const val BATTERY_CAPACITY_METHOD_NAME = "getBatteryCapacity"
 
-class BatteryInfoProvider(
+internal class BatteryInfoProvider(
     private val context: Context
 ): IBatteryInfoProvider {
 

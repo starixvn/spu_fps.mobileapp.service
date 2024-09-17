@@ -7,18 +7,18 @@ import android.hardware.Camera
 import android.hardware.camera2.CameraManager
 import java.util.LinkedList
 
-data class CameraInfo (
+internal data class CameraInfo (
     val cameraName: String,
     val cameraType: String,
     val cameraOrientation: String
 )
 
-interface ICameraInfoProvider {
+internal interface ICameraInfoProvider {
     fun isCameraPresent(): Boolean
     fun getCameraList(): List<CameraInfo>
 }
 
-class CameraInfoProvider(
+internal class CameraInfoProvider(
     context: Context
 ) : ICameraInfoProvider {
 

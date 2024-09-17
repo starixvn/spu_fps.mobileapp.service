@@ -3,17 +3,17 @@ package fps.mobile.client.infoProviders
 import android.content.Context
 import android.util.DisplayMetrics
 
-data class DisplayInfo(
+internal data class DisplayInfo(
     val widthPixel: Int,
     val heightPixel: Int,
     val densityDpi: Int
 )
 
-interface IDisplayInfoProvider {
+internal interface IDisplayInfoProvider {
     fun getDisplayInfo(): DisplayInfo
 }
 
-class DisplayInfoProvider(
+internal class DisplayInfoProvider(
     private val context: Context
 ) : IDisplayInfoProvider {
 

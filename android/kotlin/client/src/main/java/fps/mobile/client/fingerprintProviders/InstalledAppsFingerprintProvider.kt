@@ -1,15 +1,11 @@
 package fps.mobile.client.fingerprintProviders
 
-import android.content.Context
-import fps.mobile.client.infoProviders.IPackageInfoProvider
-import fps.mobile.client.infoProviders.PackageInfoProvider
+import fps.mobile.client.DeviceIdentifyFactory
 import fps.mobile.client.utils.StringExtension.hashingMd5
 
-class InstalledAppsFingerprintProvider(
-    context: Context
-): IFingerprintProvider {
+internal class InstalledAppsFingerprintProvider: IFingerprintProvider {
 
-    private val packageInfoProvider: IPackageInfoProvider = PackageInfoProvider(context)
+    private val packageInfoProvider = DeviceIdentifyFactory.getPackageInfoProvider()
 
     override fun getFingerprint(): String {
         val stringBuilder = StringBuilder()

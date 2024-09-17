@@ -3,16 +3,16 @@ package fps.mobile.client.infoProviders
 import java.security.Security
 
 
-data class SecurityProvider(
+internal data class SecurityProvider(
     val name: String,
     val info: String
 )
 
-interface ISecurityInfoProvider {
+internal interface ISecurityInfoProvider {
     fun getSecurityProviders(): List<SecurityProvider>
 }
 
-class SecurityInfoProvider : ISecurityInfoProvider {
+internal class SecurityInfoProvider : ISecurityInfoProvider {
 
     override fun getSecurityProviders(): List<SecurityProvider> {
         return Security.getProviders().map {

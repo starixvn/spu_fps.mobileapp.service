@@ -3,19 +3,19 @@ package fps.mobile.client.infoProviders
 import android.content.Context
 import android.content.pm.PackageManager
 
-data class PackageInfo(
+internal data class PackageInfo(
     val packageName: String,
     val uid: String,
 )
 
-interface IPackageInfoProvider {
+internal interface IPackageInfoProvider {
     fun getApplications(): List<PackageInfo>
     fun getSystemApplications(): List<PackageInfo>
 
     fun isPackageInstalled(name: String): Boolean
 }
 
-class PackageInfoProvider (
+internal class PackageInfoProvider (
     context: Context
 ) : IPackageInfoProvider {
 

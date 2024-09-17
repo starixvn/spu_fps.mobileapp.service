@@ -42,9 +42,11 @@ class Tab1Fragment : Fragment() {
         val gridView = view.findViewById<GridView>(R.id.gvDeviceInfo)
 
         val deviceInfoList = DeviceIdentify.getDeviceInfo(requireContext())
+
         val newDeviceInfoList: List<DeviceInfoModel> = deviceInfoList.map {
             DeviceInfoModel(it.name, it.value)
         }
+
         val adapter = PropertyAdapter(requireContext(), newDeviceInfoList )
         gridView.adapter = adapter
         //val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6")

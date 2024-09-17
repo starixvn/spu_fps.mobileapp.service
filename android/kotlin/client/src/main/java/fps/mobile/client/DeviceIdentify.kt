@@ -18,16 +18,18 @@ data class DeviceInfo(val name: String, val value: String)
 object DeviceIdentify {
 
     fun getDeviceInfo(context: Context): ArrayList<DeviceInfo> {
+        DeviceIdentifyFactory(context)
+
         val androidIdProvider = AndroidIdProvider(context.contentResolver)
         val mediaDrmIdProvider = MediaDrmIdProvider()
         val gsfIdProvider = GsfIdProvider(context.contentResolver)
         val deviceIdProvider = UuidProvider(context)
         val googleAdIdProvider = GoogleAdIdProvider(context)
 
-        val hardwareFingerprintProvider = HardwareFingerprintProvider(context)
+        val hardwareFingerprintProvider = HardwareFingerprintProvider()
         val osFingerprintProvider = OsFingerprintProvider()
-        val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider(context)
-        val deviceStateFingerprintProvider = DeviceStateFingerprintProvider(context)
+        val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
+        val deviceStateFingerprintProvider = DeviceStateFingerprintProvider()
 
         val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
         deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))

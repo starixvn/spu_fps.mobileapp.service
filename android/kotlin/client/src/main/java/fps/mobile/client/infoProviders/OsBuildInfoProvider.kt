@@ -3,7 +3,7 @@ package fps.mobile.client.infoProviders
 import android.annotation.SuppressLint
 import android.os.Build
 
-interface IOsBuildInfoProvider {
+internal interface IOsBuildInfoProvider {
     fun getManufacturerName(): String
     fun getModelName(): String
     fun getFingerprint(): String
@@ -21,7 +21,7 @@ interface IOsBuildInfoProvider {
     fun getBrand(): String
 }
 
-class OsBuildInfoProvider : IOsBuildInfoProvider{
+internal class OsBuildInfoProvider : IOsBuildInfoProvider{
 
     override fun getManufacturerName(): String {
         return Build.MANUFACTURER!!
