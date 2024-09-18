@@ -3,6 +3,7 @@ package fps.mobile.client.deviceIdProviders
 import android.media.MediaDrm
 import fps.mobile.client.infoProviders.OsBuildInfoProvider
 import fps.mobile.client.utils.ByteArrayExtension.toHexString
+import fps.mobile.client.utils.StringExtension.hashingMd5
 import java.security.MessageDigest
 import java.util.UUID
 
@@ -27,6 +28,6 @@ internal class MediaDrmIdProvider {
         val mediaDrmId = getMediaDrmId()
         val modelName = OsBuildInfoProvider().getModelName()
 
-        return "$mediaDrmId+$modelName"
+        return "$mediaDrmId+$modelName".hashingMd5()
     }
 }
