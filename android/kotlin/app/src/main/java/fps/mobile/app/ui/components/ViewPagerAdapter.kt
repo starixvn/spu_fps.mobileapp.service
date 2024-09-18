@@ -1,4 +1,4 @@
-package fps.mobile.app
+package fps.mobile.app.ui.components
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

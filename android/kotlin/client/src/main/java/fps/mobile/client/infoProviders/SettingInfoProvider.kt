@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package fps.mobile.client.infoProviders
 
 import android.content.ContentResolver

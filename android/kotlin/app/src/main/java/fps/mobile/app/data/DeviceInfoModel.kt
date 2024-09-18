@@ -1,4 +1,4 @@
-package fps.mobile.app
+package fps.mobile.app.data
 
 class DeviceInfoModel(private var propertyName: String, private var propertyValue:String) {
     fun getPropertyName():String{
