@@ -123,12 +123,28 @@ internal interface IDeviceInfoProvider {
 internal class DeviceInfoProvider (
     context: Context
 ) : IDeviceInfoProvider {
+    private var rootedDevice: Boolean? = null
+    private var emulator: Boolean? = null
 
     private val osBuildInfoProvider: IOsBuildInfoProvider = OsBuildInfoProvider()
     private val inputDeviceInfoProvider: IInputDeviceInfoProvider = InputDeviceInfoProvider(context)
     private val packageInfoProvider: IPackageInfoProvider = PackageInfoProvider(context)
 
     override fun isRootedDevice(): Boolean {
+        if(rootedDevice == null)
+            rootedDevice = rootedDevice()
+
+        return rootedDevice!!
+    }
+
+    override fun isEmulator(): Boolean {
+        if(emulator == null)
+            emulator = emulator()
+
+        return emulator!!
+    }
+
+    private fun rootedDevice(): Boolean {
         return detectTestKeys()
                 || detectRootManagementApps()
                 || detectPotentiallyDangerousApps()
@@ -141,7 +157,7 @@ internal class DeviceInfoProvider (
 
     }
 
-    override fun isEmulator(): Boolean {
+    private fun emulator(): Boolean {
         val fingerprint = osBuildInfoProvider.getFingerprint().lowercase()
         val model = osBuildInfoProvider.getModelName().lowercase()
         val manufacturer = osBuildInfoProvider.getManufacturerName().lowercase()

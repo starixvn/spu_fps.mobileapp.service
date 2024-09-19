@@ -23,8 +23,24 @@ internal class CameraInfoProvider(
 ) : ICameraInfoProvider {
 
     private val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    private var cameraPresent: Boolean? = null
+    private var cameraList: List<CameraInfo>? = null
 
     override fun isCameraPresent(): Boolean {
+        if(cameraPresent == null)
+            cameraPresent = cameraPresent()
+
+        return cameraPresent!!
+    }
+
+    override fun getCameraList(): List<CameraInfo> {
+        if(cameraList == null)
+            cameraList = cameraList()
+
+        return cameraList!!
+    }
+
+    private fun cameraPresent(): Boolean {
         return try {
             return cameraManager.cameraIdList.isNotEmpty()
         } catch (e: Exception) {
@@ -32,7 +48,7 @@ internal class CameraInfoProvider(
         }
     }
 
-    override fun getCameraList(): List<CameraInfo> {
+    private fun cameraList(): List<CameraInfo> {
         val cameraList = LinkedList<CameraInfo>()
         try {
             val numberOfCameras = cameraManager.cameraIdList.size

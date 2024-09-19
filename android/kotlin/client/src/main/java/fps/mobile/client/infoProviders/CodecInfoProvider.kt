@@ -12,8 +12,16 @@ internal interface ICodecInfoProvider {
 }
 
 internal class CodecInfoProvider : ICodecInfoProvider {
+    private var codecList: List<MediaCodecInfo>? = null
 
     override fun getCodecList(): List<MediaCodecInfo> {
+        if(codecList == null)
+            codecList = codecList()
+
+        return codecList!!
+    }
+
+    private fun codecList(): List<MediaCodecInfo> {
         val codecList = MediaCodecList(MediaCodecList.ALL_CODECS)
 
         return codecList.codecInfos.map {
@@ -23,5 +31,4 @@ internal class CodecInfoProvider : ICodecInfoProvider {
             )
         }
     }
-
 }

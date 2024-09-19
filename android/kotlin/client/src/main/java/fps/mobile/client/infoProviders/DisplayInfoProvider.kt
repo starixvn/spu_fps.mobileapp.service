@@ -17,8 +17,17 @@ internal class DisplayInfoProvider(
     private val context: Context
 ) : IDisplayInfoProvider {
 
-    @Suppress("DEPRECATION")
+    private var displayInfo: DisplayInfo? = null
+
     override fun getDisplayInfo(): DisplayInfo {
+        if(displayInfo == null)
+            displayInfo = displayInfo()
+
+        return displayInfo!!
+    }
+
+    @Suppress("DEPRECATION")
+    private fun displayInfo(): DisplayInfo {
         val displayMetrics = DisplayMetrics()
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             val display = context.display

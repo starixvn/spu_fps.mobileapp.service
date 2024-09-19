@@ -18,8 +18,32 @@ private const val BATTERY_CAPACITY_METHOD_NAME = "getBatteryCapacity"
 internal class BatteryInfoProvider(
     private val context: Context
 ): IBatteryInfoProvider {
+    private var batteryHealth: String? = null
+    private var batteryTotalCapacity: String? = null
+    private var batteryLevel: String? = null
 
     override fun getBatteryHealth(): String {
+        if(batteryHealth == null)
+            batteryHealth = batteryHealth()
+
+        return batteryHealth!!
+    }
+
+    override fun getBatteryTotalCapacity(): String {
+        if(batteryTotalCapacity == null)
+            batteryTotalCapacity = batteryTotalCapacity()
+
+        return batteryTotalCapacity!!
+    }
+
+    override fun getBatteryLevel(): String {
+        if(batteryLevel == null)
+            batteryLevel = batteryLevel()
+
+        return batteryLevel!!
+    }
+
+    private fun batteryHealth(): String {
         val intent = context
             .registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))!!
 
@@ -29,7 +53,7 @@ internal class BatteryInfoProvider(
     }
 
     @SuppressLint("PrivateApi")
-    override fun getBatteryTotalCapacity(): String {
+    private fun batteryTotalCapacity(): String {
         val mPowerProfile = Class.forName(POWER_PROFILE_CLASS_NAME)
             .getConstructor(Context::class.java)
             .newInstance(context)
@@ -40,7 +64,7 @@ internal class BatteryInfoProvider(
         return batteryCapacity.toString()
     }
 
-    override fun getBatteryLevel(): String {
+    private fun batteryLevel(): String {
         val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         val batteryStatus = context.registerReceiver(null, intentFilter)
         val level = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1

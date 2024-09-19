@@ -2,12 +2,14 @@ package fps.mobile.client
 
 import android.bluetooth.BluetoothClass.Device
 import android.content.Context
+import android.util.Log
 import fps.mobile.client.fingerprintProviders.DeviceStateFingerprintProvider
 import fps.mobile.client.fingerprintProviders.HardwareFingerprintProvider
 import fps.mobile.client.fingerprintProviders.InstalledAppsFingerprintProvider
 import fps.mobile.client.fingerprintProviders.OsFingerprintProvider
 import fps.mobile.client.infoProviders.DeviceInfoProvider
 import fps.mobile.client.infoProviders.SensorInfoProvider
+import kotlin.time.TimeSource
 
 
 data class DeviceInfo(val name: String, val value: String)
@@ -16,6 +18,9 @@ class DeviceIdentify(context: Context) {
 
     companion object {
         fun getFingerprints(): ArrayList<DeviceInfo> {
+//            val timeSource = TimeSource.Monotonic
+//            val start = timeSource.markNow()
+
             val hardwareFingerprintProvider = HardwareFingerprintProvider()
             val osFingerprintProvider = OsFingerprintProvider()
             val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
@@ -44,11 +49,16 @@ class DeviceIdentify(context: Context) {
             deviceInfoList.add(
                 DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
             )
-
+//            val timeSource = TimeSource.Monotonic
+//            val start = timeSource.markNow()
+//            val end = timeSource.markNow()
+//            Log.d("getFingerprints", "${end - start} ms")
             return deviceInfoList
         }
 
         fun getDeviceIds(): ArrayList<DeviceInfo> {
+//            val timeSource = TimeSource.Monotonic
+//            val start = timeSource.markNow()
             val androidIdProvider = DeviceIdentifyFactory.getAndroidIdProvider()
             val mediaDrmIdProvider = DeviceIdentifyFactory.getMediaDrmIdProvider()
             val gsfIdProvider = DeviceIdentifyFactory.getGsfIdProvider()
@@ -77,10 +87,14 @@ class DeviceIdentify(context: Context) {
                 )
             )
 
+//            val end = timeSource.markNow()
+//            Log.d("getFingerprints", "${end - start} ms")
             return deviceInfoList
         }
 
         fun getDeviceInfoList(): ArrayList<DeviceInfo> {
+            val timeSource = TimeSource.Monotonic
+            val start = timeSource.markNow()
             val batteryInfoProvider = DeviceIdentifyFactory.getBatteryInfoProvider()
             val cameraInfoProvider = DeviceIdentifyFactory.getCameraInfoProvider()
             val codecInfoProvider = DeviceIdentifyFactory.getCodecInfoProvider()
@@ -182,6 +196,8 @@ class DeviceIdentify(context: Context) {
             val currentRingtone = settingInfoProvider.getRingtoneSource()
             deviceInfoList.add(DeviceInfo("Setting | Ringtone ${currentRingtone.title}", currentRingtone.uri))
 
+            val end = timeSource.markNow()
+            Log.d("getDeviceInfoList", "${end - start} ms")
             return deviceInfoList
         }
     }

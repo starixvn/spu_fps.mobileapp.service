@@ -19,17 +19,41 @@ internal interface ICpuInfoProvider {
 }
 
 internal class CpuInfoProvider: ICpuInfoProvider{
+    private var numberOfCores: Int? = null
+    private var cpuInfo: CpuInfo? = null
+    private var abiType: String? = null
 
     override fun getNumberOfCores(): Int {
-        return Runtime.getRuntime()!!.availableProcessors()
+        if(numberOfCores == null)
+            numberOfCores = numberOfCores()
+
+        return numberOfCores!!
     }
 
     override fun getCpuInfo(): CpuInfo {
+        if(cpuInfo == null)
+            cpuInfo = cpuInfo()
+
+        return cpuInfo!!
+    }
+
+    override fun getAbiType(): String {
+        if(abiType == null)
+            abiType = abiType()
+
+        return abiType!!
+    }
+
+    private fun numberOfCores(): Int {
+        return Runtime.getRuntime()!!.availableProcessors()
+    }
+
+    private fun cpuInfo(): CpuInfo {
         val cpuInfoContents = File(CPU_INFO_PATH).readText()
         return parseCpuInfo(cpuInfoContents)
     }
 
-    override fun getAbiType(): String {
+    private fun abiType(): String {
         return Build.SUPPORTED_ABIS.joinToString(";")
     }
 }
