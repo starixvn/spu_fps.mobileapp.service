@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -17,10 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.androiddemo.ui.theme.FPSDemoTheme
+import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,17 +57,19 @@ fun MainScreen(
                 ) {
 
                     Row (
-                        modifier = modifier.padding(vertical = 8.dp),
+                        modifier = modifier.padding(vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
 
                         tab.icon(
-                            modifier.padding(end = 8.dp).size(24.dp)
+                            modifier
+                                .padding(end = 8.dp)
+                                .size(24.dp)
                         )
 
                         Text(text = tab.title,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.W500)
                     }
                 }
@@ -75,13 +82,27 @@ fun MainScreen(
         ) { page ->
             when(page) {
                 MainScreenTab.DeviceId.ordinal -> {
-                    Text(text = "Device Id")
+                    DeviceIdScreen()
                 }
                 else -> {
                     Text(text = "Fingerprint")
                 }
             }
             
+        }
+    }
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom
+    ) {
+        Button(
+            onClick = onButtonClicked,
+            modifier = modifier.widthIn(min = 240.dp)) {
+
+            Text(
+                text = "Login",
+                style = MaterialTheme.typography.labelLarge)
         }
     }
 }

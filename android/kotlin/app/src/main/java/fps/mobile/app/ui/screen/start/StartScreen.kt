@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,8 +44,7 @@ fun StartScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Text(text = "FPS Mobile Device Identifier",
-                fontSize = 40.sp,
-                lineHeight = 60.sp,
+                style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center)
         }
 
@@ -60,8 +60,7 @@ fun StartScreen(
                 modifier = modifier.widthIn(min = 240.dp)) {
                 Text(
                     text = "Get started",
-                    fontSize = 20.sp,
-                    lineHeight = 32.sp)
+                    style = MaterialTheme.typography.labelLarge)
             }
         }
 

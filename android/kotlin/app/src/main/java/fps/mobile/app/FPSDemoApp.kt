@@ -10,6 +10,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -28,8 +29,7 @@ import fps.mobile.app.ui.screen.start.StartScreen
 
 enum class FPSDemoScreen(val title: String) {
     Start(title = ""),
-    Main(title = "FPS Device Identifier"),
-    DeviceId(title = "Device Identifier")
+    Main(title = "FPS Device Identifier")
 }
 
 
@@ -75,14 +75,6 @@ fun FPSDemoApp(
                     modifier = Modifier.fillMaxHeight()
                 )
             }
-            composable(route = FPSDemoScreen.DeviceId.name) {
-                DeviceIdScreen(
-                    onButtonClicked = {
-                        navController.navigate(FPSDemoScreen.DeviceId.name)
-                    },
-                    modifier = Modifier.fillMaxHeight()
-                )
-            }
         }
     }
 }
@@ -96,7 +88,12 @@ fun AppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(currentScreen.title) },
+        title = {
+            Text(
+                currentScreen.title,
+                style = MaterialTheme.typography.headlineSmall
+            )
+        },
         modifier = modifier,
         navigationIcon = {
             if (canNavigateBack && currentScreen != FPSDemoScreen.Main) {
