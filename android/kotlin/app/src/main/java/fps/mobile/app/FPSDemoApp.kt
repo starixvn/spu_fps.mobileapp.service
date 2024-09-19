@@ -19,19 +19,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
 import fps.mobile.app.ui.screen.deviceInfo.DeviceInfoScreen
 import fps.mobile.app.ui.screen.main.MainScreen
 import fps.mobile.app.ui.screen.start.StartScreen
 
-enum class FPSDemoScreen(val title: String) {
-    Start(title = ""),
-    Main(title = "FPS Device Identifier"),
-    DeviceInfo(title = "Device Information")
+enum class FPSDemoScreen(
+    val title: String,
+    val route: String) {
+
+    Start(title = "", route = "start"),
+    Main(title = "FPS Device Identifier", route = "main"),
+    DeviceInfo(title = "Device Information", route = "deviceInfo/{fingerprint}")
 }
 
 
@@ -40,9 +45,7 @@ fun FPSDemoApp(
     navController: NavHostController = rememberNavController()
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = FPSDemoScreen.valueOf(
-        backStackEntry?.destination?.route ?: FPSDemoScreen.Start.name
-    )
+    val currentScreen = FPSDemoScreen.entries.find { it.route == backStackEntry?.destination?.route} ?: FPSDemoScreen.Start
 
     Scaffold(
         topBar = {
@@ -55,34 +58,43 @@ fun FPSDemoApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = FPSDemoScreen.Start.name,
+            startDestination = FPSDemoScreen.Start.route,
             modifier = Modifier.fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
         ) {
-            composable(route = FPSDemoScreen.Start.name) {
+            composable(route = FPSDemoScreen.Start.route) {
                 StartScreen(
                     onButtonClicked = {
-                        navController.navigate(FPSDemoScreen.Main.name)
+                        navController.navigate(FPSDemoScreen.Main.route)
                     },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp))
             }
 
-            composable(route = FPSDemoScreen.Main.name) {
+            composable(route = FPSDemoScreen.Main.route) {
                 MainScreen(
                     navController = navController,
                     onButtonClicked = {
-                        navController.navigate(FPSDemoScreen.Main.name)
+                        navController.navigate(FPSDemoScreen.Main.route)
                     },
                     modifier = Modifier.fillMaxHeight()
                 )
             }
 
-            composable(route = FPSDemoScreen.DeviceInfo.name) {
+            composable(
+                route = FPSDemoScreen.DeviceInfo.route,
+                arguments = listOf(
+                    navArgument("fingerprint"){
+                        type = NavType.StringType
+                        nullable = true
+                    }
+                )
+            ) {
                 DeviceInfoScreen(
-                    modifier = Modifier.fillMaxHeight()
+                    fingerprint = backStackEntry?.arguments?.getString("fingerprint"),
+                    modifier = Modifier.fillMaxHeight(),
                 )
             }
         }
