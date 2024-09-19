@@ -15,9 +15,9 @@ private const val DEVICE_ID = "UNIQUE_ID"
 
 internal class UuidProvider(
     private val context: Context
-) {
+) : IDeviceIdProvider {
 
-    fun getDeviceUuid(): String? {
+    override fun getId(): String? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         var deviceId: String? = sharedPreferences.getString(DEVICE_ID, null)
 

@@ -15,62 +15,77 @@ import fps.mobile.client.infoProviders.SettingInfoProvider
 
 
 data class DeviceInfo(val name: String, val value: String)
-object DeviceIdentify {
 
-    fun getDeviceInfo(context: Context): ArrayList<DeviceInfo> {
+class DeviceIdentify(context: Context) {
+
+    companion object {
+        fun getFingerprints(): ArrayList<DeviceInfo> {
+            val hardwareFingerprintProvider = HardwareFingerprintProvider()
+            val osFingerprintProvider = OsFingerprintProvider()
+            val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
+            val deviceStateFingerprintProvider = DeviceStateFingerprintProvider()
+
+            val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
+
+            deviceInfoList.add(
+                DeviceInfo(
+                    "Hardware Fingerprint",
+                    hardwareFingerprintProvider.getFingerprint()
+                )
+            )
+
+            deviceInfoList.add(
+                DeviceInfo(
+                    "OS Fingerprint",
+                    osFingerprintProvider.getFingerprint()
+                )
+            )
+
+            deviceInfoList.add(
+                DeviceInfo("Installed Apps FP", installedAppsFingerprintProvider.getFingerprint())
+            )
+
+            deviceInfoList.add(
+                DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
+            )
+
+            return deviceInfoList
+        }
+
+        fun getDeviceIds(): ArrayList<DeviceInfo> {
+            val androidIdProvider = DeviceIdentifyFactory.getAndroidIdProvider()
+            val mediaDrmIdProvider = DeviceIdentifyFactory.getMediaDrmIdProvider()
+            val gsfIdProvider = DeviceIdentifyFactory.getGsfIdProvider()
+            val uuIdProvider = DeviceIdentifyFactory.getUuidProvider()
+            val googleAdIdProvider = DeviceIdentifyFactory.getGoogleAdIdProvider()
+
+            val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
+
+            deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getId() ?: "unknown"))
+
+            deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getId() ?: "unknown"))
+
+            deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getId() ?: "unknown"))
+
+            deviceInfoList.add(
+                DeviceInfo(
+                    "UUID",
+                    uuIdProvider.getId() ?: "unknown"
+                )
+            )
+
+            deviceInfoList.add(
+                DeviceInfo(
+                    "Google Ad ID",
+                    googleAdIdProvider.getId() ?: "unknown"
+                )
+            )
+
+            return deviceInfoList
+        }
+    }
+
+    init {
         DeviceIdentifyFactory(context)
-
-        val androidIdProvider = AndroidIdProvider(context.contentResolver)
-        val mediaDrmIdProvider = MediaDrmIdProvider()
-        val gsfIdProvider = GsfIdProvider(context.contentResolver)
-        val deviceIdProvider = UuidProvider(context)
-        val googleAdIdProvider = GoogleAdIdProvider(context)
-
-        val hardwareFingerprintProvider = HardwareFingerprintProvider()
-        val osFingerprintProvider = OsFingerprintProvider()
-        val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
-        val deviceStateFingerprintProvider = DeviceStateFingerprintProvider()
-
-        val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
-        deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getAndroidId()))
-        deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
-        deviceInfoList.add(
-            DeviceInfo(
-                "Media DRM ID With Model",
-                mediaDrmIdProvider.getMediaDrmIdWithModel()
-            )
-        )
-        deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getGsfId() ?: "unknown"))
-        deviceInfoList.add(DeviceInfo("Device ID", deviceIdProvider.getDeviceUuid() ?: "unknown"))
-        deviceInfoList.add(
-            DeviceInfo(
-                "Google Ad ID",
-                googleAdIdProvider.getGoogleAdId() ?: "unknown"
-            )
-        )
-
-        deviceInfoList.add(
-            DeviceInfo(
-                "Hardware Fingerprint",
-                hardwareFingerprintProvider.getFingerprint()
-            )
-        )
-
-        deviceInfoList.add(
-            DeviceInfo(
-                "OS Fingerprint",
-                osFingerprintProvider.getFingerprint()
-            )
-        )
-
-        deviceInfoList.add(
-            DeviceInfo("Installed Apps FP", installedAppsFingerprintProvider.getFingerprint())
-        )
-
-        deviceInfoList.add(
-            DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
-        )
-
-        return deviceInfoList
     }
 }

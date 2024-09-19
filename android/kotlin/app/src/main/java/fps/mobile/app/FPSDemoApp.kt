@@ -23,10 +23,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
+import fps.mobile.app.ui.screen.main.MainScreen
 import fps.mobile.app.ui.screen.start.StartScreen
 
 enum class FPSDemoScreen(val title: String) {
     Start(title = ""),
+    Main(title = "FPS Device Identifier"),
     DeviceId(title = "Device Identifier")
 }
 
@@ -59,13 +61,20 @@ fun FPSDemoApp(
             composable(route = FPSDemoScreen.Start.name) {
                 StartScreen(
                     onButtonClicked = {
-                        navController.navigate(FPSDemoScreen.DeviceId.name)
+                        navController.navigate(FPSDemoScreen.Main.name)
                     },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp))
             }
-
+            composable(route = FPSDemoScreen.Main.name) {
+                MainScreen(
+                    onButtonClicked = {
+                        navController.navigate(FPSDemoScreen.Main.name)
+                    },
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
             composable(route = FPSDemoScreen.DeviceId.name) {
                 DeviceIdScreen(
                     onButtonClicked = {
@@ -90,7 +99,7 @@ fun AppBar(
         title = { Text(currentScreen.title) },
         modifier = modifier,
         navigationIcon = {
-            if (canNavigateBack) {
+            if (canNavigateBack && currentScreen != FPSDemoScreen.Main) {
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,

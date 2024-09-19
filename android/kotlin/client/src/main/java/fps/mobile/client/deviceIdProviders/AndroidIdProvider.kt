@@ -6,9 +6,10 @@ import android.provider.Settings
 
 internal class AndroidIdProvider(
     private val contentResolver: ContentResolver?
-) {
+) : IDeviceIdProvider {
+
     @SuppressLint("HardwareIds")
-    fun getAndroidId(): String {
+    override fun getId(): String {
         return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
     }
 }

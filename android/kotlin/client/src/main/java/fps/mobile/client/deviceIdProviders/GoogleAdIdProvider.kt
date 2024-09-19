@@ -7,16 +7,17 @@ import androidx.ads.identifier.AdvertisingIdClient
 
 internal class GoogleAdIdProvider(
     private val context: Context
-) {
-    fun getGoogleAdId(): String? {
+) : IDeviceIdProvider {
+
+    override fun getId(): String? {
         try {
             if (AdvertisingIdClient.isAdvertisingIdProviderAvailable(context)) {
                 val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context)
                 return adInfo.get().id
             }
-            return null
-        } catch (exception: Exception) {
-            return null
+        } catch (_: Exception) {
         }
+
+        return null
     }
 }

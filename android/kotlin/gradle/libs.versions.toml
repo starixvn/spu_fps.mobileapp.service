@@ -17,6 +17,7 @@ uiToolingPreviewAndroid = "1.7.1"
 [libraries]
 androidx-ads-identifier = { module = "androidx.ads:ads-identifier", version.ref = "adsIdentifier" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

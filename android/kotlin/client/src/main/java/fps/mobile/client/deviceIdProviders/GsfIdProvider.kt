@@ -8,9 +8,9 @@ private const val ID_KEY = "android_id"
 
 internal class GsfIdProvider(
     private val contentResolver: ContentResolver?
-) {
+) : IDeviceIdProvider {
 
-    fun getGsfId(): String? {
+    override fun getId(): String? {
         val uri = Uri.parse(URI_GSF_CONTENT_PROVIDER)
         val params = arrayOf(ID_KEY)
         return try {

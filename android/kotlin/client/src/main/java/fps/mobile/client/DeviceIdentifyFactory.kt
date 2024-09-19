@@ -1,6 +1,12 @@
 package fps.mobile.client
 
 import android.content.Context
+import fps.mobile.client.deviceIdProviders.AndroidIdProvider
+import fps.mobile.client.deviceIdProviders.GoogleAdIdProvider
+import fps.mobile.client.deviceIdProviders.GsfIdProvider
+import fps.mobile.client.deviceIdProviders.IDeviceIdProvider
+import fps.mobile.client.deviceIdProviders.MediaDrmIdProvider
+import fps.mobile.client.deviceIdProviders.UuidProvider
 import fps.mobile.client.infoProviders.*
 
 internal class DeviceIdentifyFactory(context: Context) {
@@ -22,60 +28,86 @@ internal class DeviceIdentifyFactory(context: Context) {
         private var sensorInfoProvider: ISensorInfoProvider? = null
         private var settingInfoProvider: ISettingInfoProvider? = null
 
+        private var androidIdProvider: IDeviceIdProvider? = null
+        private var mediaDrmIdProvider: IDeviceIdProvider? = null
+        private var gsfIdProvider: IDeviceIdProvider? = null
+        private var uuidProvider: IDeviceIdProvider? = null
+        private var googleAdIdProvider: IDeviceIdProvider? = null
+
         internal fun getBatteryInfoProvider(): IBatteryInfoProvider {
-            return batteryInfoProvider!!;
+            return batteryInfoProvider!!
         }
 
         internal fun getCameraInfoProvider(): ICameraInfoProvider {
-            return cameraInfoProvider!!;
+            return cameraInfoProvider!!
         }
 
         internal fun getCodecInfoProvider(): ICodecInfoProvider {
-            return codecInfoProvider!!;
+            return codecInfoProvider!!
         }
 
         internal fun getCpuInfoProvider(): ICpuInfoProvider {
-            return cpuInfoProvider!!;
+            return cpuInfoProvider!!
         }
 
         internal fun getDeviceInfoProvider(): IDeviceInfoProvider {
-            return deviceInfoProvider!!;
+            return deviceInfoProvider!!
         }
 
         internal fun getDisplayInfoProvider(): IDisplayInfoProvider {
-            return displayInfoProvider!!;
+            return displayInfoProvider!!
         }
 
         internal fun getGpuInfoProvider(): IGpuInfoProvider {
-            return gpuInfoProvider!!;
+            return gpuInfoProvider!!
         }
 
         internal fun getInputDeviceInfoProvider(): IInputDeviceInfoProvider {
-            return inputDeviceInfoProvider!!;
+            return inputDeviceInfoProvider!!
         }
 
         internal fun getMemoryInfoProvider(): IMemoryInfoProvider {
-            return memoryInfoProvider!!;
+            return memoryInfoProvider!!
         }
 
         internal fun getOsBuildInfoProvider(): IOsBuildInfoProvider {
-            return osBuildInfoProvider!!;
+            return osBuildInfoProvider!!
         }
 
         internal fun getPackageInfoProvider(): IPackageInfoProvider {
-            return packageInfoProvider!!;
+            return packageInfoProvider!!
         }
 
         internal fun getSecurityInfoProvider(): ISecurityInfoProvider {
-            return securityInfoProvider!!;
+            return securityInfoProvider!!
         }
 
         internal fun getSensorInfoProvider(): ISensorInfoProvider {
-            return sensorInfoProvider!!;
+            return sensorInfoProvider!!
         }
 
         internal fun getSettingInfoProvider(): ISettingInfoProvider {
-            return settingInfoProvider!!;
+            return settingInfoProvider!!
+        }
+
+        internal fun getAndroidIdProvider(): IDeviceIdProvider {
+            return androidIdProvider!!
+        }
+
+        internal fun getMediaDrmIdProvider(): IDeviceIdProvider {
+            return mediaDrmIdProvider!!
+        }
+
+        internal fun getGsfIdProvider(): IDeviceIdProvider {
+            return gsfIdProvider!!
+        }
+
+        internal fun getUuidProvider(): IDeviceIdProvider {
+            return uuidProvider!!
+        }
+
+        internal fun getGoogleAdIdProvider(): IDeviceIdProvider {
+            return googleAdIdProvider!!
         }
     }
 
@@ -134,6 +166,26 @@ internal class DeviceIdentifyFactory(context: Context) {
 
         if (settingInfoProvider == null) {
             settingInfoProvider = SettingInfoProvider(context)
+        }
+
+        if (androidIdProvider == null) {
+            androidIdProvider = AndroidIdProvider(context.contentResolver)
+        }
+
+        if (mediaDrmIdProvider == null) {
+            mediaDrmIdProvider = MediaDrmIdProvider()
+        }
+
+        if (gsfIdProvider == null) {
+            gsfIdProvider = GsfIdProvider(context.contentResolver)
+        }
+
+        if (uuidProvider == null) {
+            uuidProvider = UuidProvider(context)
+        }
+
+        if (googleAdIdProvider == null) {
+            googleAdIdProvider = GoogleAdIdProvider(context)
         }
     }
 }

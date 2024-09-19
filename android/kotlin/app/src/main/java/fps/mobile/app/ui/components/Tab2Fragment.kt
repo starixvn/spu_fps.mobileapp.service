@@ -39,7 +39,7 @@ class Tab2Fragment : Fragment() {
 
         val gridView = view.findViewById<GridView>(R.id.gvDeviceFingerprint)
 
-        val deviceInfoList = DeviceIdentify.getDeviceInfo(requireContext())
+        val deviceInfoList = DeviceIdentify.getDeviceIds()
         val newDeviceInfoList: List<DeviceInfoModel> = deviceInfoList.map {
             DeviceInfoModel(it.name, it.value)
         }
