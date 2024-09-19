@@ -24,13 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
+import fps.mobile.app.ui.screen.fingerprint.FingerprintScreen
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
     onButtonClicked: () -> Unit,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
 
@@ -82,10 +86,12 @@ fun MainScreen(
         ) { page ->
             when(page) {
                 MainScreenTab.DeviceId.ordinal -> {
-                    DeviceIdScreen()
+                    DeviceIdScreen(modifier = modifier)
                 }
                 else -> {
-                    Text(text = "Fingerprint")
+                    FingerprintScreen(
+                        navController = navController,
+                        modifier = modifier)
                 }
             }
             
@@ -111,6 +117,6 @@ fun MainScreen(
 @Preview
 fun MainScreenPreview() {
     FPSDemoTheme {
-        MainScreen(onButtonClicked = { })
+        MainScreen(navController = rememberNavController(), onButtonClicked = { })
     }
 }
