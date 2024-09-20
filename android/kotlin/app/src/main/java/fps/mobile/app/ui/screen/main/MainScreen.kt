@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
 import fps.mobile.app.ui.screen.fingerprint.FingerprintScreen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -82,9 +83,10 @@ fun MainScreen(
         }
 
         HorizontalPager(
-            state = pagerState
-        ) { page ->
-            when(page) {
+            state = pagerState,
+            key = { it },
+        ) {
+            when(pagerState.settledPage) {
                 MainScreenTab.DeviceId.ordinal -> {
                     DeviceIdScreen(modifier = modifier)
                 }

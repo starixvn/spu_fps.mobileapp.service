@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import fps.mobile.app.data.DataLoader
 import fps.mobile.app.data.InfoModel
 import fps.mobile.app.ui.components.InfoComponent
 import fps.mobile.client.DeviceIdentify
@@ -26,7 +27,7 @@ import fps.mobile.client.DeviceIdentify
 fun DeviceIdScreen(
     modifier: Modifier = Modifier
 ) {
-    val deviceInfoList = DeviceIdentify.getDeviceIds()
+    val deviceInfoList = DataLoader.getDeviceId()
 
     val newDeviceInfoList: List<InfoModel> = deviceInfoList.map {
         InfoModel(it.name, it.value)

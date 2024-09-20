@@ -18,8 +18,8 @@ class DeviceIdentify(context: Context) {
 
     companion object {
         fun getFingerprints(): ArrayList<DeviceInfo> {
-//            val timeSource = TimeSource.Monotonic
-//            val start = timeSource.markNow()
+            val timeSource = TimeSource.Monotonic
+            val start = timeSource.markNow()
 
             val hardwareFingerprintProvider = HardwareFingerprintProvider()
             val osFingerprintProvider = OsFingerprintProvider()
@@ -49,16 +49,16 @@ class DeviceIdentify(context: Context) {
             deviceInfoList.add(
                 DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
             )
-//            val timeSource = TimeSource.Monotonic
-//            val start = timeSource.markNow()
-//            val end = timeSource.markNow()
-//            Log.d("getFingerprints", "${end - start} ms")
+
+            val end = timeSource.markNow()
+            Log.d("getFingerprints", "${end - start} ms")
+
             return deviceInfoList
         }
 
         fun getDeviceIds(): ArrayList<DeviceInfo> {
-//            val timeSource = TimeSource.Monotonic
-//            val start = timeSource.markNow()
+            val timeSource = TimeSource.Monotonic
+            val start = timeSource.markNow()
             val androidIdProvider = DeviceIdentifyFactory.getAndroidIdProvider()
             val mediaDrmIdProvider = DeviceIdentifyFactory.getMediaDrmIdProvider()
             val gsfIdProvider = DeviceIdentifyFactory.getGsfIdProvider()
@@ -87,8 +87,8 @@ class DeviceIdentify(context: Context) {
                 )
             )
 
-//            val end = timeSource.markNow()
-//            Log.d("getFingerprints", "${end - start} ms")
+            val end = timeSource.markNow()
+            Log.d("Device Id", "${end - start} ms")
             return deviceInfoList
         }
 

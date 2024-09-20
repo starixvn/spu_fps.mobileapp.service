@@ -14,10 +14,18 @@ internal interface ISecurityInfoProvider {
 
 internal class SecurityInfoProvider : ISecurityInfoProvider {
 
+    private var securityProviders: List<SecurityProvider>? = null
+
     override fun getSecurityProviders(): List<SecurityProvider> {
+        if(securityProviders == null)
+            securityProviders = securityProviders()
+
+        return securityProviders!!
+    }
+
+    private fun securityProviders(): List<SecurityProvider> {
         return Security.getProviders().map {
             SecurityProvider(it!!.name!!, it.info ?: "")
         }
     }
-
 }

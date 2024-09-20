@@ -16,9 +16,18 @@ internal interface ISensorInfoProvider {
 internal class SensorInfoProvider(
     context: Context
 ) : ISensorInfoProvider {
+
     private val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    private var sensorList: List<SensorInfo>? = null
 
     override fun getSensorList(): List<SensorInfo> {
+        if(sensorList == null)
+            sensorList = sensorList()
+
+        return sensorList!!
+    }
+
+    private fun sensorList(): List<SensorInfo> {
         return sensorManager.getSensorList(Sensor.TYPE_ALL)!!.map {
             SensorInfo(
                 it!!.name!!,
@@ -26,5 +35,4 @@ internal class SensorInfoProvider(
             )
         }
     }
-
 }

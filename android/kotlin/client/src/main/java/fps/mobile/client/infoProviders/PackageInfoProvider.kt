@@ -20,8 +20,24 @@ internal class PackageInfoProvider (
 ) : IPackageInfoProvider {
 
     private val packageManager: PackageManager? = context.packageManager
+    private var applications: List<PackageInfo>? = null
+    private var systemApplications: List<PackageInfo>? = null
 
     override fun getApplications(): List<PackageInfo> {
+        if(applications == null)
+            applications = applications()
+
+        return applications!!
+    }
+
+    override fun getSystemApplications(): List<PackageInfo> {
+        if(systemApplications == null)
+            systemApplications = systemApplications()
+
+        return systemApplications!!
+    }
+
+    private fun applications(): List<PackageInfo> {
         return packageManager!!
             .getInstalledApplications(PackageManager.GET_META_DATA)
             .filter {
@@ -35,7 +51,7 @@ internal class PackageInfoProvider (
             }
     }
 
-    override fun getSystemApplications(): List<PackageInfo> {
+    private fun systemApplications(): List<PackageInfo> {
         return packageManager!!
             .getInstalledApplications(PackageManager.GET_META_DATA)
             .filter {

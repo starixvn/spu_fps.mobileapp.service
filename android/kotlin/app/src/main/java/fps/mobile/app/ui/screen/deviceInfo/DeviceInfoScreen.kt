@@ -22,6 +22,7 @@ import fps.mobile.app.constants.DEVICE_STATE_DEVICE_INFO
 import fps.mobile.app.constants.HARDWARE_DEVICE_INFO
 import fps.mobile.app.constants.INSTALLED_APPS_DEVICE_INFO
 import fps.mobile.app.constants.OS_DEVICE_INFO
+import fps.mobile.app.data.DataLoader
 import fps.mobile.app.data.InfoModel
 import fps.mobile.app.ui.components.InfoComponent
 import fps.mobile.client.DeviceIdentify
@@ -36,7 +37,7 @@ fun DeviceInfoScreen(
     if(fingerprint == null)
         return
 
-    var deviceInfoList = DeviceIdentify.getDeviceInfoList()
+    var deviceInfoList = DataLoader.getDeviceInfo()
 
     deviceInfoList = when(fingerprint) {
         "Hardware Fingerprint" -> deviceInfoList.filter { info -> HARDWARE_DEVICE_INFO.any { info.name.contains(it) } } as ArrayList<DeviceInfo>
@@ -101,9 +102,9 @@ fun DeviceInfoScreen(
 
             HorizontalPager(
                 state = pagerState
-            ) { page ->
+            ) {
                 Column {
-                    val newDeviceInfoList: List<InfoModel> = deviceInfoList.filter { it.name.contains(deviceInfoGroup[page]) }.map {
+                    val newDeviceInfoList: List<InfoModel> = deviceInfoList.filter { it.name.contains(deviceInfoGroup[pagerState.settledPage]) }.map {
                         InfoModel(it.name.split('|').last(), it.value)
                     }
 

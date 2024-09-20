@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fps.mobile.app.FPSDemoScreen
+import fps.mobile.app.data.DataLoader
 import fps.mobile.app.data.InfoModel
 import fps.mobile.app.ui.components.InfoComponent
 import fps.mobile.client.DeviceIdentify
@@ -29,7 +30,7 @@ fun FingerprintScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val deviceInfoList = DeviceIdentify.getFingerprints()
+    val deviceInfoList = DataLoader.getFingerprints()
 
     val newDeviceInfoList: List<InfoModel> = deviceInfoList.map {
         InfoModel(it.name, it.value)
