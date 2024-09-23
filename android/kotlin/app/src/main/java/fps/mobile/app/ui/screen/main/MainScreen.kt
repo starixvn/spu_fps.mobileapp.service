@@ -115,7 +115,7 @@ fun MainScreen(
         ) {
 
             Text(
-                text = "Login",
+                text = "Send Package",
                 style = MaterialTheme.typography.labelLarge
             )
         }

@@ -43,17 +43,9 @@ fun FingerprintDetailScreen(
     if(fingerprint == null)
         return
 
-    var deviceInfoList = DataLoader.getDeviceInfo()
+    val deviceInfoList = DataLoader.getDeviceInfo(fingerprint)
 
-    deviceInfoList = when(fingerprint) {
-        "Hardware Fingerprint" -> deviceInfoList.filter { info -> HARDWARE_DEVICE_INFO.any { info.name.contains(it) } } as ArrayList<DeviceInfo>
-        "OS Fingerprint" -> deviceInfoList.filter { info -> OS_DEVICE_INFO.any { info.name.contains(it) } } as ArrayList<DeviceInfo>
-        "Installed Apps FP" -> deviceInfoList.filter { info -> INSTALLED_APPS_DEVICE_INFO.any { info.name.contains(it) } } as ArrayList<DeviceInfo>
-        "Device State FP" -> deviceInfoList.filter { info -> DEVICE_STATE_DEVICE_INFO.any { info.name.contains(it) } } as ArrayList<DeviceInfo>
-        else -> deviceInfoList
-    }
-
-    val deviceInfoGroup = deviceInfoList.map { it.name.split('|').first() }.distinct()
+    val deviceInfoGroup = DataLoader.getDeviceInfoGroups(deviceInfoList)
 
     val pagerState = rememberPagerState(pageCount = { deviceInfoGroup.size })
     val scope = rememberCoroutineScope()

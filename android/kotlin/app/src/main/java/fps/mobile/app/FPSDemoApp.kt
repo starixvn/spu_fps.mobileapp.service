@@ -95,8 +95,9 @@ fun FPSDemoApp(
 
                 DeviceInfoScreen(
                     loginViewModel = loginViewModel,
+                    onNextButtonClicked = { navController.navigate(FPSDemoScreen.Main.route) },
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize().padding(16.dp)
                 )
             }
         }
@@ -120,13 +121,11 @@ fun AppBar(
         },
         modifier = modifier,
         navigationIcon = {
-            if (canNavigateBack && currentScreen != FPSDemoScreen.Main) {
-                IconButton(onClick = navigateUp) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null
-                    )
-                }
+            IconButton(onClick = navigateUp) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null
+                )
             }
         }
     )
