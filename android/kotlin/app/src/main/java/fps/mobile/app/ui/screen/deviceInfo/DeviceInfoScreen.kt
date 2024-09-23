@@ -64,7 +64,7 @@ fun DeviceInfoScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
 
             Text(
@@ -77,7 +77,7 @@ fun DeviceInfoScreen(
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 edgePadding = 0.dp,
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 deviceInfoGroup.forEachIndexed { index, tab ->
                     Tab(
@@ -89,7 +89,7 @@ fun DeviceInfoScreen(
                         }
                     ) {
                         Row (
-                            modifier = modifier.padding(vertical = 12.dp),
+                            modifier = Modifier.padding(vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {

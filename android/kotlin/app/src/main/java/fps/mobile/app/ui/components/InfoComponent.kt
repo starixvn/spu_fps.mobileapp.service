@@ -27,7 +27,9 @@ fun InfoComponent(
 ) {
     val context = LocalContext.current
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         TextButton(
             onClick = onNameClick
         ) {
@@ -58,7 +60,7 @@ fun InfoComponent(
         }
 
         HorizontalDivider(
-            modifier = modifier
+            modifier = Modifier
                 .height(2.dp)
                 .fillMaxWidth(),
             color = MaterialTheme.colorScheme.onBackground

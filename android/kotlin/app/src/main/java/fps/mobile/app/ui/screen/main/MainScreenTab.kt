@@ -1,6 +1,7 @@
 package fps.mobile.app.ui.screen.main
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -16,7 +17,7 @@ enum class MainScreenTab(
         icon = {modifier ->
             Icon(
                 modifier = modifier,
-                imageVector = Icons.Filled.Info,
+                imageVector = Icons.Filled.AccountCircle,
                 contentDescription = "Device ID icon"
             )
         }

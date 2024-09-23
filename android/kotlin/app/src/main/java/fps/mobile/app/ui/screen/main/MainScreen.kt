@@ -3,7 +3,6 @@ package fps.mobile.app.ui.screen.main
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,23 +18,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
 import fps.mobile.app.ui.screen.fingerprint.FingerprintScreen
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
     onButtonClicked: () -> Unit,
-    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
 
@@ -43,7 +36,7 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         TabRow(
@@ -56,26 +49,28 @@ fun MainScreen(
                     selected = pagerState.currentPage == index,
                     onClick = {
                         scope.launch {
-                            pagerState.animateScrollToPage(index)
+                            pagerState.scrollToPage(index)
                         }
                     }
                 ) {
 
-                    Row (
-                        modifier = modifier.padding(vertical = 12.dp),
+                    Row(
+                        modifier = Modifier.padding(vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
 
                         tab.icon(
-                            modifier
+                            Modifier
                                 .padding(end = 8.dp)
                                 .size(24.dp)
                         )
 
-                        Text(text = tab.title,
+                        Text(
+                            text = tab.title,
                             style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.W500)
+                            fontWeight = FontWeight.W500
+                        )
                     }
                 }
 
@@ -84,33 +79,42 @@ fun MainScreen(
 
         HorizontalPager(
             state = pagerState,
-            key = { it },
-        ) {
-            when(pagerState.settledPage) {
-                MainScreenTab.DeviceId.ordinal -> {
-                    DeviceIdScreen(modifier = modifier)
-                }
-                else -> {
-                    FingerprintScreen(
-                        navController = navController,
-                        modifier = modifier)
+            userScrollEnabled = false
+        ) { page ->
+            Column(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(20.dp)
+            ) {
+                when (page) {
+                    MainScreenTab.DeviceId.ordinal -> {
+                        DeviceIdScreen()
+                    }
+
+                    MainScreenTab.Fingerprint.ordinal -> {
+                        FingerprintScreen()
+                    }
+                    else -> {
+
+                    }
                 }
             }
-            
         }
     }
+
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
         Button(
             onClick = onButtonClicked,
-            modifier = modifier.widthIn(min = 240.dp)) {
+            modifier = Modifier.widthIn(min = 240.dp)
+        ) {
 
             Text(
                 text = "Login",
-                style = MaterialTheme.typography.labelLarge)
+                style = MaterialTheme.typography.labelLarge
+            )
         }
     }
 }
@@ -119,6 +123,6 @@ fun MainScreen(
 @Preview
 fun MainScreenPreview() {
     FPSDemoTheme {
-        MainScreen(navController = rememberNavController(), onButtonClicked = { })
+        MainScreen(onButtonClicked = { })
     }
 }

@@ -31,7 +31,7 @@ fun StartScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Column(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
@@ -39,7 +39,7 @@ fun StartScreen(
         }
 
         Column(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
@@ -48,16 +48,16 @@ fun StartScreen(
                 textAlign = TextAlign.Center)
         }
 
-        Spacer(modifier = modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
                 onClick = onButtonClicked,
-                modifier = modifier.widthIn(min = 240.dp)) {
+                modifier = Modifier.widthIn(min = 240.dp)) {
                 Text(
                     text = "Get started",
                     style = MaterialTheme.typography.labelLarge)

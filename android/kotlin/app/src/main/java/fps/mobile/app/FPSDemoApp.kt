@@ -75,7 +75,6 @@ fun FPSDemoApp(
 
             composable(route = FPSDemoScreen.Main.route) {
                 MainScreen(
-                    navController = navController,
                     onButtonClicked = {
                         navController.navigate(FPSDemoScreen.Main.route)
                     },

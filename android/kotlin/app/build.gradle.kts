@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(project(":client"))
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     debugImplementation(libs.androidx.ui.tooling)
     testImplementation(libs.junit)
