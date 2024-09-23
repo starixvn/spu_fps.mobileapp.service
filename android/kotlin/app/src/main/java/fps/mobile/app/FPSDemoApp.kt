@@ -25,20 +25,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
 import fps.mobile.app.ui.screen.deviceInfo.DeviceInfoScreen
+import fps.mobile.app.ui.screen.fingerprint.FingerprintDetailScreen
+import fps.mobile.app.ui.screen.fingerprint.fingerprintDetailArgument
 import fps.mobile.app.ui.screen.main.MainScreen
 import fps.mobile.app.ui.screen.start.StartScreen
-
-enum class FPSDemoScreen(
-    val title: String,
-    val route: String) {
-
-    Start(title = "", route = "start"),
-    Main(title = "FPS Device Identifier", route = "main"),
-    DeviceInfo(title = "Device Information", route = "deviceInfo/{fingerprint}")
-}
-
 
 @Composable
 fun FPSDemoApp(
@@ -78,22 +69,28 @@ fun FPSDemoApp(
                     onButtonClicked = {
                         navController.navigate(FPSDemoScreen.Main.route)
                     },
+                    onFingerprintClick =  { fingerprint ->
+                        navController.navigate(FPSDemoScreen.FingerprintDetail.route.replace("{fingerprint}", fingerprint))
+                    },
                     modifier = Modifier.fillMaxHeight()
                 )
             }
 
             composable(
-                route = FPSDemoScreen.DeviceInfo.route,
-                arguments = listOf(
-                    navArgument("fingerprint"){
-                        type = NavType.StringType
-                        nullable = true
-                    }
-                )
+                route = FPSDemoScreen.FingerprintDetail.route,
+                arguments = fingerprintDetailArgument
             ) {
-                DeviceInfoScreen(
+                FingerprintDetailScreen(
                     fingerprint = backStackEntry?.arguments?.getString("fingerprint"),
                     modifier = Modifier.fillMaxHeight(),
+                )
+            }
+
+            composable(route = FPSDemoScreen.DeviceInfo.route) {
+
+                DeviceInfoScreen(
+                    modifier = Modifier
+                        .fillMaxSize()
                 )
             }
         }

@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     onButtonClicked: () -> Unit,
+    onFingerprintClick: (fingerPrint: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -91,7 +92,9 @@ fun MainScreen(
                     }
 
                     MainScreenTab.Fingerprint.ordinal -> {
-                        FingerprintScreen()
+                        FingerprintScreen(
+                            onFingerprintClick = onFingerprintClick
+                        )
                     }
                     else -> {
 
@@ -116,13 +119,5 @@ fun MainScreen(
                 style = MaterialTheme.typography.labelLarge
             )
         }
-    }
-}
-
-@Composable
-@Preview
-fun MainScreenPreview() {
-    FPSDemoTheme {
-        MainScreen(onButtonClicked = { })
     }
 }

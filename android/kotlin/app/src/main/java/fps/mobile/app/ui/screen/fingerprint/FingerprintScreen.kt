@@ -13,6 +13,7 @@ import fps.mobile.app.ui.components.InfoComponent
 
 @Composable
 fun FingerprintScreen(
+    onFingerprintClick: (fingerPrint: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val deviceInfoList = DataLoader.getFingerprints()
@@ -24,9 +25,8 @@ fun FingerprintScreen(
     Column(
         modifier = modifier
     ) {
-
         newDeviceInfoList.forEach{
-            InfoComponent(info = it, onNameClick = {  })
+            InfoComponent(info = it, onNameClick = { onFingerprintClick(it.getName()) })
         }
     }
 }
