@@ -58,8 +58,7 @@ fun StartScreen(
         OutlinedTextField(
             value = loginUiState.password,
             onValueChange = { value -> loginViewModel.updatePassword(value)},
-            label = { Text("Password") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            label = { Text("Password") }
         )
 
         Spacer(modifier = Modifier.height(20.dp))

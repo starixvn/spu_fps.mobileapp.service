@@ -1,7 +1,9 @@
 package fps.mobile.app
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,6 +19,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -54,9 +59,11 @@ fun FPSDemoApp(
         NavHost(
             navController = navController,
             startDestination = FPSDemoScreen.Start.route,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
+                .imePadding()
         ) {
             composable(route = FPSDemoScreen.Start.route) {
                 StartScreen(
@@ -97,7 +104,8 @@ fun FPSDemoApp(
                     loginViewModel = loginViewModel,
                     onNextButtonClicked = { navController.navigate(FPSDemoScreen.Main.route) },
                     modifier = Modifier
-                        .fillMaxSize().padding(horizontal = 16.dp)
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
                 )
             }
         }
@@ -121,11 +129,13 @@ fun AppBar(
         },
         modifier = modifier,
         navigationIcon = {
-            IconButton(onClick = navigateUp) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null
-                )
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null
+                    )
+                }
             }
         }
     )
