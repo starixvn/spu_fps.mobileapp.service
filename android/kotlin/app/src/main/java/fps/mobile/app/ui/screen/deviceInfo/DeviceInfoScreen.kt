@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -34,42 +36,50 @@ fun DeviceInfoScreen(
     val getDeviceInfoGroups = DataLoader.getDeviceInfoGroups()
 
     Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Welcome ",
-                style = MaterialTheme.typography.bodyLarge)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(1f)
+        ){
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Welcome ",
+                    style = MaterialTheme.typography.bodyLarge)
 
-            Text(
-                text = loginUiState.username,
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Text(text = " !",
-                style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = loginUiState.username,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+                Text(text = " !",
+                    style = MaterialTheme.typography.bodyLarge)
+            }
+
+            Text(text = "This is your device information",
+                style = MaterialTheme.typography.titleMedium)
+
+            getDeviceInfoGroups.forEach { group ->
+                Spacer(modifier = Modifier.height(20.dp))
+
+                DeviceInfoCard(
+                    group = group,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
 
-
-
-        Text(text = "This is your device information",
-            style = MaterialTheme.typography.titleMedium)
-
-        getDeviceInfoGroups.forEach { group ->
-            Spacer(modifier = Modifier.height(20.dp))
-
-            DeviceInfoCard(
-                group = group,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = onNextButtonClicked,
-            modifier = Modifier.widthIn(min = 240.dp)) {
-            Text(
-                text = "Next",
-                style = MaterialTheme.typography.labelLarge)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
+        ) {
+            Button(
+                onClick = onNextButtonClicked,
+                modifier = Modifier.widthIn(min = 240.dp)) {
+                Text(
+                    text = "Next",
+                    style = MaterialTheme.typography.labelLarge)
+            }
         }
     }
 }
@@ -95,8 +105,9 @@ private fun DeviceInfoCard(
 
         deviceInfoList.forEach {
             Card(
-                modifier = modifier.padding(8.dp)
-                    .heightIn(max=400.dp)
+                modifier = modifier
+                    .padding(8.dp)
+                    .heightIn(max = 400.dp)
             ) {
                 Column (
                     modifier = Modifier.padding(20.dp)

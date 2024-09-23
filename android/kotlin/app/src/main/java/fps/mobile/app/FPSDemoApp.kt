@@ -97,7 +97,7 @@ fun FPSDemoApp(
                     loginViewModel = loginViewModel,
                     onNextButtonClicked = { navController.navigate(FPSDemoScreen.Main.route) },
                     modifier = Modifier
-                        .fillMaxSize().padding(16.dp)
+                        .fillMaxSize().padding(horizontal = 16.dp)
                 )
             }
         }
