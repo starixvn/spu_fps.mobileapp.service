@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -30,10 +31,13 @@ import fps.mobile.app.ui.screen.fingerprint.FingerprintDetailScreen
 import fps.mobile.app.ui.screen.fingerprint.fingerprintDetailArgument
 import fps.mobile.app.ui.screen.main.MainScreen
 import fps.mobile.app.ui.screen.start.StartScreen
+import fps.mobile.app.ui.viewModel.LoginViewModel
+import kotlin.math.log
 
 @Composable
 fun FPSDemoApp(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    loginViewModel: LoginViewModel = viewModel()
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = FPSDemoScreen.entries.find { it.route == backStackEntry?.destination?.route} ?: FPSDemoScreen.Start
@@ -56,8 +60,9 @@ fun FPSDemoApp(
         ) {
             composable(route = FPSDemoScreen.Start.route) {
                 StartScreen(
-                    onButtonClicked = {
-                        navController.navigate(FPSDemoScreen.Main.route)
+                    loginViewModel = loginViewModel,
+                    onLoginButtonClicked = {
+                        navController.navigate(FPSDemoScreen.DeviceInfo.route)
                     },
                     modifier = Modifier
                         .fillMaxSize()
@@ -89,6 +94,7 @@ fun FPSDemoApp(
             composable(route = FPSDemoScreen.DeviceInfo.route) {
 
                 DeviceInfoScreen(
+                    loginViewModel = loginViewModel,
                     modifier = Modifier
                         .fillMaxSize()
                 )

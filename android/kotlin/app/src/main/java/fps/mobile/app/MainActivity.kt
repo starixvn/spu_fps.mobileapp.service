@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.data.DataLoader
-import fps.mobile.app.ui.screen.login.LoginScreen
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,5 +20,6 @@ class MainActivity : AppCompatActivity() {
                 FPSDemoApp()
             }
         }
+
     }
 }

@@ -4,68 +4,82 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.R
+import fps.mobile.app.ui.viewModel.LoginViewModel
 
 @Composable
 fun StartScreen(
-    onButtonClicked: () -> Unit,
+    loginViewModel: LoginViewModel,
+    onLoginButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
+
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
-            StartScreenImage()
-        }
+        StartScreenImage()
 
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
-            Text(text = "FPS Mobile Device Identifier",
-                style = MaterialTheme.typography.headlineLarge,
-                textAlign = TextAlign.Center)
-        }
+        Text(text = "FPS Mobile Device Identifier",
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Center)
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Button(
-                onClick = onButtonClicked,
-                modifier = Modifier.widthIn(min = 240.dp)) {
-                Text(
-                    text = "Get started",
-                    style = MaterialTheme.typography.labelLarge)
-            }
+        OutlinedTextField(
+            value = loginUiState.username,
+            onValueChange = { value -> loginViewModel.updateUserName(value)},
+            label = { Text("Username") }
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        OutlinedTextField(
+            value = loginUiState.password,
+            onValueChange = { value -> loginViewModel.updatePassword(value)},
+            label = { Text("Password") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = { login(loginViewModel, onLoginButtonClicked) },
+            modifier = Modifier.widthIn(min = 240.dp)) {
+            Text(
+                text = "Login",
+                style = MaterialTheme.typography.labelLarge)
         }
-
     }
+}
 
+private fun login(
+    loginViewModel: LoginViewModel,
+    onLoginButtonClicked: () -> Unit) {
+
+    if(loginViewModel.login())
+        onLoginButtonClicked()
 }
 
 @Composable
@@ -78,6 +92,6 @@ fun StartScreenImage() {
 @Preview
 fun StartScreenPreview() {
     FPSDemoTheme {
-        StartScreen(onButtonClicked={})
+        StartScreen(loginViewModel = viewModel(), onLoginButtonClicked={})
     }
 }
