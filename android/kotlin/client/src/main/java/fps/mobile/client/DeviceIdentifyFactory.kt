@@ -7,7 +7,34 @@ import fps.mobile.client.deviceIdProviders.GsfIdProvider
 import fps.mobile.client.deviceIdProviders.IDeviceIdProvider
 import fps.mobile.client.deviceIdProviders.MediaDrmIdProvider
 import fps.mobile.client.deviceIdProviders.UuidProvider
-import fps.mobile.client.infoProviders.*
+import fps.mobile.client.infoProviders.BatteryInfoProvider
+import fps.mobile.client.infoProviders.CameraInfoProvider
+import fps.mobile.client.infoProviders.CodecInfoProvider
+import fps.mobile.client.infoProviders.CpuInfoProvider
+import fps.mobile.client.infoProviders.DeviceInfoProvider
+import fps.mobile.client.infoProviders.DisplayInfoProvider
+import fps.mobile.client.infoProviders.GpuInfoProvider
+import fps.mobile.client.infoProviders.IBatteryInfoProvider
+import fps.mobile.client.infoProviders.ICameraInfoProvider
+import fps.mobile.client.infoProviders.ICodecInfoProvider
+import fps.mobile.client.infoProviders.ICpuInfoProvider
+import fps.mobile.client.infoProviders.IDeviceInfoProvider
+import fps.mobile.client.infoProviders.IDisplayInfoProvider
+import fps.mobile.client.infoProviders.IGpuInfoProvider
+import fps.mobile.client.infoProviders.IInputDeviceInfoProvider
+import fps.mobile.client.infoProviders.IMemoryInfoProvider
+import fps.mobile.client.infoProviders.IOsBuildInfoProvider
+import fps.mobile.client.infoProviders.IPackageInfoProvider
+import fps.mobile.client.infoProviders.ISecurityInfoProvider
+import fps.mobile.client.infoProviders.ISensorInfoProvider
+import fps.mobile.client.infoProviders.ISettingInfoProvider
+import fps.mobile.client.infoProviders.InputDeviceInfoProvider
+import fps.mobile.client.infoProviders.MemoryInfoProvider
+import fps.mobile.client.infoProviders.OsBuildInfoProvider
+import fps.mobile.client.infoProviders.PackageInfoProvider
+import fps.mobile.client.infoProviders.SecurityInfoProvider
+import fps.mobile.client.infoProviders.SensorInfoProvider
+import fps.mobile.client.infoProviders.SettingInfoProvider
 
 internal class DeviceIdentifyFactory(context: Context) {
 

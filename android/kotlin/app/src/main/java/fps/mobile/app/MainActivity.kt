@@ -1,18 +1,22 @@
 package fps.mobile.app
 
+import android.bluetooth.BluetoothClass.Device
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.data.DataLoader
+import fps.mobile.app.ui.viewModel.LoginViewModel
+import fps.mobile.client.DeviceIdentify
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DataLoader(this)
         enableEdgeToEdge()
 
         setContent {
@@ -22,27 +26,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
-        // TODO("Implement fetch tracking data again based on time paused")
-    }
+        Log.d("MainActivity", "onStart Called")
 
-    override fun onPause() {
-        super.onPause()
+        val model: LoginViewModel by viewModels()
 
-        // TODO("Implement time counter on pausing")
+        Log.d("MainActivity", "onStart isAuthenticated: ${model.isAuthenticated()}")
+        if(model.isAuthenticated()) {
+            DeviceIdentify.onStartOrRestart(this)
+            DataLoader(this)
+        }
     }
 
     override fun onStop() {
         super.onStop()
 
-        // TODO("Not yet implemented")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        // TODO("Not yet implemented")
+        Log.d("MainActivity", "onStop Called")
+        DeviceIdentify.onStop()
     }
 }

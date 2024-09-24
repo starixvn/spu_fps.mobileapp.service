@@ -1,14 +1,11 @@
 package fps.mobile.client
 
-import android.bluetooth.BluetoothClass.Device
 import android.content.Context
 import android.util.Log
 import fps.mobile.client.fingerprintProviders.DeviceStateFingerprintProvider
 import fps.mobile.client.fingerprintProviders.HardwareFingerprintProvider
 import fps.mobile.client.fingerprintProviders.InstalledAppsFingerprintProvider
 import fps.mobile.client.fingerprintProviders.OsFingerprintProvider
-import fps.mobile.client.infoProviders.DeviceInfoProvider
-import fps.mobile.client.infoProviders.SensorInfoProvider
 import org.json.JSONObject
 import kotlin.time.TimeSource
 
@@ -23,6 +20,9 @@ class DeviceIdentify(context: Context) {
 //    Log.d("getFingerprints", "${end - start} ms")
 
     companion object {
+        private var lastLiveTime: TimeSource.Monotonic.ValueTimeMark? = null
+        private val timeSource = TimeSource.Monotonic
+
         fun getFingerprints(): ArrayList<DeviceInfo> {
             val hardwareFingerprintProvider = HardwareFingerprintProvider()
             val osFingerprintProvider = OsFingerprintProvider()
@@ -248,6 +248,30 @@ class DeviceIdentify(context: Context) {
             packageJson.put("systemLanguage", settingInfoProvider.getSystemLanguage())
 
             return packageJson.toString(4)
+        }
+
+        fun login(
+            context: Context,
+            userName: String
+        ) {
+            DeviceIdentify(context)
+        }
+
+        fun onStartOrRestart(
+            context: Context
+        ) {
+            if(lastLiveTime != null) {
+                val now = timeSource.markNow()
+                val freezeTimeInSecond = now - lastLiveTime!!
+
+                if(freezeTimeInSecond.inWholeSeconds > 5) {
+                    DeviceIdentify(context)
+                }
+            }
+        }
+
+        fun onStop() {
+            lastLiveTime = timeSource.markNow()
         }
     }
 

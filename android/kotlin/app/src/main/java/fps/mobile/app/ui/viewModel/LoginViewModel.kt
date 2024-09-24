@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.update
 
 data class LoginUiState(
     val username: String = "test",
-    val password: String = "1234"
+    val password: String = "1234",
+    val isAuthenticated: Boolean = false
 )
 
 class LoginViewModel : ViewModel() {
@@ -31,8 +32,20 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    fun isAuthenticated(): Boolean {
+        return _uiState.value.isAuthenticated
+    }
+
     fun login(): Boolean {
-        return (_uiState.value.username == "test" &&
-                    _uiState.value.password == "1234")
+        if (_uiState.value.username == "test" &&
+                    _uiState.value.password == "1234") {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isAuthenticated = true
+                )
+            }
+            return true
+        }
+        return false
     }
 }
