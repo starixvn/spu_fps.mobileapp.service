@@ -1,4 +1,8 @@
 package fps.mobile.client.fingerprintProviders
 
-class CombinedFingerprintProvider {
+class CombinedFingerprintProvider : IFingerprintProvider {
+    override fun getFingerprint(): String {
+        TODO("Not yet implemented")
+
+    }
 }

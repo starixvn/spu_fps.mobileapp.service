@@ -5,6 +5,7 @@ package fps.mobile.client.infoProviders
 import android.content.ContentResolver
 import android.content.Context
 import android.media.RingtoneManager
+import android.os.Build
 import android.provider.Settings
 import android.text.format.DateFormat
 import java.util.LinkedList
@@ -25,6 +26,7 @@ internal interface ISettingInfoProvider {
     fun getRingtoneList(): List<RingtoneInfo>
     fun getRingtoneSource(): RingtoneInfo
     fun getBrightnessMode(): String
+    fun getDeviceName(): String
 
     fun getScreenOffTimeout(): Long
 
@@ -66,7 +68,7 @@ internal class SettingInfoProvider(
     }
 
     override fun getFontScale(): String {
-        return Settings.System.getString(contentResolver, Settings.System.FONT_SCALE)
+        return Settings.System.getString(contentResolver, Settings.System.FONT_SCALE) ?: "unknown"
     }
 
     override fun getRingtoneList(): List<RingtoneInfo> {
@@ -106,6 +108,14 @@ internal class SettingInfoProvider(
             Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL -> "Manual"
             Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC -> "Auto"
             else -> "unknown"
+        }
+    }
+
+    override fun getDeviceName(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            Settings.Global.getString(contentResolver, Settings.Global.DEVICE_NAME)
+        } else {
+            "unknown"
         }
     }
 

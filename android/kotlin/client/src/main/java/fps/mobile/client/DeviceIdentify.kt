@@ -210,6 +210,7 @@ class DeviceIdentify(context: Context) {
             val deviceInfoProvider = DeviceIdentifyFactory.getDeviceInfoProvider()
             val displayInfoProvider = DeviceIdentifyFactory.getDisplayInfoProvider()
             val osBuildInfoProvider = DeviceIdentifyFactory.getOsBuildInfoProvider()
+            val settingInfoProvider = DeviceIdentifyFactory.getSettingInfoProvider()
 
             val packageJson= JSONObject()
             packageJson.put("UserName",userName)
@@ -235,6 +236,16 @@ class DeviceIdentify(context: Context) {
 
             packageJson.put("model", osBuildInfoProvider.getModelName())
             packageJson.put("manufacturer", osBuildInfoProvider.getManufacturerName())
+            packageJson.put("device", osBuildInfoProvider.getDevice())
+            packageJson.put("fingerprint", osBuildInfoProvider.getFingerprint())
+            packageJson.put("brand", osBuildInfoProvider.getBrand())
+            packageJson.put("hardware", osBuildInfoProvider.getHardware())
+            packageJson.put("androidVersion", osBuildInfoProvider.getAndroidVersion())
+            packageJson.put("sdkVersion", osBuildInfoProvider.getSdkVersion())
+
+            packageJson.put("deviceName", settingInfoProvider.getDeviceName())
+            packageJson.put("timezone", settingInfoProvider.getTimezone())
+            packageJson.put("systemLanguage", settingInfoProvider.getSystemLanguage())
 
             return packageJson.toString(4)
         }
