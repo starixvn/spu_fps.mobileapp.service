@@ -67,7 +67,7 @@ class DeviceIdentify(context: Context) {
 
             deviceIdList.add(DeviceInfo("AndroidID", androidIdProvider.getId() ?: "unknown"))
 
-            deviceIdList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getId()))
+            deviceIdList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
             deviceIdList.add(DeviceInfo("Media DRM ID With Model", mediaDrmIdProvider.getMediaDrmIdWithModel()))
 
             deviceIdList.add(DeviceInfo("GSF ID", gsfIdProvider.getId() ?: "unknown"))
@@ -215,7 +215,7 @@ class DeviceIdentify(context: Context) {
             packageJson.put("UserName",userName)
 
             packageJson.put("AndroidId",androidIdProvider.getId())
-            packageJson.put("MediaDrmId",mediaDrmIdProvider.getId())
+            packageJson.put("MediaDrmId",mediaDrmIdProvider.getMediaDrmId())
             packageJson.put("MediaDrmIdWithModel",mediaDrmIdProvider.getMediaDrmIdWithModel())
             packageJson.put("gsfId",gsfIdProvider.getId())
             packageJson.put("uuid",uuIdProvider.getId())

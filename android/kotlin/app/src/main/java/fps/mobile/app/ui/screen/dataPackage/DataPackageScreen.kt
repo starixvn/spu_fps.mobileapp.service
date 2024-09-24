@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fps.mobile.app.data.DataLoader
+import fps.mobile.app.ui.components.CopyableText
 import fps.mobile.app.ui.viewModel.LoginViewModel
 
 @Composable
@@ -25,6 +26,7 @@ fun DataPackageScreen(
 ) {
     val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     val dataPackage: String = DataLoader.getDataPackage(loginUiState.username)
+    val dataSize = dataPackage.toByteArray().size
 
     Column(
         modifier = modifier,
@@ -33,12 +35,15 @@ fun DataPackageScreen(
         Text(text = "Sending this package to FPS",
             style = MaterialTheme.typography.titleLarge)
 
+        Text(text = "Approximate $dataSize Byte",
+            style = MaterialTheme.typography.titleSmall)
+
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(vertical = 16.dp)
         ) {
-            Text(text = dataPackage)
+            CopyableText(value = dataPackage)
         }
 
         Button(

@@ -7,6 +7,8 @@ import fps.mobile.app.constants.INSTALLED_APPS_DEVICE_INFO
 import fps.mobile.app.constants.OS_DEVICE_INFO
 import fps.mobile.client.DeviceIdentify
 import fps.mobile.client.DeviceInfo
+import kotlin.time.Duration
+import kotlin.time.TimeSource
 
 class DataLoader(context: Context) {
     companion object {
@@ -14,6 +16,11 @@ class DataLoader(context: Context) {
         private var deviceId: List<DeviceInfo>? = null
         private var deviceInfo: List<DeviceInfo>? = null
         private var dataPackage: String? = null
+        private var loadingTime: Duration? = null
+
+        fun getLoadingTime(): Duration {
+            return loadingTime!!
+        }
 
         fun getFingerprints(): List<DeviceInfo> {
             if(fingerprints == null)
@@ -67,9 +74,13 @@ class DataLoader(context: Context) {
     }
 
     init {
+        val timeSource = TimeSource.Monotonic
+        val start = timeSource.markNow()
         DeviceIdentify(context = context)
         fingerprints = DeviceIdentify.getFingerprints()
         deviceId = DeviceIdentify.getDeviceIds()
         deviceInfo = DeviceIdentify.getDeviceInfoList()
+        val end = timeSource.markNow()
+        loadingTime = end - start
     }
 }

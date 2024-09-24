@@ -32,6 +32,7 @@ fun DeviceInfoScreen(
 ) {
     val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     val getDeviceInfoGroups = DataLoader.getDeviceInfoGroups()
+    val loadingTime = DataLoader.getLoadingTime()
 
     Column(
         modifier = modifier
@@ -56,6 +57,9 @@ fun DeviceInfoScreen(
 
             Text(text = "This is your device information",
                 style = MaterialTheme.typography.titleMedium)
+
+            Text(text = "in $loadingTime",
+                style = MaterialTheme.typography.titleSmall)
 
             getDeviceInfoGroups.forEach { group ->
                 Spacer(modifier = Modifier.height(20.dp))
