@@ -19,9 +19,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.ui.screen.deviceId.DeviceIdScreen
 import fps.mobile.app.ui.screen.fingerprint.FingerprintScreen
 import kotlinx.coroutines.launch

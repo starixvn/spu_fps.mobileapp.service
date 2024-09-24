@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import fps.mobile.app.ui.screen.dataPackage.DataPackageScreen
 import fps.mobile.app.ui.screen.deviceInfo.DeviceInfoScreen
 import fps.mobile.app.ui.screen.fingerprint.FingerprintDetailScreen
 import fps.mobile.app.ui.screen.fingerprint.fingerprintDetailArgument
@@ -69,10 +70,20 @@ fun FPSDemoApp(
                         .padding(16.dp))
             }
 
+            composable(route = FPSDemoScreen.DeviceInfo.route) {
+                DeviceInfoScreen(
+                    loginViewModel = loginViewModel,
+                    onNextButtonClicked = { navController.navigate(FPSDemoScreen.Main.route) },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                )
+            }
+
             composable(route = FPSDemoScreen.Main.route) {
                 MainScreen(
                     onButtonClicked = {
-                        navController.navigate(FPSDemoScreen.Main.route)
+                        navController.navigate(FPSDemoScreen.DataPackage.route)
                     },
                     onFingerprintClick =  { fingerprint ->
                         navController.navigate(FPSDemoScreen.FingerprintDetail.route.replace("{fingerprint}", fingerprint))
@@ -91,11 +102,10 @@ fun FPSDemoApp(
                 )
             }
 
-            composable(route = FPSDemoScreen.DeviceInfo.route) {
-
-                DeviceInfoScreen(
+            composable(route = FPSDemoScreen.DataPackage.route) {
+                DataPackageScreen(
                     loginViewModel = loginViewModel,
-                    onNextButtonClicked = { navController.navigate(FPSDemoScreen.Main.route) },
+                    onBackButtonClick = { navController.navigate(FPSDemoScreen.Start.route) },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)

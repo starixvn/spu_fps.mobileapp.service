@@ -18,14 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import fps.mobile.app.constants.DEVICE_STATE_DEVICE_INFO
-import fps.mobile.app.constants.HARDWARE_DEVICE_INFO
-import fps.mobile.app.constants.INSTALLED_APPS_DEVICE_INFO
-import fps.mobile.app.constants.OS_DEVICE_INFO
 import fps.mobile.app.data.DataLoader
 import fps.mobile.app.data.InfoModel
 import fps.mobile.app.ui.components.InfoComponent
-import fps.mobile.client.DeviceInfo
 import kotlinx.coroutines.launch
 
 val fingerprintDetailArgument = listOf(

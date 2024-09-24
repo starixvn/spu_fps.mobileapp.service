@@ -13,6 +13,7 @@ class DataLoader(context: Context) {
         private var fingerprints: List<DeviceInfo>? = null
         private var deviceId: List<DeviceInfo>? = null
         private var deviceInfo: List<DeviceInfo>? = null
+        private var dataPackage: String? = null
 
         fun getFingerprints(): List<DeviceInfo> {
             if(fingerprints == null)
@@ -56,6 +57,12 @@ class DataLoader(context: Context) {
                 deviceInfo = getDeviceInfo()
 
             return deviceInfo!!.map { it.name.split('|').first() }.distinct()
+        }
+
+        fun getDataPackage(userName: String): String {
+            if(dataPackage == null)
+                dataPackage = DeviceIdentify.getDataPackage(userName)
+            return dataPackage!!
         }
     }
 

@@ -29,7 +29,7 @@ internal class DeviceIdentifyFactory(context: Context) {
         private var settingInfoProvider: ISettingInfoProvider? = null
 
         private var androidIdProvider: IDeviceIdProvider? = null
-        private var mediaDrmIdProvider: IDeviceIdProvider? = null
+        private var mediaDrmIdProvider: MediaDrmIdProvider? = null
         private var gsfIdProvider: IDeviceIdProvider? = null
         private var uuidProvider: IDeviceIdProvider? = null
         private var googleAdIdProvider: IDeviceIdProvider? = null
@@ -94,7 +94,7 @@ internal class DeviceIdentifyFactory(context: Context) {
             return androidIdProvider!!
         }
 
-        internal fun getMediaDrmIdProvider(): IDeviceIdProvider {
+        internal fun getMediaDrmIdProvider(): MediaDrmIdProvider {
             return mediaDrmIdProvider!!
         }
 

@@ -17,85 +17,79 @@ data class DeviceInfo(val name: String, val value: String)
 
 class DeviceIdentify(context: Context) {
 
+//    val timeSource = TimeSource.Monotonic
+//    val start = timeSource.markNow()
+//    val end = timeSource.markNow()
+//    Log.d("getFingerprints", "${end - start} ms")
+
     companion object {
         fun getFingerprints(): ArrayList<DeviceInfo> {
-            val timeSource = TimeSource.Monotonic
-            val start = timeSource.markNow()
-
             val hardwareFingerprintProvider = HardwareFingerprintProvider()
             val osFingerprintProvider = OsFingerprintProvider()
             val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
             val deviceStateFingerprintProvider = DeviceStateFingerprintProvider()
 
-            val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
+            val fingerprintList: ArrayList<DeviceInfo> = ArrayList()
 
-            deviceInfoList.add(
+            fingerprintList.add(
                 DeviceInfo(
                     "Hardware Fingerprint",
                     hardwareFingerprintProvider.getFingerprint()
                 )
             )
 
-            deviceInfoList.add(
+            fingerprintList.add(
                 DeviceInfo(
                     "OS Fingerprint",
                     osFingerprintProvider.getFingerprint()
                 )
             )
 
-            deviceInfoList.add(
+            fingerprintList.add(
                 DeviceInfo("Installed Apps FP", installedAppsFingerprintProvider.getFingerprint())
             )
 
-            deviceInfoList.add(
+            fingerprintList.add(
                 DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
             )
 
-            val end = timeSource.markNow()
-            Log.d("getFingerprints", "${end - start} ms")
-
-            return deviceInfoList
+            return fingerprintList
         }
 
         fun getDeviceIds(): ArrayList<DeviceInfo> {
-            val timeSource = TimeSource.Monotonic
-            val start = timeSource.markNow()
             val androidIdProvider = DeviceIdentifyFactory.getAndroidIdProvider()
             val mediaDrmIdProvider = DeviceIdentifyFactory.getMediaDrmIdProvider()
             val gsfIdProvider = DeviceIdentifyFactory.getGsfIdProvider()
             val uuIdProvider = DeviceIdentifyFactory.getUuidProvider()
             val googleAdIdProvider = DeviceIdentifyFactory.getGoogleAdIdProvider()
 
-            val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
+            val deviceIdList: ArrayList<DeviceInfo> = ArrayList()
 
-            deviceInfoList.add(DeviceInfo("AndroidID", androidIdProvider.getId() ?: "unknown"))
+            deviceIdList.add(DeviceInfo("AndroidID", androidIdProvider.getId() ?: "unknown"))
 
-            deviceInfoList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getId() ?: "unknown"))
+            deviceIdList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getId()))
+            deviceIdList.add(DeviceInfo("Media DRM ID With Model", mediaDrmIdProvider.getMediaDrmIdWithModel()))
 
-            deviceInfoList.add(DeviceInfo("GSF ID", gsfIdProvider.getId() ?: "unknown"))
+            deviceIdList.add(DeviceInfo("GSF ID", gsfIdProvider.getId() ?: "unknown"))
 
-            deviceInfoList.add(
+            deviceIdList.add(
                 DeviceInfo(
                     "UUID",
                     uuIdProvider.getId() ?: "unknown"
                 )
             )
 
-            deviceInfoList.add(
+            deviceIdList.add(
                 DeviceInfo(
                     "Google Ad ID",
                     googleAdIdProvider.getId() ?: "unknown"
                 )
             )
 
-            val end = timeSource.markNow()
-            Log.d("Device Id", "${end - start} ms")
-            return deviceInfoList
+            return deviceIdList
         }
 
         fun getDeviceInfoList(): ArrayList<DeviceInfo> {
-            val timeSource = TimeSource.Monotonic
-            val start = timeSource.markNow()
             val batteryInfoProvider = DeviceIdentifyFactory.getBatteryInfoProvider()
             val cameraInfoProvider = DeviceIdentifyFactory.getCameraInfoProvider()
             val codecInfoProvider = DeviceIdentifyFactory.getCodecInfoProvider()
@@ -198,16 +192,51 @@ class DeviceIdentify(context: Context) {
             val currentRingtone = settingInfoProvider.getRingtoneSource()
             deviceInfoList.add(DeviceInfo("Setting | Ringtone ${currentRingtone.title}", currentRingtone.uri))
 
-            val end = timeSource.markNow()
-            Log.d("getDeviceInfoList", "${end - start} ms")
             return deviceInfoList
         }
 
-        fun getPackage(): String {
-            val rootObject= JSONObject()
-            rootObject.put("name","test name")
-            rootObject.put("age","25")
-            return rootObject.toString()
+        fun getDataPackage(userName: String): String {
+            val androidIdProvider = DeviceIdentifyFactory.getAndroidIdProvider()
+            val mediaDrmIdProvider = DeviceIdentifyFactory.getMediaDrmIdProvider()
+            val gsfIdProvider = DeviceIdentifyFactory.getGsfIdProvider()
+            val uuIdProvider = DeviceIdentifyFactory.getUuidProvider()
+            val googleAdIdProvider = DeviceIdentifyFactory.getGoogleAdIdProvider()
+
+            val hardwareFingerprintProvider = HardwareFingerprintProvider()
+            val osFingerprintProvider = OsFingerprintProvider()
+            val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
+            val deviceStateFingerprintProvider = DeviceStateFingerprintProvider()
+
+            val deviceInfoProvider = DeviceIdentifyFactory.getDeviceInfoProvider()
+            val displayInfoProvider = DeviceIdentifyFactory.getDisplayInfoProvider()
+            val osBuildInfoProvider = DeviceIdentifyFactory.getOsBuildInfoProvider()
+
+            val packageJson= JSONObject()
+            packageJson.put("UserName",userName)
+
+            packageJson.put("AndroidId",androidIdProvider.getId())
+            packageJson.put("MediaDrmId",mediaDrmIdProvider.getId())
+            packageJson.put("MediaDrmIdWithModel",mediaDrmIdProvider.getMediaDrmIdWithModel())
+            packageJson.put("gsfId",gsfIdProvider.getId())
+            packageJson.put("uuid",uuIdProvider.getId())
+            packageJson.put("googleAdId",googleAdIdProvider.getId())
+
+            packageJson.put("hardwareFP",hardwareFingerprintProvider.getFingerprint())
+            packageJson.put("osFP",osFingerprintProvider.getFingerprint())
+            packageJson.put("installedAppsFP",installedAppsFingerprintProvider.getFingerprint())
+            packageJson.put("deviceStateFP",deviceStateFingerprintProvider.getFingerprint())
+
+            packageJson.put("isRooted", deviceInfoProvider.isRootedDevice())
+            packageJson.put("isEmulator", deviceInfoProvider.isEmulator())
+            packageJson.put("userAgent", deviceInfoProvider.getUseragent())
+
+            val displayInfo = displayInfoProvider.getDisplayInfo()
+            packageJson.put("display", "${displayInfo.widthPixel}x${displayInfo.heightPixel}x${displayInfo.densityDpi}")
+
+            packageJson.put("model", osBuildInfoProvider.getModelName())
+            packageJson.put("manufacturer", osBuildInfoProvider.getManufacturerName())
+
+            return packageJson.toString(4)
         }
     }
 

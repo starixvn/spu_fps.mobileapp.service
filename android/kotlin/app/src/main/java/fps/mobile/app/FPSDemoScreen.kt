@@ -7,5 +7,6 @@ enum class FPSDemoScreen(
     Start(title = "", route = "start"),
     Main(title = "FPS Device Identifier", route = "main"),
     FingerprintDetail(title = "Fingerprint", route = "fingerprint/{fingerprint}"),
-    DeviceInfo(title = "Device Information", route = "deviceInfo")
+    DeviceInfo(title = "Device Information", route = "deviceInfo"),
+    DataPackage(title = "Data Package", route = "dataPackage")
 }
