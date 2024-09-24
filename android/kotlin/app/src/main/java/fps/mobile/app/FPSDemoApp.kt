@@ -105,7 +105,9 @@ fun FPSDemoApp(
             composable(route = FPSDemoScreen.DataPackage.route) {
                 DataPackageScreen(
                     loginViewModel = loginViewModel,
-                    onBackButtonClick = { navController.navigate(FPSDemoScreen.Start.route) },
+                    onBackButtonClick = { navController.popBackStack(FPSDemoScreen.Start.route, false,
+                        saveState = false
+                    ) },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)

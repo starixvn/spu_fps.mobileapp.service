@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class LoginUiState(
-    val username: String = "",
-    val password: String = ""
+    val username: String = "test",
+    val password: String = "1234"
 )
 
 class LoginViewModel : ViewModel() {
