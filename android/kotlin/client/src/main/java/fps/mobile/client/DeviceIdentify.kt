@@ -9,6 +9,7 @@ import fps.mobile.client.fingerprintProviders.InstalledAppsFingerprintProvider
 import fps.mobile.client.fingerprintProviders.OsFingerprintProvider
 import fps.mobile.client.infoProviders.DeviceInfoProvider
 import fps.mobile.client.infoProviders.SensorInfoProvider
+import org.json.JSONObject
 import kotlin.time.TimeSource
 
 
@@ -133,6 +134,7 @@ class DeviceIdentify(context: Context) {
 
             deviceInfoList.add(DeviceInfo("Device Info | Is Rooted Device", deviceInfoProvider.isRootedDevice().toString()))
             deviceInfoList.add(DeviceInfo("Device Info | Is Emulator", deviceInfoProvider.isEmulator().toString()))
+            deviceInfoList.add(DeviceInfo("Device Info | Is Emulator", deviceInfoProvider.getUseragent()))
 
             val displayInfo = displayInfoProvider.getDisplayInfo()
             deviceInfoList.add(DeviceInfo("Display Info | Width", displayInfo.widthPixel.toString()))
@@ -199,6 +201,13 @@ class DeviceIdentify(context: Context) {
             val end = timeSource.markNow()
             Log.d("getDeviceInfoList", "${end - start} ms")
             return deviceInfoList
+        }
+
+        fun getPackage(): String {
+            val rootObject= JSONObject()
+            rootObject.put("name","test name")
+            rootObject.put("age","25")
+            return rootObject.toString()
         }
     }
 

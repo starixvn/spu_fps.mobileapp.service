@@ -1,6 +1,7 @@
 package fps.mobile.client.infoProviders
 
 import android.content.Context
+import android.webkit.WebView
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
@@ -118,10 +119,11 @@ private val PATHS_SHOULD_NOT_BE_WRITEABLE = arrayOf(
 internal interface IDeviceInfoProvider {
     fun isRootedDevice(): Boolean
     fun isEmulator(): Boolean
+    fun getUseragent(): String
 }
 
 internal class DeviceInfoProvider (
-    context: Context
+    private val context: Context
 ) : IDeviceInfoProvider {
     private var rootedDevice: Boolean? = null
     private var emulator: Boolean? = null
@@ -142,6 +144,10 @@ internal class DeviceInfoProvider (
             emulator = emulator()
 
         return emulator!!
+    }
+
+    override fun getUseragent(): String {
+        return  WebView(context).settings.userAgentString;
     }
 
     private fun rootedDevice(): Boolean {

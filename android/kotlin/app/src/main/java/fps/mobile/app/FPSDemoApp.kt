@@ -1,6 +1,5 @@
 package fps.mobile.app
 
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
@@ -19,25 +18,19 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import fps.mobile.app.ui.screen.deviceInfo.DeviceInfoScreen
 import fps.mobile.app.ui.screen.fingerprint.FingerprintDetailScreen
 import fps.mobile.app.ui.screen.fingerprint.fingerprintDetailArgument
 import fps.mobile.app.ui.screen.main.MainScreen
 import fps.mobile.app.ui.screen.start.StartScreen
 import fps.mobile.app.ui.viewModel.LoginViewModel
-import kotlin.math.log
 
 @Composable
 fun FPSDemoApp(

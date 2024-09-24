@@ -38,6 +38,7 @@ internal class DeviceStateFingerprintProvider: IFingerprintProvider {
 
         stringBuilder.append(deviceInfoProvider.isRootedDevice())
         stringBuilder.append(deviceInfoProvider.isEmulator())
+        stringBuilder.append(deviceInfoProvider.getUseragent())
 
         return stringBuilder.toString().hashingMd5()
     }
