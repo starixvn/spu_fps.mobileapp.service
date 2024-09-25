@@ -128,7 +128,7 @@ class DeviceIdentify(context: Context) {
 
             deviceInfoList.add(DeviceInfo("Device Info | Is Rooted Device", deviceInfoProvider.isRootedDevice().toString()))
             deviceInfoList.add(DeviceInfo("Device Info | Is Emulator", deviceInfoProvider.isEmulator().toString()))
-            deviceInfoList.add(DeviceInfo("Device Info | Is Emulator", deviceInfoProvider.getUseragent()))
+            deviceInfoList.add(DeviceInfo("Device Info | Useragent", deviceInfoProvider.getUseragent()))
 
             val displayInfo = displayInfoProvider.getDisplayInfo()
             deviceInfoList.add(DeviceInfo("Display Info | Width", displayInfo.widthPixel.toString()))
@@ -236,14 +236,10 @@ class DeviceIdentify(context: Context) {
 
             packageJson.put("model", osBuildInfoProvider.getModelName())
             packageJson.put("manufacturer", osBuildInfoProvider.getManufacturerName())
-            packageJson.put("device", osBuildInfoProvider.getDevice())
-            packageJson.put("fingerprint", osBuildInfoProvider.getFingerprint())
             packageJson.put("brand", osBuildInfoProvider.getBrand())
-            packageJson.put("hardware", osBuildInfoProvider.getHardware())
-            packageJson.put("androidVersion", osBuildInfoProvider.getAndroidVersion())
+            packageJson.put("os", "Android")
             packageJson.put("sdkVersion", osBuildInfoProvider.getSdkVersion())
 
-            packageJson.put("deviceName", settingInfoProvider.getDeviceName())
             packageJson.put("timezone", settingInfoProvider.getTimezone())
             packageJson.put("systemLanguage", settingInfoProvider.getSystemLanguage())
 
