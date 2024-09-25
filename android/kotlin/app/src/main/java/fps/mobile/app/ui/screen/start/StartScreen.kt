@@ -1,5 +1,6 @@
 package fps.mobile.app.ui.screen.start
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -33,7 +35,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androiddemo.ui.theme.FPSDemoTheme
 import fps.mobile.app.R
+import fps.mobile.app.data.DataLoader
 import fps.mobile.app.ui.viewModel.LoginViewModel
+import fps.mobile.client.DeviceIdentify
 
 @Composable
 fun StartScreen(
@@ -41,6 +45,7 @@ fun StartScreen(
     onLoginButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     var passwordVisibility by remember { mutableStateOf(false) }
 
@@ -89,7 +94,7 @@ fun StartScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = { login(loginViewModel, onLoginButtonClicked) },
+            onClick = { login(context, loginViewModel, onLoginButtonClicked) },
             modifier = Modifier.widthIn(min = 240.dp)) {
             Text(
                 text = "Login",
@@ -99,11 +104,17 @@ fun StartScreen(
 }
 
 private fun login(
+    context: Context,
     loginViewModel: LoginViewModel,
     onLoginButtonClicked: () -> Unit) {
 
-    if(loginViewModel.login())
+    if(loginViewModel.login()){
+
+        DeviceIdentify.login(context, loginViewModel.uiState.value.username)
+        DataLoader(context)
+
         onLoginButtonClicked()
+    }
 }
 
 @Composable

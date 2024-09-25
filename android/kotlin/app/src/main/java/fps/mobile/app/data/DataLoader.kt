@@ -76,7 +76,6 @@ class DataLoader(context: Context) {
     init {
         val timeSource = TimeSource.Monotonic
         val start = timeSource.markNow()
-        DeviceIdentify(context = context)
         fingerprints = DeviceIdentify.getFingerprints()
         deviceId = DeviceIdentify.getDeviceIds()
         deviceInfo = DeviceIdentify.getDeviceInfoList()
