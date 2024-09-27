@@ -27,6 +27,7 @@ internal interface ISettingInfoProvider {
     fun getRingtoneSource(): RingtoneInfo
     fun getBrightnessMode(): String
     fun getDeviceName(): String
+    fun getCountry(): String
 
     fun getScreenOffTimeout(): Long
 
@@ -117,6 +118,10 @@ internal class SettingInfoProvider(
         } else {
             "unknown"
         }
+    }
+
+    override fun getCountry(): String {
+        return context.resources.configuration.locale.country
     }
 
     override fun getScreenOffTimeout(): Long {

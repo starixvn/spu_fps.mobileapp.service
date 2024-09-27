@@ -182,6 +182,7 @@ class DeviceIdentify(context: Context) {
             deviceInfoList.add(DeviceInfo("Setting | Date Format", settingInfoProvider.getDateFormat()))
             deviceInfoList.add(DeviceInfo("Setting | Brightness Mode", settingInfoProvider.getBrightnessMode()))
             deviceInfoList.add(DeviceInfo("Setting | System Language", settingInfoProvider.getSystemLanguage()))
+            deviceInfoList.add(DeviceInfo("Setting | Country", settingInfoProvider.getCountry()))
             deviceInfoList.add(DeviceInfo("Setting | Wifi Sleep Policy", settingInfoProvider.getWifiSleepPolicy()))
             deviceInfoList.add(DeviceInfo("Setting | Screen Off Timeout", settingInfoProvider.getScreenOffTimeout().toString()))
             val ringtones = settingInfoProvider.getRingtoneList()
@@ -242,6 +243,7 @@ class DeviceIdentify(context: Context) {
 
             packageJson.put("timezone", settingInfoProvider.getTimezone())
             packageJson.put("systemLanguage", settingInfoProvider.getSystemLanguage())
+            packageJson.put("country", settingInfoProvider.getCountry())
 
             return packageJson.toString(4)
         }

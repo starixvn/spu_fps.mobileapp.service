@@ -16,6 +16,7 @@ internal class DeviceStateFingerprintProvider: IFingerprintProvider {
         stringBuilder.append(settingInfoProvider.getWifiSleepPolicy())
         stringBuilder.append(settingInfoProvider.getSystemLanguage())
         stringBuilder.append(settingInfoProvider.getFontScale())
+        stringBuilder.append(settingInfoProvider.getCountry())
 
         val ringtoneList = settingInfoProvider.getRingtoneList()
         ringtoneList.forEach{

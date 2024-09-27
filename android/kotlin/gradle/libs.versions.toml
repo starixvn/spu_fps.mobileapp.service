@@ -1,6 +1,7 @@
 [versions]
 adsIdentifier = "1.0.0-alpha05"
 agp = "8.5.2"
+guava = "28.0-android"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -21,6 +22,7 @@ androidx-ads-identifier = { module = "androidx.ads:ads-identifier", version.ref 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJsonVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
