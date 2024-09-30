@@ -1,121 +1,279 @@
 package fps.mobile.client
-import android.app.ActivityManager
+
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.content.SharedPreferences
-import android.hardware.Sensor
-import android.hardware.SensorManager
-import android.os.Build
-import android.provider.Settings
-import android.telephony.TelephonyManager
-import android.util.DisplayMetrics
-import java.util.Locale
-import java.util.TimeZone
-import java.util.UUID
+import android.util.Log
+import fps.mobile.client.fingerprintProviders.DeviceStateFingerprintProvider
+import fps.mobile.client.fingerprintProviders.HardwareFingerprintProvider
+import fps.mobile.client.fingerprintProviders.InstalledAppsFingerprintProvider
+import fps.mobile.client.fingerprintProviders.OsFingerprintProvider
+import org.json.JSONObject
+import kotlin.time.TimeSource
 
 
-data class DeviceInfo(val name:String, val value: String)
-object DeviceIdentify {
-    fun getDeviceInfo(context: Context): ArrayList<DeviceInfo> {
-        // Device Info
-        val deviceModel = Build.MODEL
-        val deviceManufacturer = Build.MANUFACTURER
-        val androidVersion = Build.VERSION.RELEASE
-        val apiLevel = Build.VERSION.SDK_INT
-        val deviceName = "$deviceManufacturer $deviceModel"
-        val baseOs = Build.VERSION.BASE_OS
-        val hardware = Build.HARDWARE
-        val board = Build.BOARD
-        val timeZone = TimeZone.getDefault().id
-        val language = Locale.getDefault().language
-        val country = Locale.getDefault().country
+data class DeviceInfo(val name: String, val value: String)
 
-        // Display Metrics
-        val displayMetrics = getDisplayMetrics(context)
-        val screenWidth = displayMetrics.widthPixels
-        val screenHeight = displayMetrics.heightPixels
-        val densityDpi = displayMetrics.densityDpi
+class DeviceIdentify(context: Context) {
 
-        // Battery Level
-        val batteryLevel = getBatteryLevel(context)
+//    val timeSource = TimeSource.Monotonic
+//    val start = timeSource.markNow()
+//    val end = timeSource.markNow()
+//    Log.d("getFingerprints", "${end - start} ms")
 
-        // Sensors
-        val sensors = getAvailableSensors(context)
+    companion object {
+        private var lastLiveTime: TimeSource.Monotonic.ValueTimeMark? = null
+        private val timeSource = TimeSource.Monotonic
 
-        // RAM Info
-        val totalRam = getTotalRam(context)
-        val userID = getUUID(context)
+        fun getFingerprints(): ArrayList<DeviceInfo> {
+            val hardwareFingerprintProvider = HardwareFingerprintProvider()
+            val osFingerprintProvider = OsFingerprintProvider()
+            val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
+            val deviceStateFingerprintProvider = DeviceStateFingerprintProvider()
 
-        val androidID = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID);
+            val fingerprintList: ArrayList<DeviceInfo> = ArrayList()
 
-        val deviceInfoList: ArrayList<DeviceInfo> = ArrayList<DeviceInfo>()
+            fingerprintList.add(
+                DeviceInfo(
+                    "Hardware Fingerprint",
+                    hardwareFingerprintProvider.getFingerprint()
+                )
+            )
 
-        deviceInfoList.add(DeviceInfo("AndroidID", androidID))
-        deviceInfoList.add(DeviceInfo("DeviceName", deviceName))
-        deviceInfoList.add(DeviceInfo("Build Info", getBuildInfo()))
-        deviceInfoList.add(DeviceInfo("Android Version", "$androidVersion (API $apiLevel)"))
-        deviceInfoList.add(DeviceInfo("Base OS", baseOs))
-        deviceInfoList.add(DeviceInfo("Hardware", hardware))
-        deviceInfoList.add(DeviceInfo("Board", board))
-        deviceInfoList.add(DeviceInfo("Timezone", timeZone))
-        deviceInfoList.add(DeviceInfo("Language", "$language ($country)"))
-        deviceInfoList.add(DeviceInfo("Screen Resolution", "${screenWidth}x$screenHeight (Density: $densityDpi dpi)"))
-        deviceInfoList.add(DeviceInfo("Battery Level", "$batteryLevel%"))
-        deviceInfoList.add(DeviceInfo("Total RAM", "$totalRam MB"))
-        deviceInfoList.add(DeviceInfo("Available Sensors", "${sensors.size}"))
-        deviceInfoList.add(DeviceInfo("UUID", "${userID}"))
-        //deviceInfoList.add(DeviceInfo("MAC wifi address from file", "${getMacAddressFromFile()}"))
+            fingerprintList.add(
+                DeviceInfo(
+                    "OS Fingerprint",
+                    osFingerprintProvider.getFingerprint()
+                )
+            )
 
-        return deviceInfoList
-        //return
-    }
-    private fun getAndroidId(context: Context): String{
-        return DeviceIdentify.getAndroidId(context)
-    }
+            fingerprintList.add(
+                DeviceInfo("Installed Apps FP", installedAppsFingerprintProvider.getFingerprint())
+            )
 
-    private fun getDisplayMetrics(context: Context): DisplayMetrics {
-        val displayMetrics = DisplayMetrics()
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics
-    }
+            fingerprintList.add(
+                DeviceInfo("Device State FP", deviceStateFingerprintProvider.getFingerprint())
+            )
 
-    private fun getBatteryLevel(context: Context): Int {
-        val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        val batteryStatus = context.registerReceiver(null, intentFilter)
-        val level = batteryStatus?.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1) ?: -1
-        val scale = batteryStatus?.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1) ?: -1
-        return if (level != -1 && scale != -1) {
-            (level.toFloat() / scale.toFloat() * 100).toInt()
-        } else {
-            -1
+            return fingerprintList
+        }
+
+        fun getDeviceIds(): ArrayList<DeviceInfo> {
+            val androidIdProvider = DeviceIdentifyFactory.getAndroidIdProvider()
+            val mediaDrmIdProvider = DeviceIdentifyFactory.getMediaDrmIdProvider()
+            val gsfIdProvider = DeviceIdentifyFactory.getGsfIdProvider()
+            val uuIdProvider = DeviceIdentifyFactory.getUuidProvider()
+            val googleAdIdProvider = DeviceIdentifyFactory.getGoogleAdIdProvider()
+
+            val deviceIdList: ArrayList<DeviceInfo> = ArrayList()
+
+            deviceIdList.add(DeviceInfo("AndroidID", androidIdProvider.getId() ?: "unknown"))
+
+            deviceIdList.add(DeviceInfo("Media DRM ID", mediaDrmIdProvider.getMediaDrmId()))
+            deviceIdList.add(DeviceInfo("Media DRM ID With Model", mediaDrmIdProvider.getMediaDrmIdWithModel()))
+
+            deviceIdList.add(DeviceInfo("GSF ID", gsfIdProvider.getId() ?: "unknown"))
+
+            deviceIdList.add(
+                DeviceInfo(
+                    "UUID",
+                    uuIdProvider.getId() ?: "unknown"
+                )
+            )
+
+            deviceIdList.add(
+                DeviceInfo(
+                    "Google Ad ID",
+                    googleAdIdProvider.getId() ?: "unknown"
+                )
+            )
+
+            return deviceIdList
+        }
+
+        fun getDeviceInfoList(): ArrayList<DeviceInfo> {
+            val batteryInfoProvider = DeviceIdentifyFactory.getBatteryInfoProvider()
+            val cameraInfoProvider = DeviceIdentifyFactory.getCameraInfoProvider()
+            val codecInfoProvider = DeviceIdentifyFactory.getCodecInfoProvider()
+            val cpuInfoProvider = DeviceIdentifyFactory.getCpuInfoProvider()
+            val deviceInfoProvider = DeviceIdentifyFactory.getDeviceInfoProvider()
+            val displayInfoProvider = DeviceIdentifyFactory.getDisplayInfoProvider()
+            val gpuInfoProvider = DeviceIdentifyFactory.getGpuInfoProvider()
+            val memoryInfoProvider = DeviceIdentifyFactory.getMemoryInfoProvider()
+            val osBuildInfoProvider = DeviceIdentifyFactory.getOsBuildInfoProvider()
+            val packageInfoProvider = DeviceIdentifyFactory.getPackageInfoProvider()
+            val securityInfoProvider = DeviceIdentifyFactory.getSecurityInfoProvider()
+            val sensorInfoProvider = DeviceIdentifyFactory.getSensorInfoProvider()
+            val settingInfoProvider = DeviceIdentifyFactory.getSettingInfoProvider()
+
+            val deviceInfoList: ArrayList<DeviceInfo> = ArrayList()
+
+            deviceInfoList.add(DeviceInfo("Battery | Health", batteryInfoProvider.getBatteryHealth() ?: "unknown"))
+            deviceInfoList.add(DeviceInfo("Battery | Total Capacity", batteryInfoProvider.getBatteryTotalCapacity()))
+            deviceInfoList.add(DeviceInfo("Battery | Level", batteryInfoProvider.getBatteryLevel()))
+
+            val cameraList = cameraInfoProvider.getCameraList()
+            cameraList.forEach{
+                deviceInfoList.add(DeviceInfo("Camera | ${it.cameraName}", "${it.cameraType} x ${it.cameraOrientation}"))
+            }
+
+            val codecList = codecInfoProvider.getCodecList()
+            codecList.forEach {
+                deviceInfoList.add(DeviceInfo("Codec | ${it.name}", it.capabilities.joinToString()))
+            }
+
+            val cpuInfo = cpuInfoProvider.getCpuInfo()
+            deviceInfoList.add(DeviceInfo("CPU | Common Info", cpuInfo.commonInfo.toString()))
+            deviceInfoList.add(DeviceInfo("CPU | per Processor Info", cpuInfo.perProcessorInfo.toString()))
+            deviceInfoList.add(DeviceInfo("CPU | Abi Type", cpuInfoProvider.getAbiType()))
+            deviceInfoList.add(DeviceInfo("CPU | Number Of Cores", cpuInfoProvider.getNumberOfCores().toString()))
+
+            deviceInfoList.add(DeviceInfo("Device Info | Is Rooted Device", deviceInfoProvider.isRootedDevice().toString()))
+            deviceInfoList.add(DeviceInfo("Device Info | Is Emulator", deviceInfoProvider.isEmulator().toString()))
+            deviceInfoList.add(DeviceInfo("Device Info | Useragent", deviceInfoProvider.getUseragent()))
+
+            val displayInfo = displayInfoProvider.getDisplayInfo()
+            deviceInfoList.add(DeviceInfo("Display Info | Width", displayInfo.widthPixel.toString()))
+            deviceInfoList.add(DeviceInfo("Display Info | Height", displayInfo.heightPixel.toString()))
+            deviceInfoList.add(DeviceInfo("Display Info | Density Dpi", displayInfo.densityDpi.toString()))
+
+            deviceInfoList.add(DeviceInfo("GPU | Gles Version", gpuInfoProvider.getGlesVersion()))
+
+            deviceInfoList.add(DeviceInfo("Memory | Total Ram in MB", memoryInfoProvider.getTotalRamInMB().toString()))
+            deviceInfoList.add(DeviceInfo("Memory | External Storage", memoryInfoProvider.getExternalStorage().toString()))
+            deviceInfoList.add(DeviceInfo("Memory | Internal Storage", memoryInfoProvider.getInternalStorage().toString()))
+
+            deviceInfoList.add(DeviceInfo("OSBuild | Device", osBuildInfoProvider.getDevice()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Fingerprint", osBuildInfoProvider.getFingerprint()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Build Tags", osBuildInfoProvider.getBuildTags()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Build Product", osBuildInfoProvider.getBuildProduct()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Serial", osBuildInfoProvider.getSerial()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Android Version", osBuildInfoProvider.getAndroidVersion()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Board", osBuildInfoProvider.getBoard()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Boot Loader", osBuildInfoProvider.getBootLoader()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Brand", osBuildInfoProvider.getBrand()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Display", osBuildInfoProvider.getDisplay()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Hardware", osBuildInfoProvider.getHardware()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Kernel Version", osBuildInfoProvider.getKernelVersion()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Manufacturer", osBuildInfoProvider.getManufacturerName()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Model", osBuildInfoProvider.getModelName()))
+            deviceInfoList.add(DeviceInfo("OSBuild | Sdk Version", osBuildInfoProvider.getSdkVersion()))
+
+            val installedApps = packageInfoProvider.getApplications()
+            installedApps.forEach{
+                deviceInfoList.add(DeviceInfo("App | ${it.packageName}", it.uid))
+            }
+
+            val systemPackages = packageInfoProvider.getSystemApplications()
+            systemPackages.forEach {
+                deviceInfoList.add(DeviceInfo("System Package | ${it.packageName}", it.uid))
+            }
+
+            val securityProviders = securityInfoProvider.getSecurityProviders()
+            securityProviders.forEach {
+                deviceInfoList.add(DeviceInfo("Security | ${it.name}", it.info))
+            }
+
+            val sensors = sensorInfoProvider.getSensorList()
+            sensors.forEach {
+                deviceInfoList.add(DeviceInfo("Sensor | ${it.sensorName}", it.vendorName))
+            }
+
+            deviceInfoList.add(DeviceInfo("Setting | Timezone", settingInfoProvider.getTimezone()))
+            deviceInfoList.add(DeviceInfo("Setting | Font Scale", settingInfoProvider.getFontScale()))
+            deviceInfoList.add(DeviceInfo("Setting | Date Format", settingInfoProvider.getDateFormat()))
+            deviceInfoList.add(DeviceInfo("Setting | Brightness Mode", settingInfoProvider.getBrightnessMode()))
+            deviceInfoList.add(DeviceInfo("Setting | System Language", settingInfoProvider.getSystemLanguage()))
+            deviceInfoList.add(DeviceInfo("Setting | Country", settingInfoProvider.getCountry()))
+            deviceInfoList.add(DeviceInfo("Setting | Wifi Sleep Policy", settingInfoProvider.getWifiSleepPolicy()))
+            deviceInfoList.add(DeviceInfo("Setting | Screen Off Timeout", settingInfoProvider.getScreenOffTimeout().toString()))
+            val ringtones = settingInfoProvider.getRingtoneList()
+            ringtones.forEach {
+                deviceInfoList.add(DeviceInfo("Setting | Ringtone ${it.title}", it.uri))
+            }
+
+            val currentRingtone = settingInfoProvider.getRingtoneSource()
+            deviceInfoList.add(DeviceInfo("Setting | Ringtone ${currentRingtone.title}", currentRingtone.uri))
+
+            return deviceInfoList
+        }
+
+        fun getDataPackage(userName: String): String {
+            val androidIdProvider = DeviceIdentifyFactory.getAndroidIdProvider()
+            val mediaDrmIdProvider = DeviceIdentifyFactory.getMediaDrmIdProvider()
+            val gsfIdProvider = DeviceIdentifyFactory.getGsfIdProvider()
+            val uuIdProvider = DeviceIdentifyFactory.getUuidProvider()
+            val googleAdIdProvider = DeviceIdentifyFactory.getGoogleAdIdProvider()
+
+            val hardwareFingerprintProvider = HardwareFingerprintProvider()
+            val osFingerprintProvider = OsFingerprintProvider()
+            val installedAppsFingerprintProvider = InstalledAppsFingerprintProvider()
+            val deviceStateFingerprintProvider = DeviceStateFingerprintProvider()
+
+            val deviceInfoProvider = DeviceIdentifyFactory.getDeviceInfoProvider()
+            val displayInfoProvider = DeviceIdentifyFactory.getDisplayInfoProvider()
+            val osBuildInfoProvider = DeviceIdentifyFactory.getOsBuildInfoProvider()
+            val settingInfoProvider = DeviceIdentifyFactory.getSettingInfoProvider()
+
+            val packageJson= JSONObject()
+            packageJson.put("UserName",userName)
+
+            packageJson.put("AndroidId",androidIdProvider.getId())
+            packageJson.put("MediaDrmId",mediaDrmIdProvider.getMediaDrmId())
+            packageJson.put("MediaDrmIdWithModel",mediaDrmIdProvider.getMediaDrmIdWithModel())
+            packageJson.put("gsfId",gsfIdProvider.getId())
+            packageJson.put("uuid",uuIdProvider.getId())
+            packageJson.put("googleAdId",googleAdIdProvider.getId())
+
+            packageJson.put("hardwareFP",hardwareFingerprintProvider.getFingerprint())
+            packageJson.put("osFP",osFingerprintProvider.getFingerprint())
+            packageJson.put("installedAppsFP",installedAppsFingerprintProvider.getFingerprint())
+            packageJson.put("deviceStateFP",deviceStateFingerprintProvider.getFingerprint())
+
+            packageJson.put("isRooted", deviceInfoProvider.isRootedDevice())
+            packageJson.put("isEmulator", deviceInfoProvider.isEmulator())
+            packageJson.put("userAgent", deviceInfoProvider.getUseragent())
+
+            val displayInfo = displayInfoProvider.getDisplayInfo()
+            packageJson.put("display", "${displayInfo.widthPixel}x${displayInfo.heightPixel}x${displayInfo.densityDpi}")
+
+            packageJson.put("model", osBuildInfoProvider.getModelName())
+            packageJson.put("manufacturer", osBuildInfoProvider.getManufacturerName())
+            packageJson.put("brand", osBuildInfoProvider.getBrand())
+            packageJson.put("os", "Android")
+            packageJson.put("sdkVersion", osBuildInfoProvider.getSdkVersion())
+
+            packageJson.put("timezone", settingInfoProvider.getTimezone())
+            packageJson.put("systemLanguage", settingInfoProvider.getSystemLanguage())
+            packageJson.put("country", settingInfoProvider.getCountry())
+
+            return packageJson.toString(4)
+        }
+
+        fun login(
+            context: Context,
+            userName: String
+        ) {
+            DeviceIdentify(context)
+        }
+
+        fun onStartOrRestart(
+            context: Context
+        ) {
+            if(lastLiveTime != null) {
+                val now = timeSource.markNow()
+                val freezeTimeInSecond = now - lastLiveTime!!
+
+                if(freezeTimeInSecond.inWholeSeconds > 5) {
+                    DeviceIdentify(context)
+                }
+            }
+        }
+
+        fun onStop() {
+            lastLiveTime = timeSource.markNow()
         }
     }
 
-    private fun getAvailableSensors(context: Context): List<Sensor> {
-        val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        return sensorManager.getSensorList(Sensor.TYPE_ALL)
-    }
-
-    private fun getTotalRam(context: Context): Long {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val memoryInfo = ActivityManager.MemoryInfo()
-        activityManager.getMemoryInfo(memoryInfo)
-        return memoryInfo.totalMem / (1024 * 1024)  // Convert bytes to MB
-    }
-
-    private fun getBuildInfo(): String {
-        return "Manufacturer: ${Build.MANUFACTURER}, Model: ${Build.MODEL}, Device: ${Build.DEVICE}"
-    }
-
-    private fun getUUID(context: Context): String {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        var uuid = sharedPreferences.getString("unique_id", null)
-        if (uuid == null) {
-            uuid = UUID.randomUUID().toString()
-            sharedPreferences.edit().putString("unique_id", uuid).apply()
-        }
-        return uuid
+    init {
+        DeviceIdentifyFactory(context)
     }
 }

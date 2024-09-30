@@ -1,0 +1,158 @@
+@file:Suppress("DEPRECATION")
+
+package fps.mobile.client.infoProviders
+
+import android.content.ContentResolver
+import android.content.Context
+import android.media.RingtoneManager
+import android.os.Build
+import android.provider.Settings
+import android.text.format.DateFormat
+import java.util.LinkedList
+import java.util.Locale
+import java.util.TimeZone
+
+internal data class RingtoneInfo(
+    val title: String,
+    val uri: String
+)
+
+internal interface ISettingInfoProvider {
+    fun getTimezone(): String
+    fun getDateFormat(): String
+    fun getWifiSleepPolicy(): String
+    fun getSystemLanguage(): String
+    fun getFontScale(): String
+    fun getRingtoneList(): List<RingtoneInfo>
+    fun getRingtoneSource(): RingtoneInfo
+    fun getBrightnessMode(): String
+    fun getDeviceName(): String
+    fun getCountry(): String
+
+    fun getScreenOffTimeout(): Long
+
+    fun is24HourFormat(): Boolean
+    fun isAutoTime(): Boolean
+    fun isAutoTimezone(): Boolean
+    fun isNotifyAvailableWifi(): Boolean
+    fun isSoundEffectsEnable(): Boolean
+    fun isShowingPassword(): Boolean
+    fun isAutoRotation(): Boolean
+}
+
+internal class SettingInfoProvider(
+    private val context: Context
+) : ISettingInfoProvider {
+
+    private val contentResolver: ContentResolver? = context.contentResolver!!
+
+    override fun getTimezone(): String {
+        return TimeZone.getDefault().displayName
+    }
+
+    override fun getDateFormat(): String {
+        return DateFormat.getDateFormatOrder(context).joinToString()
+    }
+
+    override fun getWifiSleepPolicy(): String {
+        val policy = Settings.Global.getInt(contentResolver, Settings.Global.WIFI_SLEEP_POLICY)
+        return when (policy) {
+            Settings.Global.WIFI_SLEEP_POLICY_DEFAULT -> "default"
+            Settings.Global.WIFI_SLEEP_POLICY_NEVER -> "never"
+            Settings.Global.WIFI_SLEEP_POLICY_NEVER_WHILE_PLUGGED -> "never while plugged"
+            else -> ""
+        }
+    }
+
+    override fun getSystemLanguage(): String {
+        return Locale.getDefault().displayLanguage
+    }
+
+    override fun getFontScale(): String {
+        return Settings.System.getString(contentResolver, Settings.System.FONT_SCALE) ?: "unknown"
+    }
+
+    override fun getRingtoneList(): List<RingtoneInfo> {
+        val ringtoneList = LinkedList<RingtoneInfo>()
+
+        val manager = RingtoneManager(context)
+        manager.setType(RingtoneManager.TYPE_RINGTONE)
+        val cursor = manager.cursor
+        while (cursor.moveToNext()) {
+            val title = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX)
+            val ringtoneURI = manager.getRingtoneUri(cursor.position)
+
+            ringtoneList.add(RingtoneInfo(
+                title = title,
+                uri = ringtoneURI.toString()
+            ))
+        }
+
+        return ringtoneList
+    }
+
+    override fun getRingtoneSource(): RingtoneInfo {
+        val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
+            context,
+            RingtoneManager.TYPE_RINGTONE
+        )
+
+        return RingtoneInfo(
+            title = RingtoneManager.getRingtone(context, defaultRingtoneUri).getTitle(context),
+            uri = defaultRingtoneUri.toString()
+        )
+    }
+
+    override fun getBrightnessMode(): String {
+        val mode = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
+        return when (mode) {
+            Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL -> "Manual"
+            Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC -> "Auto"
+            else -> "unknown"
+        }
+    }
+
+    override fun getDeviceName(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            Settings.Global.getString(contentResolver, Settings.Global.DEVICE_NAME)
+        } else {
+            "unknown"
+        }
+    }
+
+    override fun getCountry(): String {
+        return context.resources.configuration.locale.country
+    }
+
+    override fun getScreenOffTimeout(): Long {
+        return Settings.System.getLong(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT)
+    }
+
+    override fun is24HourFormat(): Boolean {
+        return DateFormat.is24HourFormat(context)
+    }
+
+    override fun isAutoTime(): Boolean {
+        return Settings.Global.getString(contentResolver, Settings.Global.AUTO_TIME) == "1"
+    }
+
+    override fun isAutoTimezone(): Boolean {
+        return Settings.Global.getString(contentResolver, Settings.Global.AUTO_TIME_ZONE) == "1"
+    }
+
+    override fun isNotifyAvailableWifi(): Boolean {
+        return Settings.Global.getString(contentResolver, Settings.Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON) == "1"
+    }
+
+    override fun isSoundEffectsEnable(): Boolean {
+        return Settings.System.getString(contentResolver, Settings.System.SOUND_EFFECTS_ENABLED) == "1"
+    }
+
+    override fun isShowingPassword(): Boolean {
+        return Settings.System.getString(contentResolver, Settings.System.TEXT_SHOW_PASSWORD) == "1"
+    }
+
+    override fun isAutoRotation(): Boolean {
+        return Settings.System.getString(contentResolver, Settings.System.ACCELEROMETER_ROTATION) == "1"
+    }
+}
