@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "FPS-Mobile"
 include(":core")
 include(":sdk")
+include(":debugapp")
