@@ -11,18 +11,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.fps.android.core.DeviceIdentify
+import com.fps.android.core.DeviceIdFactory
+import com.fps.android.core.FPSModule
 import com.fps.android.debugapp.ui.theme.FPSMobileTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             FPSMobileTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = DeviceIdentify.log(),
+                        name = FPSModule.login(this, "test","alpha", "unknown") ?: "unknown",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
