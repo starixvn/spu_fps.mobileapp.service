@@ -5,7 +5,7 @@ import com.fps.android.core.constants.DATETIME_FORMAT
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class DateTimeHelper {
+internal class DateTimeHelper {
     companion object {
 
         @SuppressLint("SimpleDateFormat")

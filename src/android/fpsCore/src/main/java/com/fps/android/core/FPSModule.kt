@@ -1,16 +1,20 @@
 package com.fps.android.core
 
 import android.content.Context
+import com.fps.android.core.constants.OS_VALUE
 import com.fps.android.core.constants.TIME_FREEZE_VALUE
 import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.DateTimeHelper
+import com.fps.android.core.utils.StringExtension.encode
 import com.fps.android.core.utils.StringExtension.hashingMd5
 import org.json.JSONObject
 import kotlin.time.TimeSource
 
 class FPSModule {
     companion object {
+
         private var lastLiveTime: TimeSource.Monotonic.ValueTimeMark? = null
+
         fun login(
             context: Context,
             userName: String,
@@ -62,25 +66,40 @@ class FPSModule {
 
         private fun getDataPackage(context: Context, userName: String, subscriberName: String, ipV4: String): String {
             DeviceIdFactory(context)
+            DeviceInfoFactory(context)
 
             val dataPackage = JSONObject()
+
             dataPackage.put("LoginName", userName)
             dataPackage.put("SubscriberName", subscriberName)
-
-
             dataPackage.put("TransTime", DateTimeHelper.getCurrent())
 
+            dataPackage.put("UserAgent", DeviceInfoFactory.UserAgent)
             dataPackage.put("IP", ipV4)
             dataPackage.put("IPID", ipV4.hashingMd5())
 
             dataPackage.put("Action", "login")
             dataPackage.put("ActionResult", "Successfully")
+
             dataPackage.put("FP_MobileAndroidCode", DeviceIdFactory.AndroidId.hashingMd5())
             dataPackage.put("FP_MobileCustomCode", DeviceIdFactory.UUID.hashingMd5())
             dataPackage.put("FP_MobileMediaDRMCode", DeviceIdFactory.MediaDrmId.hashingMd5())
             dataPackage.put("FP_IsMobileApp", 1)
 
-            return dataPackage.toString()
+            dataPackage.put("IsRootedDevice", DeviceInfoFactory.IsRootedDevice)
+            dataPackage.put("IsEmulator", DeviceInfoFactory.IsEmulator)
+
+            dataPackage.put("ModelName", DeviceInfoFactory.ModelName)
+            dataPackage.put("Manufacturer", DeviceInfoFactory.Manufacturer)
+            dataPackage.put("Brand", DeviceInfoFactory.Brand)
+            dataPackage.put("SdkVersion", DeviceInfoFactory.SdkVersion)
+            dataPackage.put("OS", OS_VALUE)
+
+            dataPackage.put("Timezone", DeviceInfoFactory.Timezone)
+            dataPackage.put("SystemLanguage", DeviceInfoFactory.SystemLanguage)
+            dataPackage.put("Country", DeviceInfoFactory.Country)
+
+            return dataPackage.toString().encode()
         }
     }
 }

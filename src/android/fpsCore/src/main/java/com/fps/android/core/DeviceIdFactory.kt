@@ -1,33 +1,51 @@
 package com.fps.android.core
 
 import android.content.Context
-import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.deviceIdProviders.AndroidIdProvider
+import com.fps.android.core.deviceIdProviders.IDeviceIdProvider
 import com.fps.android.core.deviceIdProviders.MediaDrmIdProvider
 import com.fps.android.core.deviceIdProviders.UuidProvider
 
 class DeviceIdFactory(
-    private val context: Context
+    context: Context
 ) {
-
     companion object {
-        private var androidId: String = UNKNOWN_VALUE
-        private var mediaDrmId: String = UNKNOWN_VALUE
-        private var uuid: String = UNKNOWN_VALUE
+        private lateinit var androidIdProvider : IDeviceIdProvider
+        private lateinit var mediaDrmIdProvider : IDeviceIdProvider
+        private lateinit var uuidProvider : IDeviceIdProvider
+
+        private var androidId: String? = null
+        private var mediaDrmId: String? = null
+        private var uuid: String? = null
 
         val AndroidId: String
-            get() = androidId
+            get() {
+                if(androidId == null)
+                    androidId = androidIdProvider.getId()
+
+                return androidId!!
+            }
 
         val MediaDrmId: String
-            get() = mediaDrmId
+            get() {
+                if(mediaDrmId == null)
+                    mediaDrmId = mediaDrmIdProvider.getId()
+
+                return mediaDrmId!!
+            }
 
         val UUID: String
-            get() = uuid
+            get() {
+                if(uuid == null)
+                    uuid = uuidProvider.getId()
+
+                return uuid!!
+            }
     }
 
     init {
-        androidId = AndroidIdProvider(context).getId()
-        mediaDrmId = MediaDrmIdProvider().getId()
-        uuid = UuidProvider(context).getId()
+        androidIdProvider = AndroidIdProvider(context)
+        mediaDrmIdProvider = MediaDrmIdProvider()
+        uuidProvider = UuidProvider(context)
     }
 }

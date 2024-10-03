@@ -1,6 +1,7 @@
 package com.fps.android.core.deviceIdProviders
 
 import android.media.MediaDrm
+import com.fps.android.core.DeviceInfoFactory
 import com.fps.android.core.infoProviders.OsBuildInfoProvider
 import com.fps.android.core.utils.ByteArrayExtension.toHexString
 import java.security.MessageDigest
@@ -14,7 +15,7 @@ internal class MediaDrmIdProvider : IDeviceIdProvider{
         return getMediaDrmIdWithModel()
     }
 
-    fun getMediaDrmId(): String {
+    private fun getMediaDrmId(): String {
         val widevineUUID = UUID(WIDEWINE_UUID_MOST_SIG_BITS, WIDEWINE_UUID_LEAST_SIG_BITS)
         val wvDrm: MediaDrm?
 
@@ -27,9 +28,9 @@ internal class MediaDrmIdProvider : IDeviceIdProvider{
         return md.digest().toHexString()
     }
 
-    fun getMediaDrmIdWithModel(): String {
+    private fun getMediaDrmIdWithModel(): String {
         val mediaDrmId = getMediaDrmId()
-        val modelName = OsBuildInfoProvider().getModelName()
+        val modelName = DeviceInfoFactory.ModelName
 
         return "$mediaDrmId+$modelName"
     }
