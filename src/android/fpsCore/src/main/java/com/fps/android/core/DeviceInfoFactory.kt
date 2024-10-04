@@ -5,11 +5,9 @@ import com.fps.android.core.infoProviders.DeviceInfoProvider
 import com.fps.android.core.infoProviders.IDeviceInfoProvider
 import com.fps.android.core.infoProviders.IInputDeviceInfoProvider
 import com.fps.android.core.infoProviders.IOsBuildInfoProvider
-import com.fps.android.core.infoProviders.IPackageInfoProvider
 import com.fps.android.core.infoProviders.ISettingInfoProvider
 import com.fps.android.core.infoProviders.InputDeviceInfoProvider
 import com.fps.android.core.infoProviders.OsBuildInfoProvider
-import com.fps.android.core.infoProviders.PackageInfoProvider
 import com.fps.android.core.infoProviders.SettingInfoProvider
 
 internal  class DeviceInfoFactory(
@@ -18,7 +16,6 @@ internal  class DeviceInfoFactory(
     companion object {
         private lateinit var osBuildInfoProvider: IOsBuildInfoProvider
         private lateinit var deviceInfoProvider: IDeviceInfoProvider
-        private lateinit var packageInfoProvider: IPackageInfoProvider
         private lateinit var inputDeviceInfoProvider: IInputDeviceInfoProvider
         private lateinit var settingInfoProvider: ISettingInfoProvider
 
@@ -32,11 +29,8 @@ internal  class DeviceInfoFactory(
         private var serial: String? = null
         private var device: String? = null
         private var brand: String? = null
-        private var display: String? = null
         private var sdkVersion: String? = null
-        private var buildTags: String? = null
         private var userAgent: String? = null
-        private var isRootedDevice: Boolean? = null
         private var isEmulator: Boolean? = null
         private var timezone: String? = null
         private var systemLanguage: String? = null
@@ -122,28 +116,12 @@ internal  class DeviceInfoFactory(
                 return brand!!
             }
 
-        val Display: String
-            get() {
-                if(display == null)
-                    display = osBuildInfoProvider.getDisplay()
-
-                return display!!
-            }
-
         val SdkVersion: String
             get() {
                 if(sdkVersion == null)
                     sdkVersion = osBuildInfoProvider.getSdkVersion()
 
                 return sdkVersion!!
-            }
-
-        val BuildTags: String
-            get() {
-                if(buildTags == null)
-                    buildTags = osBuildInfoProvider.getBuildTags()
-
-                return buildTags!!
             }
 
         val UserAgent: String
@@ -154,13 +132,6 @@ internal  class DeviceInfoFactory(
                 return userAgent!!
             }
 
-        val IsRootedDevice: Boolean
-            get() {
-                if(isRootedDevice == null)
-                    isRootedDevice = deviceInfoProvider.isRootedDevice()
-
-                return isRootedDevice!!
-            }
 
         val IsEmulator: Boolean
             get() {
@@ -194,16 +165,12 @@ internal  class DeviceInfoFactory(
                 return country!!
             }
 
-        val PackageInfoProvider: IPackageInfoProvider
-            get() = packageInfoProvider
-
         val InputDeviceInfoProvider: IInputDeviceInfoProvider
             get() = inputDeviceInfoProvider
     }
 
     init {
         osBuildInfoProvider = OsBuildInfoProvider()
-        packageInfoProvider = PackageInfoProvider(context)
         inputDeviceInfoProvider = InputDeviceInfoProvider(context)
         settingInfoProvider = SettingInfoProvider(context)
 

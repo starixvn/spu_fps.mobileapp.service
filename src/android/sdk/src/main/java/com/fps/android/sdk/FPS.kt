@@ -24,8 +24,8 @@ class FPS {
             userName: String,
             subscriberName: String,
             ipV4: String = ""
-        ) {
-            FPSModule.onStartOrRestart(context, userName, subscriberName, ipV4)
+        ) : String? {
+            return FPSModule.onStartOrRestart(context, userName, subscriberName, ipV4)
         }
     }
 }

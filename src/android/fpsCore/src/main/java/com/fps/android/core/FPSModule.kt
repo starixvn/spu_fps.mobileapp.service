@@ -86,7 +86,6 @@ class FPSModule {
             dataPackage.put("FP_MobileMediaDRMCode", DeviceIdFactory.MediaDrmId.hashingMd5())
             dataPackage.put("FP_IsMobileApp", 1)
 
-            dataPackage.put("IsRootedDevice", DeviceInfoFactory.IsRootedDevice)
             dataPackage.put("IsEmulator", DeviceInfoFactory.IsEmulator)
 
             dataPackage.put("ModelName", DeviceInfoFactory.ModelName)
