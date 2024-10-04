@@ -8,11 +8,10 @@ class FPS {
         fun login(
             context: Context,
             userName: String,
-            subscriberName: String,
-            ipV4: String = ""
+            subscriberName: String
         ): String? {
 
-            return FPSModule.login(context, userName, subscriberName, ipV4)
+            return FPSModule.login(context, userName, subscriberName)
         }
 
         fun onStop() {
@@ -22,10 +21,9 @@ class FPS {
         fun onStartOrRestart(
             context: Context,
             userName: String,
-            subscriberName: String,
-            ipV4: String = ""
+            subscriberName: String
         ) : String? {
-            return FPSModule.onStartOrRestart(context, userName, subscriberName, ipV4)
+            return FPSModule.onStartOrRestart(context, userName, subscriberName)
         }
     }
 }

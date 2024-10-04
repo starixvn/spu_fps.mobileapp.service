@@ -18,12 +18,11 @@ class FPSModule {
         fun login(
             context: Context,
             userName: String,
-            subscriberName: String,
-            ipV4: String = UNKNOWN_VALUE
+            subscriberName: String
         ): String? {
 
             return try {
-                getDataPackage(context, userName, subscriberName, ipV4)
+                getDataPackage(context, userName, subscriberName)
             } catch (ex: Exception){
                 null
             }
@@ -42,8 +41,7 @@ class FPSModule {
         fun onStartOrRestart(
             context: Context,
             userName: String,
-            subscriberName: String,
-            ipV4: String = UNKNOWN_VALUE
+            subscriberName: String
         ): String? {
 
             return try {
@@ -53,7 +51,7 @@ class FPSModule {
                     val freezeTimeInSecond = now - lastLiveTime!!
 
                     if(freezeTimeInSecond.inWholeSeconds > TIME_FREEZE_VALUE) {
-                        return getDataPackage(context, userName, subscriberName, ipV4)
+                        return getDataPackage(context, userName, subscriberName)
                     }
 
                 }
@@ -64,7 +62,7 @@ class FPSModule {
 
         }
 
-        private fun getDataPackage(context: Context, userName: String, subscriberName: String, ipV4: String): String {
+        private fun getDataPackage(context: Context, userName: String, subscriberName: String): String {
             DeviceIdFactory(context)
             DeviceInfoFactory(context)
 
@@ -75,8 +73,6 @@ class FPSModule {
             dataPackage.put("TransTime", DateTimeHelper.getCurrent())
 
             dataPackage.put("UserAgent", DeviceInfoFactory.UserAgent)
-            dataPackage.put("IP", ipV4)
-            dataPackage.put("IPID", ipV4.hashingMd5())
 
             dataPackage.put("Action", "login")
             dataPackage.put("ActionResult", "Successfully")

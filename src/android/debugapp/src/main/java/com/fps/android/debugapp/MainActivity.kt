@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             FPSMobileTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = FPS.login(this, "test","alpha", "unknown") ?: "unknown",
+                        name = FPS.login(this, "test","alpha") ?: "unknown",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
