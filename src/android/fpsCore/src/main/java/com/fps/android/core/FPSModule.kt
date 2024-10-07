@@ -15,33 +15,11 @@ class FPSModule {
 
         private var lastLiveTime: TimeSource.Monotonic.ValueTimeMark? = null
 
-        fun login(
+        fun onCheckFPSTrans(
             context: Context,
             userName: String,
-            subscriberName: String
-        ): String? {
-
-            return try {
-                getDataPackage(context, userName, subscriberName)
-            } catch (ex: Exception){
-                null
-            }
-
-        }
-
-        fun onStop() {
-            try {
-                val timeSource = TimeSource.Monotonic
-                lastLiveTime = timeSource.markNow()
-            } catch (_: Exception){
-
-            }
-        }
-
-        fun onStartOrRestart(
-            context: Context,
-            userName: String,
-            subscriberName: String
+            subscriberName: String,
+            action: String
         ): String? {
 
             return try {
@@ -51,18 +29,34 @@ class FPSModule {
                     val freezeTimeInSecond = now - lastLiveTime!!
 
                     if(freezeTimeInSecond.inWholeSeconds > TIME_FREEZE_VALUE) {
-                        return getDataPackage(context, userName, subscriberName)
+                        return getDataPackage(context, userName, subscriberName, action)
                     }
 
+                    return null
                 }
-                null
+
+                return getDataPackage(context, userName, subscriberName, action)
             } catch (_: Exception){
                 null
             }
-
         }
 
-        private fun getDataPackage(context: Context, userName: String, subscriberName: String): String {
+        fun onResetFPSLastLiveTime() {
+            try {
+                val timeSource = TimeSource.Monotonic
+                lastLiveTime = timeSource.markNow()
+            } catch (_: Exception){
+
+            }
+        }
+
+        private fun getDataPackage(
+            context: Context,
+            userName: String,
+            subscriberName: String,
+            action: String
+        ): String {
+
             DeviceIdFactory(context)
             DeviceInfoFactory(context)
 
@@ -74,7 +68,7 @@ class FPSModule {
 
             dataPackage.put("UserAgent", DeviceInfoFactory.UserAgent)
 
-            dataPackage.put("Action", "login")
+            dataPackage.put("Action", action)
             dataPackage.put("ActionResult", "Successfully")
 
             dataPackage.put("FP_MobileAndroidCode", DeviceIdFactory.AndroidId.hashingMd5())

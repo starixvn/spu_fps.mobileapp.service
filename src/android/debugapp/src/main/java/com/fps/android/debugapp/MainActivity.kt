@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             FPSMobileTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = FPS.login(this, "test","alpha") ?: "unknown",
+                        name = FPS.onCheckFPSTrans(this, "test","alpha", "login") ?: "unknown",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
