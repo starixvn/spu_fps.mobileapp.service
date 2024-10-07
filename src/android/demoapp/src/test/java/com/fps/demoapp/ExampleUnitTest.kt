@@ -1,4 +1,4 @@
-package com.fps.android.debugapp
+package com.fps.demoapp
 
 import org.junit.Test
 

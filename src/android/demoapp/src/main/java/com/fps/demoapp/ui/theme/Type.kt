@@ -1,4 +1,4 @@
-package com.fps.android.debugapp.ui.theme
+package com.fps.demoapp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

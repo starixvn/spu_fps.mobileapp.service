@@ -1,4 +1,4 @@
-package com.fps.android.debugapp.ui.theme
+package com.fps.demoapp.ui.theme
 
 import android.app.Activity
 import android.os.Build

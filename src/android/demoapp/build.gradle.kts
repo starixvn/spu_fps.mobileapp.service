@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.fps.android.debugapp"
+    namespace = "com.fps.demoapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.fps.android.debugapp"
+        applicationId = "com.fps.demoapp"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
