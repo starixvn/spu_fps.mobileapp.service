@@ -7,6 +7,7 @@ import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.DateTimeHelper
 import com.fps.android.core.utils.StringExtension.encode
 import com.fps.android.core.utils.StringExtension.hashingMd5
+import com.fps.android.core.utils.safeException
 import org.json.JSONObject
 import kotlin.time.TimeSource
 
@@ -22,32 +23,32 @@ class FPSModule {
             action: String
         ): String? {
 
-            return try {
+            require(userName.isNotEmpty()) { "userName must be non-empty!"}
+            require(subscriberName.isNotEmpty()) { "subscriberName must be non-empty!"}
+            require(action.isNotEmpty()) { "action must be non-empty!"}
+
+            return safeException({
                 if(lastLiveTime != null) {
                     val timeSource = TimeSource.Monotonic
                     val now = timeSource.markNow()
                     val freezeTimeInSecond = now - lastLiveTime!!
 
                     if(freezeTimeInSecond.inWholeSeconds > TIME_FREEZE_VALUE) {
-                        return getDataPackage(context, userName, subscriberName, action)
+                        return@safeException getDataPackage(context, userName, subscriberName, action)
                     }
 
-                    return null
+                    return@safeException null
                 }
 
-                return getDataPackage(context, userName, subscriberName, action)
-            } catch (_: Exception){
-                null
-            }
+                return@safeException getDataPackage(context, userName, subscriberName, action)
+            }, null)
         }
 
         fun onResetFPSLastLiveTime() {
-            try {
+            return safeException({
                 val timeSource = TimeSource.Monotonic
                 lastLiveTime = timeSource.markNow()
-            } catch (_: Exception){
-
-            }
+            }, Unit)
         }
 
         private fun getDataPackage(
@@ -56,7 +57,6 @@ class FPSModule {
             subscriberName: String,
             action: String
         ): String {
-
             DeviceIdFactory(context)
             DeviceInfoFactory(context)
 
@@ -88,7 +88,7 @@ class FPSModule {
             dataPackage.put("SystemLanguage", DeviceInfoFactory.SystemLanguage)
             dataPackage.put("Country", DeviceInfoFactory.Country)
 
-            return dataPackage.toString()//.encode()
+            return dataPackage.toString().encode()
         }
     }
 }
