@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
 import com.fps.android.core.constants.UNKNOWN_VALUE
+import com.fps.android.core.utils.safeException
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -18,6 +19,12 @@ internal class UuidProvider(
 ) : IDeviceIdProvider {
 
     override fun getId(): String {
+        return safeException({
+            getUUID()
+        }, UNKNOWN_VALUE)
+    }
+
+    private fun getUUID(): String {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         var deviceId: String = sharedPreferences.getString(DEVICE_ID, null) ?: UNKNOWN_VALUE
 

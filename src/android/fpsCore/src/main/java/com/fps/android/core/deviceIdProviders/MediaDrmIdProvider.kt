@@ -1,9 +1,12 @@
 package com.fps.android.core.deviceIdProviders
 
 import android.media.MediaDrm
+import android.provider.Settings
 import com.fps.android.core.DeviceInfoFactory
+import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.infoProviders.OsBuildInfoProvider
 import com.fps.android.core.utils.ByteArrayExtension.toHexString
+import com.fps.android.core.utils.safeException
 import java.security.MessageDigest
 import java.util.UUID
 
@@ -12,7 +15,9 @@ private const val WIDEWINE_UUID_LEAST_SIG_BITS = -0x5c37d8232ae2de13L
 
 internal class MediaDrmIdProvider : IDeviceIdProvider{
     override fun getId(): String {
-        return getMediaDrmIdWithModel()
+        return safeException({
+            getMediaDrmIdWithModel()
+        }, UNKNOWN_VALUE)
     }
 
     private fun getMediaDrmId(): String {

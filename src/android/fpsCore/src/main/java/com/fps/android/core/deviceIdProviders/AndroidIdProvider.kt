@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
+import com.fps.android.core.constants.UNKNOWN_VALUE
+import com.fps.android.core.utils.safeException
 
 internal class AndroidIdProvider(
     context: Context
@@ -13,7 +15,9 @@ internal class AndroidIdProvider(
 
     @SuppressLint("HardwareIds")
     override fun getId(): String {
-        return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        return safeException({
+            Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        }, UNKNOWN_VALUE)
     }
 
 }

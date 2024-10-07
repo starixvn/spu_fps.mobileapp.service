@@ -3,6 +3,8 @@ package com.fps.android.core.infoProviders
 import android.content.Context
 import android.webkit.WebView
 import com.fps.android.core.DeviceInfoFactory
+import com.fps.android.core.constants.UNKNOWN_VALUE
+import com.fps.android.core.utils.safeException
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
@@ -66,32 +68,35 @@ internal class DeviceInfoProvider (
 ) : IDeviceInfoProvider {
     private val inputDeviceInfoProvider = DeviceInfoFactory.InputDeviceInfoProvider
 
-
     override fun isEmulator(): Boolean {
-        val fingerprint = DeviceInfoFactory.Fingerprint.lowercase()
-        val model = DeviceInfoFactory.ModelName.lowercase()
-        val manufacturer = DeviceInfoFactory.Manufacturer.lowercase()
-        val hardware = DeviceInfoFactory.Hardware.lowercase()
-        val product = DeviceInfoFactory.BuildProduct.lowercase()
-        val board = DeviceInfoFactory.Board.lowercase()
-        val bootLoader = DeviceInfoFactory.BootLoader
-        val serial = DeviceInfoFactory.Serial
-        val device = DeviceInfoFactory.Device
-        val brand = DeviceInfoFactory.Brand
+        return safeException({
+            val fingerprint = DeviceInfoFactory.Fingerprint.lowercase()
+            val model = DeviceInfoFactory.ModelName.lowercase()
+            val manufacturer = DeviceInfoFactory.Manufacturer.lowercase()
+            val hardware = DeviceInfoFactory.Hardware.lowercase()
+            val product = DeviceInfoFactory.BuildProduct.lowercase()
+            val board = DeviceInfoFactory.Board.lowercase()
+            val bootLoader = DeviceInfoFactory.BootLoader
+            val serial = DeviceInfoFactory.Serial
+            val device = DeviceInfoFactory.Device
+            val brand = DeviceInfoFactory.Brand
 
-        return FINGERPRINT_EMULATOR_CONTAINS_VALUES.any { fingerprint.contains(it.lowercase()) }
-                || MODEL_EMULATOR_CONTAINS_VALUES.any { model.contains(it.lowercase()) }
-                || MANUFACTURER_EMULATOR_CONTAINS_VALUES.any { manufacturer.contains(it.lowercase()) }
-                || HARDWARE_EMULATOR_CONTAINS_VALUES.any { hardware.contains(it.lowercase()) }
-                || PRODUCT_EMULATOR_CONTAINS_VALUES.any { product.contains(it.lowercase()) }
-                || BOARD_EMULATOR_CONTAINS_VALUES.any { board.contains(it.lowercase()) }
-                || BOOTLOADER_EMULATOR_CONTAINS_VALUES.any { bootLoader.contains(it.lowercase()) }
-                || SERIAL_EMULATOR_CONTAINS_VALUES.any { serial.contains(it.lowercase()) }
-                || (brand.startsWith("generic") && device.startsWith("generic"))
-                || inputDeviceInfoProvider.hasKeyboard("memuime")
+             (FINGERPRINT_EMULATOR_CONTAINS_VALUES.any { fingerprint.contains(it.lowercase()) }
+                    || MODEL_EMULATOR_CONTAINS_VALUES.any { model.contains(it.lowercase()) }
+                    || MANUFACTURER_EMULATOR_CONTAINS_VALUES.any { manufacturer.contains(it.lowercase()) }
+                    || HARDWARE_EMULATOR_CONTAINS_VALUES.any { hardware.contains(it.lowercase()) }
+                    || PRODUCT_EMULATOR_CONTAINS_VALUES.any { product.contains(it.lowercase()) }
+                    || BOARD_EMULATOR_CONTAINS_VALUES.any { board.contains(it.lowercase()) }
+                    || BOOTLOADER_EMULATOR_CONTAINS_VALUES.any { bootLoader.contains(it.lowercase()) }
+                    || SERIAL_EMULATOR_CONTAINS_VALUES.any { serial.contains(it.lowercase()) }
+                    || (brand.startsWith("generic") && device.startsWith("generic"))
+                    || inputDeviceInfoProvider.hasKeyboard("memuime"))
+        }, false)
     }
 
     override fun getUserAgent(): String {
-        return  WebView(context).settings.userAgentString;
+        return safeException({
+            WebView(context).settings.userAgentString
+        }, UNKNOWN_VALUE)
     }
 }

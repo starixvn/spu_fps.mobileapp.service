@@ -88,7 +88,7 @@ class FPSModule {
             dataPackage.put("SystemLanguage", DeviceInfoFactory.SystemLanguage)
             dataPackage.put("Country", DeviceInfoFactory.Country)
 
-            return dataPackage.toString().encode()
+            return dataPackage.toString()//.encode()
         }
     }
 }

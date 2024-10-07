@@ -1,6 +1,9 @@
 package com.fps.android.core.infoProviders
 
 import android.content.Context
+import android.os.Build
+import com.fps.android.core.constants.UNKNOWN_VALUE
+import com.fps.android.core.utils.safeException
 import java.util.Locale
 import java.util.TimeZone
 
@@ -15,14 +18,20 @@ internal class SettingInfoProvider(
 ) : ISettingInfoProvider {
 
     override fun getTimezone(): String {
-        return TimeZone.getDefault().displayName
+        return safeException({
+            TimeZone.getDefault().displayName
+        }, UNKNOWN_VALUE)
     }
 
     override fun getSystemLanguage(): String {
-        return Locale.getDefault().displayLanguage
+        return safeException({
+            Locale.getDefault().displayLanguage
+        }, UNKNOWN_VALUE)
     }
 
     override fun getCountry(): String {
-        return context.resources.configuration.locale.country
+        return safeException({
+            context.resources.configuration.locale.country
+        }, UNKNOWN_VALUE)
     }
 }
