@@ -1,7 +1,6 @@
 package com.fps.android.core.infoProviders
 
 import android.content.Context
-import android.os.Build
 import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.safeException
 import java.util.Locale

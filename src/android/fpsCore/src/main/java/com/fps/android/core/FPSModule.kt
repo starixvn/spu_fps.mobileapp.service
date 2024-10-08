@@ -3,7 +3,6 @@ package com.fps.android.core
 import android.content.Context
 import com.fps.android.core.constants.OS_VALUE
 import com.fps.android.core.constants.TIME_FREEZE_VALUE
-import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.DateTimeHelper
 import com.fps.android.core.utils.StringExtension.encode
 import com.fps.android.core.utils.StringExtension.hashingMd5

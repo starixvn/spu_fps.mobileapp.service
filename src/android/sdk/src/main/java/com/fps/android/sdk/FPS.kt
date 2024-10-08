@@ -11,7 +11,6 @@ class FPS {
             subscriberName: String,
             action: String
         ): String? {
-
             return FPSModule.onCheckFPSTrans(context, userName, subscriberName, action)
         }
 
