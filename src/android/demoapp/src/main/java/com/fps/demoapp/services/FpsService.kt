@@ -26,7 +26,7 @@ private val retrofit = Retrofit.Builder()
 
 interface IApiService {
     @Headers("Content-Type: application/json")
-    @POST("/FPS/CheckTransaction")
+    @POST("/FPS/MobileCheckTransaction")
     suspend fun checkTransaction(@Body body: String): String
 }
 

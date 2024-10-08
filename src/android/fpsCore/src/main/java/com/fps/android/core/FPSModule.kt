@@ -62,7 +62,7 @@ class FPSModule {
             val dataPackage = JSONObject()
 
             dataPackage.put("LoginName", userName)
-            dataPackage.put("SubscriberName", subscriberName)
+            dataPackage.put("Subscriber", subscriberName)
             dataPackage.put("TransTime", DateTimeHelper.getCurrent())
 
             dataPackage.put("UserAgent", DeviceInfoFactory.UserAgent)
