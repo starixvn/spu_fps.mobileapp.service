@@ -40,11 +40,13 @@ class FpsService {
     companion object {
         fun checkTransaction(
             context: Context,
-            username: String
+            subscriber: String,
+            username: String,
+            action: String
         ) {
 
             CoroutineScope(Dispatchers.IO).launch {
-                val fpsTrans = FPS.onCheckFPSTrans(context, username, context.getString(R.string.subscriber_name), "login")
+                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, action)
 
                 if(fpsTrans != null) {
                     try {

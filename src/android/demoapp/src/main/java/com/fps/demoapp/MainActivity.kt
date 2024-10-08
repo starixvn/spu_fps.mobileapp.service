@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         val model: LoginViewModel by viewModels()
         if(model.isAuthenticated()) {
             val username = model.getUsername()
-            FpsService.checkTransaction(this, username)
+            FpsService.checkTransaction(this,"Maxbet", username,"login")
         }
     }
 

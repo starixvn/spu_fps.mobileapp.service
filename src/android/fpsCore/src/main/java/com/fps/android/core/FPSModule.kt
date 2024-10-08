@@ -17,8 +17,8 @@ class FPSModule {
 
         fun onCheckFPSTrans(
             context: Context,
-            userName: String,
             subscriberName: String,
+            userName: String,
             action: String
         ): String? {
 
@@ -33,13 +33,13 @@ class FPSModule {
                     val freezeTimeInSecond = now - lastLiveTime!!
 
                     if(freezeTimeInSecond.inWholeSeconds > TIME_FREEZE_VALUE) {
-                        return@safeException getDataPackage(context, userName, subscriberName, action)
+                        return@safeException getDataPackage(context, subscriberName, userName, action)
                     }
 
                     return@safeException null
                 }
 
-                return@safeException getDataPackage(context, userName, subscriberName, action)
+                return@safeException getDataPackage(context, subscriberName, userName, action)
             }, null)
         }
 
@@ -52,8 +52,8 @@ class FPSModule {
 
         private fun getDataPackage(
             context: Context,
-            userName: String,
             subscriberName: String,
+            userName: String,
             action: String
         ): String {
             DeviceIdFactory(context)

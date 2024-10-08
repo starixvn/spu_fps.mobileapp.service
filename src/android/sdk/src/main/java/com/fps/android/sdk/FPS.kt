@@ -7,11 +7,11 @@ class FPS {
     companion object {
         fun onCheckFPSTrans(
             context: Context,
-            userName: String,
             subscriberName: String,
+            userName: String,
             action: String
         ): String? {
-            return FPSModule.onCheckFPSTrans(context, userName, subscriberName, action)
+            return FPSModule.onCheckFPSTrans(context, subscriberName, userName, action)
         }
 
         fun onResetFPSLastLiveTime() {

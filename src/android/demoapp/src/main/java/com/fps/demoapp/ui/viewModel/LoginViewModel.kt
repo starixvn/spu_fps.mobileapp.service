@@ -56,7 +56,7 @@ class LoginViewModel : ViewModel() {
                 )
             }
 
-            FpsService.checkTransaction(context, _uiState.value.username)
+            FpsService.checkTransaction(context, "Maxbet" ,_uiState.value.username,"login")
             return true
         }
         return false
