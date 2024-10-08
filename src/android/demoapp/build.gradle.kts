@@ -63,7 +63,10 @@ dependencies {
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation(project(":sdk"))
     implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.converter.scalars)
     implementation(libs.androidx.navigation.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

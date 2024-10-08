@@ -1,6 +1,7 @@
 package com.fps.demoapp.ui.screen.main
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -24,25 +25,21 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
-    val dataPackage = loginUiState.fpsTrans ?: "null"
-    val dataSize = dataPackage.toByteArray().size
 
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Sending this package to FPS",
-            style = MaterialTheme.typography.titleLarge)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Welcome ",
+                style = MaterialTheme.typography.bodyLarge)
 
-        Text(text = "Approximate $dataSize Byte",
-            style = MaterialTheme.typography.titleSmall)
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
-        ) {
-            CopyableText(value = dataPackage)
+            Text(
+                text = loginUiState.username,
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Text(text = " !",
+                style = MaterialTheme.typography.bodyLarge)
         }
 
         Button(
