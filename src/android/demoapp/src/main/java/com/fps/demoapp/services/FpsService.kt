@@ -6,6 +6,7 @@ import com.fps.android.sdk.FPS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
@@ -16,47 +17,41 @@ import retrofit2.http.Url
 interface IApiService {
     @Headers("Content-Type: application/json")
     @POST
-    suspend fun checkTransaction(@Url endpoint: String, @Body body: String): String
+    suspend fun send(@Url endpoint: String, @Body body: String): String
 }
 
-class FpsService {
-    private lateinit var retrofit: Retrofit
-    private lateinit var apiService: IApiService
-    private lateinit var endpoint: String
+class FpsService(
+    baseUrl: String,
+    private val endpoint: String
+) {
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .baseUrl(baseUrl)
+        .build()
 
-    fun initialRequest(baseUrl: String, endpoint: String): FpsService {
-        retrofit = Retrofit.Builder()
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .baseUrl(baseUrl)
-            .build()
-
-        apiService = retrofit.create(IApiService::class.java)
-        this.endpoint = endpoint
-
-        return this
-    }
+    private val apiService: IApiService = retrofit.create(IApiService::class.java)
 
     fun checkTransaction(
         context: Context,
         subscriber: String,
         username: String,
         action: String
-    ): FpsService {
-
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
-            val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, action)
+            try {
+                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, action)
 
-            if(fpsTrans != null) {
-                try {
-                    apiService.checkTransaction(endpoint, fpsTrans)
+                if(fpsTrans != null) {
+                    apiService.send(endpoint, fpsTrans)
                 }
-                catch (e: Exception) {
-                    Log.d("ApiService", e.message!!);
-                }
-
             }
-        }
+            catch (e: HttpException) {
+                Log.d("HttpException", e.message!!);
+            }
+            catch (e: Exception) {
+                Log.d("ApiService", e.message!!);
+            }
 
-        return this
+        }
     }
 }

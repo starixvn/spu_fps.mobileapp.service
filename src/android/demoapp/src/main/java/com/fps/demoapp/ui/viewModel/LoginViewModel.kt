@@ -56,9 +56,9 @@ class LoginViewModel : ViewModel() {
                 )
             }
 
-            val fpsService = FpsService()
+            FpsService("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
+                .checkTransaction(context, "Maxbet" ,_uiState.value.username,"login")
 
-            fpsService.initialRequest("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction").checkTransaction(context, "Maxbet" ,_uiState.value.username,"login")
             return true
         }
         return false

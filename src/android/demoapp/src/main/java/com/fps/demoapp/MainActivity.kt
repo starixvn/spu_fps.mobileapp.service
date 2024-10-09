@@ -28,9 +28,7 @@ class MainActivity : ComponentActivity() {
         if(model.isAuthenticated()) {
             val username = model.getUsername()
 
-            val fpsService = FpsService()
-
-            fpsService.initialRequest("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
+            FpsService("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
                 .checkTransaction(this, "Maxbet" ,username,"login")
         }
     }
