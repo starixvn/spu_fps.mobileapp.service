@@ -27,10 +27,11 @@ class MainActivity : ComponentActivity() {
         val model: LoginViewModel by viewModels()
         if(model.isAuthenticated()) {
             val username = model.getUsername()
+            val subscriber = model.getSubscriber()
 
             val fpsService = FpsService("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
 
-            fpsService.checkTransaction(this, "Maxbet" ,username,"login")
+            fpsService.checkTransaction(this, subscriber, username,"login")
         }
     }
 

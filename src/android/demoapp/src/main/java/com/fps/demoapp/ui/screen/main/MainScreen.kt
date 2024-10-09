@@ -48,7 +48,7 @@ fun MainScreen(
         ) {
 
             Text(
-                text = "Back to begin",
+                text = "Logout",
                 style = MaterialTheme.typography.labelLarge
             )
         }

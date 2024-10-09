@@ -45,7 +45,6 @@ fun StartScreen(
 ) {
     val context = LocalContext.current
     val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
-    var passwordVisibility by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier,
@@ -61,32 +60,17 @@ fun StartScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = loginUiState.username,
-            onValueChange = { value -> loginViewModel.updateUserName(value)},
-            label = { Text("Username") }
+            value = loginUiState.subscriber,
+            onValueChange = { value -> loginViewModel.updateSubscriber(value)},
+            label = { Text("Subscriber") },
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = loginUiState.password,
-            onValueChange = { value -> loginViewModel.updatePassword(value)},
-            label = { Text("Password") },
-            trailingIcon = {
-                IconButton(onClick = {
-                    passwordVisibility = !passwordVisibility
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = "Visibility Icon"
-                    )
-                }
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
-            visualTransformation = if (passwordVisibility) VisualTransformation.None
-            else PasswordVisualTransformation()
+            value = loginUiState.username,
+            onValueChange = { value -> loginViewModel.updateUserName(value)},
+            label = { Text("Username") }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -104,11 +88,10 @@ fun StartScreen(
 private fun login(
     context: Context,
     loginViewModel: LoginViewModel,
-    onLoginButtonClicked: () -> Unit) {
-
-    if(loginViewModel.login(context)) {
-        onLoginButtonClicked()
-    }
+    onLoginButtonClicked: () -> Unit
+) {
+    loginViewModel.login(context)
+    onLoginButtonClicked()
 }
 
 @Composable

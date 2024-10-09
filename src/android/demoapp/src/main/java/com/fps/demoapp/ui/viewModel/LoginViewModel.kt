@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 
 data class LoginUiState(
     val username: String = "test",
-    val password: String = "1234",
+    val subscriber: String = "Maxbet",
     val isAuthenticated: Boolean = false
 )
 
@@ -28,10 +28,10 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun updatePassword(password: String) {
+    fun updateSubscriber(subscriber: String) {
         _uiState.update { currentState ->
             currentState.copy(
-                password = password
+                subscriber = subscriber
             )
         }
     }
@@ -40,28 +40,26 @@ class LoginViewModel : ViewModel() {
         return _uiState.value.username
     }
 
+    fun getSubscriber(): String {
+        return _uiState.value.subscriber
+    }
+
     fun isAuthenticated(): Boolean {
         return _uiState.value.isAuthenticated
     }
 
     fun login(
         context: Context
-    ): Boolean {
-        if (_uiState.value.username == "test" &&
-            _uiState.value.password == "1234") {
-
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isAuthenticated = true
-                )
-            }
-
-            val fpsService = FpsService("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
-
-            fpsService.checkTransaction(context, "Maxbet" ,_uiState.value.username,"login")
-            return true
+    ) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isAuthenticated = true
+            )
         }
-        return false
+
+        val fpsService = FpsService("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
+
+        fpsService.checkTransaction(context, _uiState.value.subscriber, _uiState.value.username,"login")
     }
 
 }
