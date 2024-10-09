@@ -38,6 +38,11 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.mockito.core)
+    testImplementation(libs.mockk.mockk)
+    testImplementation ("io.mockk:mockk:1.13.0")
+    testImplementation ("io.mockk:mockk-android:1.13.0")
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
