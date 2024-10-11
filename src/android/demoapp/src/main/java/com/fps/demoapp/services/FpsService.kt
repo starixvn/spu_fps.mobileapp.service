@@ -6,6 +6,7 @@ import com.fps.android.sdk.FPS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -42,7 +43,10 @@ class FpsService(
                 val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, action)
 
                 if(fpsTrans != null) {
-                    apiService.send(endpoint, fpsTrans)
+                    val jsonObject = JSONObject()
+                    jsonObject.put("fpsTrans", fpsTrans);
+
+                    apiService.send(endpoint, jsonObject.toString())
                 }
             }
             catch (e: HttpException) {
