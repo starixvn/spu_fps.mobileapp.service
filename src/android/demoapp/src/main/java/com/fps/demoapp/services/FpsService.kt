@@ -44,7 +44,7 @@ class FpsService(
 
                 if(fpsTrans != null) {
                     val jsonObject = JSONObject()
-                    jsonObject.put("fpsTrans", fpsTrans);
+                    jsonObject.put("transaction", fpsTrans);
 
                     apiService.send(endpoint, jsonObject.toString())
                 }
