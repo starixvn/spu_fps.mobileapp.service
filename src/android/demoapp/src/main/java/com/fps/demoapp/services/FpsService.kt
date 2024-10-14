@@ -44,16 +44,16 @@ class FpsService(
 
                 if(fpsTrans != null) {
                     val jsonObject = JSONObject()
-                    jsonObject.put("transaction", fpsTrans);
+                    jsonObject.put("transaction", fpsTrans)
 
                     apiService.send(endpoint, jsonObject.toString())
                 }
             }
             catch (e: HttpException) {
-                Log.d("HttpException", e.message!!);
+                Log.d("HttpException", e.message!!)
             }
             catch (e: Exception) {
-                Log.d("ApiService", e.message!!);
+                Log.d("ApiService", e.message!!)
             }
 
         }

@@ -5,6 +5,7 @@ import android.webkit.WebView
 import com.fps.android.core.DeviceInfoFactory
 import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.safeException
+import kotlinx.coroutines.Delay
 
 private val FINGERPRINT_EMULATOR_CONTAINS_VALUES: Array<String> = arrayOf(
     "generic",
@@ -90,7 +91,7 @@ internal class DeviceInfoProvider (
 
     override fun getUserAgent(): String {
         return safeException({
-            WebView(context).settings.userAgentString
+            System.getProperty("http.agent")!!
         }, UNKNOWN_VALUE)
     }
 }

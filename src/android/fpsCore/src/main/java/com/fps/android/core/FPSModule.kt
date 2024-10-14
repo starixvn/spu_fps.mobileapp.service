@@ -58,7 +58,6 @@ class FPSModule {
         ): String {
             DeviceIdFactory(context)
             DeviceInfoFactory(context)
-
             val dataPackage = JSONObject()
 
             dataPackage.put("Account", userName)
@@ -70,10 +69,10 @@ class FPSModule {
             dataPackage.put("Action", action)
             dataPackage.put("ActionResult", "Successfully")
 
-            dataPackage.put("MobileAndroidCode", DeviceIdFactory.AndroidId.hashingMd5())
-            dataPackage.put("MobileCustomCode", DeviceIdFactory.UUID.hashingMd5())
-            dataPackage.put("MobileMediaDRMCode", DeviceIdFactory.MediaDrmId.hashingMd5())
-            dataPackage.put("IsMobileApp", 1)
+            dataPackage.put("AndroidCode", DeviceIdFactory.AndroidId.hashingMd5())
+            dataPackage.put("CustomCode", DeviceIdFactory.UUID.hashingMd5())
+            dataPackage.put("MediaDRMCode", DeviceIdFactory.MediaDrmId.hashingMd5())
+            dataPackage.put("IsMobileApp", true)
 
             dataPackage.put("IsEmulator", DeviceInfoFactory.IsEmulator)
 
