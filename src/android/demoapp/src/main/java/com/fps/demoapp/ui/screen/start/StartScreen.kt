@@ -2,8 +2,10 @@ package com.fps.demoapp.ui.screen.start
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
@@ -11,6 +13,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,6 +41,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fps.demoapp.R
 import com.fps.demoapp.ui.theme.DemoAppTheme
 import com.fps.demoapp.ui.viewModel.LoginViewModel
+import com.fps.demoapp.ui.viewModel.enviromentConfig
 
 @Composable
 fun StartScreen(
@@ -46,6 +52,12 @@ fun StartScreen(
     val context = LocalContext.current
     val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
 
+    val isDropDownExpanded = remember {
+        mutableStateOf(false)
+    }
+    val itemPosition = remember {
+        mutableIntStateOf(0)
+    }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -56,6 +68,35 @@ fun StartScreen(
         Text(text = "FPS Mobile Device Identifier",
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center)
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable {
+                isDropDownExpanded.value = true
+            }
+        ) {
+            Text(text = "${enviromentConfig.entries.first{it.url == loginViewModel.getEnv()}.title}: ${loginViewModel.getEnv()}")
+            DropdownMenu(
+                expanded = isDropDownExpanded.value,
+                onDismissRequest = {
+                    isDropDownExpanded.value = false
+                }) {
+                enviromentConfig.entries.forEachIndexed { index, env ->
+                    DropdownMenuItem(
+                        text = {Text(text=env.title)},
+                        onClick = {
+                            isDropDownExpanded.value = false
+                            itemPosition.intValue = index
+                            loginViewModel.updateEnv(env.url)
+                        })
+
+                }
+
+            }
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 

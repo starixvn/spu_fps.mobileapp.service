@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             val username = model.getUsername()
             val subscriber = model.getSubscriber()
 
-            val fpsService = FpsService("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
+            val fpsService = FpsService(model.getEnv(),"/FPS/MobileCheckTransaction")
 
             fpsService.checkTransaction(this, subscriber, username,"login")
         }

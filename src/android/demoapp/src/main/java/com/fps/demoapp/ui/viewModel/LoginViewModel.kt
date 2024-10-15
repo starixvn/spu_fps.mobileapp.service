@@ -10,10 +10,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+enum class enviromentConfig(
+    val title: String,
+    val url: String) {
+
+    DEV(title = "DEV", url = "http://10.0.2.2:5010/"),
+    LOCAL(title = "LOCAL", url = "https://fpt-local.nexdev.net/")
+}
+
 data class LoginUiState(
     val username: String = "test",
     val subscriber: String = "Maxbet",
-    val isAuthenticated: Boolean = false
+    val isAuthenticated: Boolean = false,
+    val env: String = "http://10.0.2.2:5010/"
 )
 
 class LoginViewModel : ViewModel() {
@@ -36,12 +45,24 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    fun updateEnv(env: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                env = env
+            )
+        }
+    }
+
     fun getUsername(): String {
         return _uiState.value.username
     }
 
     fun getSubscriber(): String {
         return _uiState.value.subscriber
+    }
+
+    fun getEnv(): String {
+        return _uiState.value.env
     }
 
     fun isAuthenticated(): Boolean {
@@ -57,7 +78,7 @@ class LoginViewModel : ViewModel() {
             )
         }
 
-        val fpsService = FpsService("http://10.0.2.2:5010/","/FPS/MobileCheckTransaction")
+        val fpsService = FpsService(_uiState.value.env,"/FPS/MobileCheckTransaction")
 
         fpsService.checkTransaction(context, _uiState.value.subscriber, _uiState.value.username,"login")
     }
