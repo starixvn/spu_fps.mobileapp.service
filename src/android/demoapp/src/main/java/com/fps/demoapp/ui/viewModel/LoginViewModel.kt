@@ -2,27 +2,25 @@ package com.fps.demoapp.ui.viewModel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.fps.android.sdk.FPS
-import com.fps.demoapp.R
 import com.fps.demoapp.services.FpsService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-enum class enviromentConfig(
+enum class EnvironmentConfig(
     val title: String,
     val url: String) {
 
-    DEV(title = "DEV", url = "http://10.0.2.2:5010/"),
-    LOCAL(title = "LOCAL", url = "https://fpt-local.nexdev.net/")
+    LOCAL(title = "LOCAL", url = "https://fpt-local.nexdev.net/"),
+    DEV(title = "DEV", url = "http://10.0.2.2:5010/")
 }
 
 data class LoginUiState(
     val username: String = "test",
     val subscriber: String = "Maxbet",
     val isAuthenticated: Boolean = false,
-    val env: String = "http://10.0.2.2:5010/"
+    val env: String = "https://fpt-local.nexdev.net/"
 )
 
 class LoginViewModel : ViewModel() {

@@ -9,14 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,14 +20,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,7 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fps.demoapp.R
 import com.fps.demoapp.ui.theme.DemoAppTheme
 import com.fps.demoapp.ui.viewModel.LoginViewModel
-import com.fps.demoapp.ui.viewModel.enviromentConfig
+import com.fps.demoapp.ui.viewModel.EnvironmentConfig
 
 @Composable
 fun StartScreen(
@@ -78,13 +69,13 @@ fun StartScreen(
                 isDropDownExpanded.value = true
             }
         ) {
-            Text(text = "${enviromentConfig.entries.first{it.url == loginViewModel.getEnv()}.title}: ${loginViewModel.getEnv()}")
+            Text(text = "${EnvironmentConfig.entries.first{it.url == loginViewModel.getEnv()}.title}: ${loginViewModel.getEnv()}")
             DropdownMenu(
                 expanded = isDropDownExpanded.value,
                 onDismissRequest = {
                     isDropDownExpanded.value = false
                 }) {
-                enviromentConfig.entries.forEachIndexed { index, env ->
+                EnvironmentConfig.entries.forEachIndexed { index, env ->
                     DropdownMenuItem(
                         text = {Text(text=env.title)},
                         onClick = {
