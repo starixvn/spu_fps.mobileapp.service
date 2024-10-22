@@ -61,11 +61,11 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     implementation (libs.androidx.lifecycle.viewmodel.compose)
-    implementation(project(":sdk"))
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.retrofit)
     implementation(libs.converter.scalars)
     implementation(libs.androidx.navigation.compose)
+    implementation(files("libs/com.fps.android.sdk.aar"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
