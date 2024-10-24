@@ -50,3 +50,11 @@ fun MainScreen(
         }
     }
 }
+
+private fun logout(
+    loginViewModel: LoginViewModel,
+    onBackButtonClick: () -> Unit
+) {
+    loginViewModel.logout()
+    onBackButtonClick()
+}

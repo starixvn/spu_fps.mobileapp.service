@@ -27,6 +27,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -65,6 +66,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.scalars)
     implementation(libs.androidx.navigation.compose)
+    implementation(files("libs/com.fps.android.core.aar"))
     implementation(files("libs/com.fps.android.sdk.aar"))
 
     testImplementation(libs.junit)

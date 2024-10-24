@@ -3,6 +3,7 @@ package com.fps.android.core.deviceIdProviders
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
+import android.util.Log
 import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.safeException
 import java.io.File
@@ -26,7 +27,7 @@ internal class UuidProvider(
 
     private fun getUUID(): String {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        var deviceId: String = sharedPreferences.getString(DEVICE_ID, null) ?: UNKNOWN_VALUE
+        var deviceId: String = sharedPreferences.getString(DEVICE_ID, null) ?: ""
 
         if (TextUtils.isEmpty(deviceId)) {
             val installation = File(context.filesDir, INSTALLATION)

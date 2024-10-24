@@ -81,4 +81,11 @@ class LoginViewModel : ViewModel() {
         fpsService.checkTransaction(context, _uiState.value.subscriber, _uiState.value.username,"login")
     }
 
+    fun logout() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isAuthenticated = false
+            )
+        }
+    }
 }
