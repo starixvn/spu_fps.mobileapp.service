@@ -70,7 +70,6 @@ class FPSModule {
             dataPackage.put("AndroidCode", DeviceIdFactory.AndroidId.hashingMd5())
             dataPackage.put("CustomCode", DeviceIdFactory.UUID.hashingMd5())
             dataPackage.put("MediaDRMCode", DeviceIdFactory.MediaDrmId.hashingMd5())
-            dataPackage.put("IsMobileApp", true)
 
             dataPackage.put("IsEmulator", DeviceInfoFactory.IsEmulator)
 
