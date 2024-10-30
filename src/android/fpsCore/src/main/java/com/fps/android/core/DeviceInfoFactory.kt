@@ -30,7 +30,6 @@ internal  class DeviceInfoFactory(
         private var device: String? = null
         private var brand: String? = null
         private var sdkVersion: String? = null
-        private var userAgent: String? = null
         private var isEmulator: Boolean? = null
         private var timezone: String? = null
         private var systemLanguage: String? = null
@@ -123,15 +122,6 @@ internal  class DeviceInfoFactory(
 
                 return sdkVersion!!
             }
-
-        val UserAgent: String
-            get() {
-                if(userAgent == null)
-                    userAgent = deviceInfoProvider.getUserAgent()
-
-                return userAgent!!
-            }
-
 
         val IsEmulator: Boolean
             get() {

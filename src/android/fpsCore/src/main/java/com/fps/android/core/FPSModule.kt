@@ -64,8 +64,6 @@ class FPSModule {
             dataPackage.put("Subscriber", subscriberName)
             dataPackage.put("LoginTime", DateTimeHelper.getCurrent())
 
-            dataPackage.put("UserAgent", DeviceInfoFactory.UserAgent)
-
             dataPackage.put("Action", action)
             dataPackage.put("ActionResult", "Successfully")
 

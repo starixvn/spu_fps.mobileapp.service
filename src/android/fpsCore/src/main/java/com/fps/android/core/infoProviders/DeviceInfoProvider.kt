@@ -55,7 +55,6 @@ private val SERIAL_EMULATOR_CONTAINS_VALUES: Array<String> = arrayOf(
 
 internal interface IDeviceInfoProvider {
     fun isEmulator(): Boolean
-    fun getUserAgent(): String
 }
 
 internal class DeviceInfoProvider (
@@ -87,11 +86,5 @@ internal class DeviceInfoProvider (
                     || (brand.startsWith("generic") && device.startsWith("generic"))
                     || inputDeviceInfoProvider.hasKeyboard("memuime"))
         }, false)
-    }
-
-    override fun getUserAgent(): String {
-        return safeException({
-            System.getProperty("http.agent")!!
-        }, UNKNOWN_VALUE)
     }
 }
