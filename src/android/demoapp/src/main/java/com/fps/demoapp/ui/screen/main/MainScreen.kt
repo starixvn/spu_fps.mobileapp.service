@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fps.demoapp.ui.viewModel.LoginViewModel
 
+
 @Composable
 fun MainScreen(
     loginViewModel: LoginViewModel,
@@ -39,7 +40,7 @@ fun MainScreen(
         }
 
         Button(
-            onClick = onBackButtonClick,
+            onClick = { logout(loginViewModel, onBackButtonClick) },
             modifier = Modifier.widthIn(min = 240.dp)
         ) {
 
