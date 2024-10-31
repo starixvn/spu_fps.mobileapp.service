@@ -1,11 +1,10 @@
 package com.fps.android.core.utils
 
-import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Base64
 import java.math.BigInteger
+import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
-import java.util.Base64
+
 
 internal object StringExtension {
 
@@ -14,8 +13,8 @@ internal object StringExtension {
         return BigInteger(1, md.digest(this.toByteArray())).toString(16).padStart(32, '0')
     }
 
-    @SuppressLint("NewApi")
     fun String.encode(): String {
-        return Base64.getEncoder().encodeToString(this.toByteArray())
+        val encodedBytes: ByteArray = Base64.encode(this.toByteArray(), Base64.DEFAULT)
+        return String(encodedBytes, StandardCharsets.UTF_8)
     }
 }

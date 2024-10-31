@@ -12,7 +12,7 @@ enum class EnvironmentConfig(
     val title: String,
     val url: String) {
 
-    LOCAL(title = "LOCAL", url = "https://fpt-local.nexdev.net/"),
+    LOCAL(title = "LOCAL", url = "http://fpt-local.nexdev.net/"),
     DEV(title = "DEV", url = "http://10.0.2.2:5010/")
 }
 
@@ -20,7 +20,7 @@ data class LoginUiState(
     val username: String = "test",
     val subscriber: String = "Maxbet",
     val isAuthenticated: Boolean = false,
-    val env: String = "https://fpt-local.nexdev.net/"
+    val env: String = "http://fpt-local.nexdev.net/"
 )
 
 class LoginViewModel : ViewModel() {
