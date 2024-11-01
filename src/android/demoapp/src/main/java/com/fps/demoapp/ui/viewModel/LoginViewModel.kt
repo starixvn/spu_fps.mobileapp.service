@@ -18,7 +18,7 @@ enum class EnvironmentConfig(
 
 data class LoginUiState(
     val username: String = "test",
-    val subscriber: String = "Maxbet",
+    val subscriber: String = "Alpha",
     val isAuthenticated: Boolean = false,
     val env: String = "http://fpt-local.nexdev.net/"
 )
