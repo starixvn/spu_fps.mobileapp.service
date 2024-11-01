@@ -15,16 +15,29 @@ class FPSModule {
 
         private var lastLiveTime: TimeSource.Monotonic.ValueTimeMark? = null
 
+        fun onLogin(
+            context: Context,
+            subscriberName: String,
+            userName: String): String? {
+
+            require(userName.isNotEmpty()) { "userName must be non-empty!"}
+            require(subscriberName.isNotEmpty()) { "subscriberName must be non-empty!"}
+
+            lastLiveTime = null
+
+            return safeException({
+                return@safeException getDataPackage(context, subscriberName, userName, "login")
+            }, null)
+        }
+
         fun onCheckFPSTrans(
             context: Context,
             subscriberName: String,
-            userName: String,
-            action: String
+            userName: String
         ): String? {
 
             require(userName.isNotEmpty()) { "userName must be non-empty!"}
             require(subscriberName.isNotEmpty()) { "subscriberName must be non-empty!"}
-            require(action.isNotEmpty()) { "action must be non-empty!"}
 
             return safeException({
                 if(lastLiveTime != null) {
@@ -33,13 +46,13 @@ class FPSModule {
                     val freezeTimeInSecond = now - lastLiveTime!!
 
                     if(freezeTimeInSecond.inWholeSeconds > TIME_FREEZE_VALUE) {
-                        return@safeException getDataPackage(context, subscriberName, userName, action)
+                        return@safeException getDataPackage(context, subscriberName, userName, "resume app")
                     }
 
                     return@safeException null
                 }
 
-                return@safeException getDataPackage(context, subscriberName, userName, action)
+                return@safeException getDataPackage(context, subscriberName, userName, "login")
             }, null)
         }
 

@@ -12,10 +12,10 @@ private const val WIDEWINE_UUID_MOST_SIG_BITS = -0x121074568629b532L
 private const val WIDEWINE_UUID_LEAST_SIG_BITS = -0x5c37d8232ae2de13L
 
 internal class MediaDrmIdProvider : IDeviceIdProvider{
-    override fun getId(): String {
+    override fun getId(): String? {
         return safeException({
             getMediaDrmIdWithModel()
-        }, UNKNOWN_VALUE)
+        }, null)
     }
 
     private fun getMediaDrmId(): String {

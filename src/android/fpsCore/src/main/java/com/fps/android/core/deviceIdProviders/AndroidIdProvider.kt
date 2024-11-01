@@ -14,10 +14,10 @@ internal class AndroidIdProvider(
     private val contentResolver: ContentResolver = context.contentResolver
 
     @SuppressLint("HardwareIds")
-    override fun getId(): String {
+    override fun getId(): String? {
         return safeException({
             Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        }, UNKNOWN_VALUE)
+        }, null)
     }
 
 }
