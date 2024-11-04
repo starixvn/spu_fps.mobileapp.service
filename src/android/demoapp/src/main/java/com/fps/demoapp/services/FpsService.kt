@@ -38,11 +38,12 @@ class FpsService(
         context: Context,
         subscriber: String,
         username: String,
-        isLogin:Boolean
+        action: String,
+        isOnStart: Boolean = false
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, isLogin)
+                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, action, isOnStart)
 
                 send(fpsTrans)
             }

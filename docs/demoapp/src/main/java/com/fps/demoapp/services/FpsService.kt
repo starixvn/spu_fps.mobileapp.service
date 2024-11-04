@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.fps.android.sdk.FPS
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Delay
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.HttpException
@@ -36,18 +38,14 @@ class FpsService(
         context: Context,
         subscriber: String,
         username: String,
-        action: String
+        action: String,
+        isOnStart: Boolean = false
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, action)
+                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, action, isOnStart)
 
-                if(fpsTrans != null) {
-                    val jsonObject = JSONObject()
-                    jsonObject.put("transaction", fpsTrans)
-
-                    apiService.send(endpoint, jsonObject.toString())
-                }
+                send(fpsTrans)
             }
             catch (e: HttpException) {
                 Log.d("HttpException", e.message!!)
@@ -57,5 +55,15 @@ class FpsService(
             }
 
         }
+    }
+
+    private suspend fun send(transaction: String?) {
+        if(transaction == null)
+            return
+
+        val jsonObject = JSONObject()
+        jsonObject.put("transaction", transaction)
+
+        apiService.send(endpoint, jsonObject.toString())
     }
 }

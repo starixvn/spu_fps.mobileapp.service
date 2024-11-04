@@ -82,7 +82,7 @@ class LoginViewModel : ViewModel() {
 
         val fpsService = FpsService(_uiState.value.env,"/FPS/MobileCheckTransaction")
 
-        fpsService.checkTransaction(context, _uiState.value.subscriber, _uiState.value.username, true)
+        fpsService.checkTransaction(context, _uiState.value.subscriber, _uiState.value.username, "login")
     }
 
     fun logout() {

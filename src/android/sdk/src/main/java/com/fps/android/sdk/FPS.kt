@@ -12,9 +12,10 @@ class FPS {
             context: Context,
             subscriberName: String,
             userName: String,
-            isLogin: Boolean = true
+            action: String,
+            isOnStart: Boolean = false
         ): String? {
-            return FPSModule.onCheckFPSTrans(context, subscriberName, userName, isLogin)
+            return FPSModule.onCheckFPSTrans(context, subscriberName, userName, action, isOnStart)
         }
 
         fun onResetFPSLastLiveTime() {

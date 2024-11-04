@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
             val fpsService = FpsService(model.getEnv(),"/FPS/MobileCheckTransaction")
 
-            fpsService.checkTransaction(this, subscriber, username,"resume app")
+            fpsService.checkTransaction(this, subscriber, username, "resume app", true)
         }
     }
 

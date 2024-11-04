@@ -20,24 +20,25 @@ class FPSModule {
             context: Context,
             subscriberName: String,
             userName: String,
-            isLogin: Boolean = true
+            action: String,
+            isOnStart: Boolean = false
         ): String? {
 
             require(userName.isNotEmpty()) { "userName must be non-empty!"}
             require(subscriberName.isNotEmpty()) { "subscriberName must be non-empty!"}
 
             return safeException({
-                if(!isLogin && lastLiveTime != null) {
+                if(isOnStart && lastLiveTime != null) {
                     val freezeTimeInSecond = Date().time - lastLiveTime!!.time
 
                     if(freezeTimeInSecond > TIME_FREEZE_VALUE) {
-                        return@safeException getDataPackage(context, subscriberName, userName, "resume app")
+                        return@safeException getDataPackage(context, subscriberName, userName, action)
                     }
 
                     return@safeException null
                 }
 
-                return@safeException getDataPackage(context, subscriberName, userName, "login")
+                return@safeException getDataPackage(context, subscriberName, userName, action)
             }, null)
         }
 
