@@ -10,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.fps.android.sdk.FPS
 import com.fps.demoapp.ui.viewModel.LoginViewModel
 
 
@@ -22,7 +24,6 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val loginUiState by loginViewModel.uiState.collectAsStateWithLifecycle()
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -38,6 +39,7 @@ fun MainScreen(
             Text(text = " !",
                 style = MaterialTheme.typography.bodyLarge)
         }
+
 
         Button(
             onClick = { logout(loginViewModel, onBackButtonClick) },

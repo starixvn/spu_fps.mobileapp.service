@@ -37,33 +37,12 @@ class FpsService(
     fun checkTransaction(
         context: Context,
         subscriber: String,
-        username: String
+        username: String,
+        isLogin:Boolean
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                delay(1000)
-                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username)
-
-                send(fpsTrans)
-            }
-            catch (e: HttpException) {
-                Log.d("HttpException", e.message!!)
-            }
-            catch (e: Exception) {
-                Log.d("ApiService", e.message!!)
-            }
-
-        }
-    }
-
-    fun login(
-        context: Context,
-        subscriber: String,
-        username: String
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val fpsTrans = FPS.onLogin(context, subscriber, username)
+                val fpsTrans = FPS.onCheckFPSTrans(context, subscriber, username, isLogin)
 
                 send(fpsTrans)
             }

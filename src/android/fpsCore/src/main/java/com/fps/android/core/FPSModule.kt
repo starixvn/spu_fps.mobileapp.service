@@ -1,6 +1,7 @@
 package com.fps.android.core
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.fps.android.core.constants.OS_VALUE
 import com.fps.android.core.constants.TIME_FREEZE_VALUE
 import com.fps.android.core.utils.DateTimeHelper
@@ -8,44 +9,28 @@ import com.fps.android.core.utils.StringExtension.encode
 import com.fps.android.core.utils.StringExtension.hashingMd5
 import com.fps.android.core.utils.safeException
 import org.json.JSONObject
+import java.util.Date
 import kotlin.time.TimeSource
 
 class FPSModule {
     companion object {
-
-        private var lastLiveTime: TimeSource.Monotonic.ValueTimeMark? = null
-
-        fun onLogin(
-            context: Context,
-            subscriberName: String,
-            userName: String): String? {
-
-            require(userName.isNotEmpty()) { "userName must be non-empty!"}
-            require(subscriberName.isNotEmpty()) { "subscriberName must be non-empty!"}
-
-            lastLiveTime = null
-
-            return safeException({
-                return@safeException getDataPackage(context, subscriberName, userName, "login")
-            }, null)
-        }
+        private var lastLiveTime: Date? = null
 
         fun onCheckFPSTrans(
             context: Context,
             subscriberName: String,
-            userName: String
+            userName: String,
+            isLogin: Boolean = true
         ): String? {
 
             require(userName.isNotEmpty()) { "userName must be non-empty!"}
             require(subscriberName.isNotEmpty()) { "subscriberName must be non-empty!"}
 
             return safeException({
-                if(lastLiveTime != null) {
-                    val timeSource = TimeSource.Monotonic
-                    val now = timeSource.markNow()
-                    val freezeTimeInSecond = now - lastLiveTime!!
+                if(!isLogin && lastLiveTime != null) {
+                    val freezeTimeInSecond = Date().time - lastLiveTime!!.time
 
-                    if(freezeTimeInSecond.inWholeSeconds > TIME_FREEZE_VALUE) {
+                    if(freezeTimeInSecond > TIME_FREEZE_VALUE) {
                         return@safeException getDataPackage(context, subscriberName, userName, "resume app")
                     }
 
@@ -58,8 +43,7 @@ class FPSModule {
 
         fun onResetFPSLastLiveTime() {
             return safeException({
-                val timeSource = TimeSource.Monotonic
-                lastLiveTime = timeSource.markNow()
+                lastLiveTime = Date()
             }, Unit)
         }
 
