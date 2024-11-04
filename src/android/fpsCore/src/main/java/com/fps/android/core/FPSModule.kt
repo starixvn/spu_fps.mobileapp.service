@@ -29,7 +29,7 @@ class FPSModule {
 
             return safeException({
                 if(isOnStart && lastLiveTime != null) {
-                    val freezeTimeInSecond = Date().time - lastLiveTime!!.time
+                    val freezeTimeInSecond = (Date().time - lastLiveTime!!.time) / 1000
 
                     if(freezeTimeInSecond > TIME_FREEZE_VALUE) {
                         return@safeException getDataPackage(context, subscriberName, userName, action)

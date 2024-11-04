@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fps.android.sdk.FPS
 import com.fps.demoapp.ui.viewModel.LoginViewModel
+import java.util.Date
 
 
 @Composable
@@ -39,7 +40,6 @@ fun MainScreen(
             Text(text = " !",
                 style = MaterialTheme.typography.bodyLarge)
         }
-
 
         Button(
             onClick = { logout(loginViewModel, onBackButtonClick) },
