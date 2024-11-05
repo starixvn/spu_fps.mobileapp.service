@@ -2,6 +2,7 @@ package com.fps.android.core
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.fps.android.core.constants.OS_VALUE
 import com.fps.android.core.constants.TIME_FREEZE_VALUE
 import com.fps.android.core.utils.DateTimeHelper
@@ -66,12 +67,11 @@ class FPSModule {
                     dataPackage.put("Action", action)
                     dataPackage.put("ActionResult", "Successfully")
 
-                    dataPackage.put("AndroidCode", DeviceIdFactory.AndroidId.hashingMd5())
-                    dataPackage.put("CustomCode", DeviceIdFactory.UUID.hashingMd5())
-                    dataPackage.put("MediaDRMCode", DeviceIdFactory.MediaDrmId.hashingMd5())
+                    dataPackage.put("AndroidCode", DeviceIdFactory.AndroidId?.hashingMd5())
+                    dataPackage.put("CustomCode", DeviceIdFactory.UUID?.hashingMd5())
+                    dataPackage.put("MediaDRMCode", DeviceIdFactory.MediaDrmId?.hashingMd5())
 
                     dataPackage.put("IsEmulator", DeviceInfoFactory.IsEmulator)
-
                     dataPackage.put("ModelName", DeviceInfoFactory.ModelName)
                     dataPackage.put("Manufacturer", DeviceInfoFactory.Manufacturer)
                     dataPackage.put("Brand", DeviceInfoFactory.Brand)

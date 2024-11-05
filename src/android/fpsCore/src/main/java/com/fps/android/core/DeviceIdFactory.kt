@@ -18,28 +18,28 @@ class DeviceIdFactory(
         private var mediaDrmId: String? = null
         private var uuid: String? = null
 
-        val AndroidId: String
+        val AndroidId: String?
             get() {
                 if(androidId == null)
                     androidId = androidIdProvider.getId()
 
-                return androidId!!
+                return androidId
             }
 
-        val MediaDrmId: String
+        val MediaDrmId: String?
             get() {
                 if(mediaDrmId == null)
                     mediaDrmId = mediaDrmIdProvider.getId()
 
-                return mediaDrmId!!
+                return mediaDrmId
             }
 
-        val UUID: String
+        val UUID: String?
             get() {
                 if(uuid == null)
                     uuid = uuidProvider.getId()
 
-                return uuid!!
+                return uuid
             }
     }
 

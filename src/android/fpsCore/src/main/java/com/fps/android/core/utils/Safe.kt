@@ -1,5 +1,7 @@
 package com.fps.android.core.utils
 
+import android.util.Log
+
 internal fun <T> safeException(
     block: () -> T,
     defaultValue: T
@@ -7,8 +9,9 @@ internal fun <T> safeException(
     try {
         return block()
     }
-    catch (_: Exception) {
-
+    catch (e: Exception) {
+//        Log.e("Exception Called", e.message!!)
     }
+
     return defaultValue
 }

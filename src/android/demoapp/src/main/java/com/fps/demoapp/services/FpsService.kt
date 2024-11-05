@@ -48,10 +48,10 @@ class FpsService(
                 send(fpsTrans)
             }
             catch (e: HttpException) {
-                Log.d("HttpException", e.message!!)
+                Log.d("HttpException",  e.toString())
             }
             catch (e: Exception) {
-                Log.d("ApiService", e.message!!)
+                Log.d("ApiService", e.toString())
             }
 
         }
