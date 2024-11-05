@@ -1,8 +1,6 @@
 package com.fps.android.core
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import com.fps.android.core.constants.OS_VALUE
 import com.fps.android.core.constants.TIME_FREEZE_VALUE
 import com.fps.android.core.utils.DateTimeHelper
@@ -11,7 +9,6 @@ import com.fps.android.core.utils.StringExtension.hashingMd5
 import com.fps.android.core.utils.safeException
 import org.json.JSONObject
 import java.util.Date
-import kotlin.time.TimeSource
 
 class FPSModule {
     companion object {

@@ -3,7 +3,6 @@ package com.fps.android.core.utils
 import android.annotation.SuppressLint
 import com.fps.android.core.constants.DATETIME_FORMAT
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Date
 
 internal class DateTimeHelper {

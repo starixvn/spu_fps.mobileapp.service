@@ -10,12 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.fps.android.sdk.FPS
 import com.fps.demoapp.ui.viewModel.LoginViewModel
-import java.util.Date
 
 
 @Composable

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
-import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.safeException
 
 internal class AndroidIdProvider(

@@ -1,7 +1,5 @@
 package com.fps.android.core.utils
 
-import android.util.Log
-
 internal fun <T> safeException(
     block: () -> T,
     defaultValue: T

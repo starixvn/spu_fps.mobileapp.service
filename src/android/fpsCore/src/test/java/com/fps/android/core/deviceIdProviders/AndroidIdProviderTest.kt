@@ -2,7 +2,6 @@ package com.fps.android.core.deviceIdProviders
 
 import android.content.ContentResolver
 import android.content.Context
-import android.provider.Settings
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

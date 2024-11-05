@@ -2,11 +2,8 @@ package com.fps.android.core.infoProviders
 
 import android.content.Context
 import android.os.Build
-import android.webkit.WebView
 import com.fps.android.core.DeviceInfoFactory
-import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.safeException
-import kotlinx.coroutines.Delay
 import java.io.File
 
 private val FINGERPRINT_EMULATOR_CONTAINS_VALUES: Array<String> = arrayOf(

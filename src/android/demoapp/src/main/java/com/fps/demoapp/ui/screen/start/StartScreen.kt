@@ -34,8 +34,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fps.demoapp.R
 import com.fps.demoapp.ui.theme.DemoAppTheme
-import com.fps.demoapp.ui.viewModel.LoginViewModel
 import com.fps.demoapp.ui.viewModel.EnvironmentConfig
+import com.fps.demoapp.ui.viewModel.LoginViewModel
 
 @Composable
 fun StartScreen(

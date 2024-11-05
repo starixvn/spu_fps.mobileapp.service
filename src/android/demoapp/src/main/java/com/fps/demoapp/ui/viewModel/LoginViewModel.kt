@@ -1,16 +1,12 @@
 package com.fps.demoapp.ui.viewModel
 
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
-import com.fps.android.sdk.FPS
 import com.fps.demoapp.services.FpsService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.Date
-import kotlin.time.TimeSource
 
 enum class EnvironmentConfig(
     val title: String,
