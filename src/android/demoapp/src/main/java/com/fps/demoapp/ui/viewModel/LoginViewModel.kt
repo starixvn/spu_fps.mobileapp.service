@@ -13,6 +13,7 @@ enum class EnvironmentConfig(
     val url: String) {
 
     LOCAL(title = "LOCAL", url = "http://fpt-local.nexdev.net/"),
+    UAT(title = "UAT", url = "https://fpt-uat.starixuat.com:6012/"),
     DEV(title = "DEV", url = "http://10.0.2.2:5010/")
 }
 
