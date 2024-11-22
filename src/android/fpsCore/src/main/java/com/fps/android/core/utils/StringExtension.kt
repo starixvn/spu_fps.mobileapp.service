@@ -14,7 +14,7 @@ internal object StringExtension {
     }
 
     fun String.encode(): String {
-        val encodedBytes: ByteArray = Base64.encode(this.toByteArray(), Base64.DEFAULT)
+        val encodedBytes: ByteArray = Base64.encode(this.toByteArray(), Base64.NO_WRAP)
         return String(encodedBytes, StandardCharsets.UTF_8)
     }
 }
