@@ -1,6 +1,8 @@
 package com.fps.android.core.deviceIdProviders
 
 import android.media.MediaDrm
+import android.os.Build
+import android.util.Log
 import com.fps.android.core.DeviceInfoFactory
 import com.fps.android.core.utils.ByteArrayExtension.toHexString
 import com.fps.android.core.utils.safeException
@@ -23,7 +25,12 @@ internal class MediaDrmIdProvider : IDeviceIdProvider{
 
         wvDrm = MediaDrm(widevineUUID)
         val mivevineId = wvDrm.getPropertyByteArray(MediaDrm.PROPERTY_DEVICE_UNIQUE_ID)
-        wvDrm.close()
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            wvDrm.close()
+        } else
+            wvDrm.release()
+
         val md: MessageDigest = MessageDigest.getInstance("SHA-256")
         md.update(mivevineId)
 
