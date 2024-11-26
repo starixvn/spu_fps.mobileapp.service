@@ -11,6 +11,8 @@ internal fun <T> safeException(
     }
     catch (_: NoSuchMethodError) {
     }
+    catch (_: Error) {
+    }
 
     return defaultValue
 }
