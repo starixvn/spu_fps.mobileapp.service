@@ -7,8 +7,9 @@ internal fun <T> safeException(
     try {
         return block()
     }
-    catch (e: Exception) {
-//        Log.e("Exception Called", e.message!!)
+    catch (_: Exception) {
+    }
+    catch (_: NoSuchMethodError) {
     }
 
     return defaultValue
