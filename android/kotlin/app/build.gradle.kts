@@ -55,6 +55,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(project(":client"))
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(fileTree(mapOf(
+        "dir" to "..\\libs",
+        "include" to listOf("*.aar", "*.jar")
+    )))
 
     debugImplementation(libs.androidx.ui.tooling)
     testImplementation(libs.junit)

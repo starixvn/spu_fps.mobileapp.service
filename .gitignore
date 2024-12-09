@@ -1,1 +1,12 @@
 /android/kotlin/app/release/
+*.iml
+.gradle
+.idea
+.DS_Store
+build
+captures
+.externalNativeBuild
+.cxx
+local.properties
+deploymentTargetSelector.xml
+release
