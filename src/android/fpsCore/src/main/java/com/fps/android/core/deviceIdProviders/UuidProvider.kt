@@ -31,26 +31,11 @@ internal class UuidProvider(
     private fun getUUID(): String? {
         var deviceId = ""
 
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val file = File(path,"/uuid")
-
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            && file.exists()) {
-
-            deviceId = file.readText()
-
-            if (!TextUtils.isEmpty(deviceId))
-                return deviceId
-        }
-
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         deviceId = sharedPreferences.getString(DEVICE_ID, null) ?: ""
 
         if (!TextUtils.isEmpty(deviceId))
-        {
-            writeExternalFile(context, file, deviceId)
             return deviceId
-        }
 
         val installation = File(context.filesDir, INSTALLATION)
         try {
@@ -63,14 +48,12 @@ internal class UuidProvider(
 
                 writeInstallationFile(installation, deviceId)
                 sharedPreferences.edit().putString(DEVICE_ID, deviceId).apply()
-                writeExternalFile(context, file, deviceId)
                 return deviceId
             }
 
             deviceId = readInstallationFile(installation)
 
             sharedPreferences.edit().putString(DEVICE_ID, deviceId).apply()
-            writeExternalFile(context, file, deviceId)
         } catch (e: Exception) {
             return null
         }
@@ -96,10 +79,5 @@ internal class UuidProvider(
         val out = FileOutputStream(installation)
         out.write(id.toByteArray())
         out.close()
-    }
-
-    private fun writeExternalFile(context:Context, file: File, deviceId: String) {
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            file.appendText(deviceId)
     }
 }
