@@ -7,14 +7,8 @@ internal fun <T> safeException(
     try {
         return block()
     }
-    catch (e: Exception) {
-        ThrowableHandler.add(e.message ?: "")
-    }
-    catch (e: NoSuchMethodError) {
-        ThrowableHandler.add(e.message ?: "")
-    }
-    catch (e: Error) {
-        ThrowableHandler.add(e.message ?: "")
+    catch (e: Throwable) {
+        ThrowableHandler.add(e)
     }
 
     return defaultValue
@@ -24,8 +18,8 @@ internal class ThrowableHandler {
     companion object {
         private var exceptions = mutableListOf<String>()
 
-        fun add(e: String) {
-            exceptions.add(e)
+        fun add(e: Throwable) {
+            exceptions.add("${e.message} at ${e.stackTrace.firstOrNull().toString()}")
         }
 
         fun get(): String {
