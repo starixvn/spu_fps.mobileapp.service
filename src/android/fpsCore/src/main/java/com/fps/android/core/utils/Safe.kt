@@ -7,12 +7,32 @@ internal fun <T> safeException(
     try {
         return block()
     }
-    catch (_: Exception) {
+    catch (e: Exception) {
+        ThrowableHandler.add(e.message ?: "")
     }
-    catch (_: NoSuchMethodError) {
+    catch (e: NoSuchMethodError) {
+        ThrowableHandler.add(e.message ?: "")
     }
-    catch (_: Error) {
+    catch (e: Error) {
+        ThrowableHandler.add(e.message ?: "")
     }
 
     return defaultValue
+}
+
+internal class ThrowableHandler {
+    companion object {
+        private var exceptions = mutableListOf<String>()
+
+        fun add(e: String) {
+            exceptions.add(e)
+        }
+
+        fun get(): String {
+            val result = exceptions.joinToString(";")
+            exceptions.clear()
+
+            return result
+        }
+    }
 }
