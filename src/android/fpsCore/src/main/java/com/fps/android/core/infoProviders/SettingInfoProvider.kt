@@ -29,6 +29,7 @@ internal class SettingInfoProvider(
             return@safeException String.format(Locale.getDefault(), "%s%02d:%02d", if (hours >= 0) "+" else "-", abs(hours), minutes)
         }, UNKNOWN_VALUE)
     }
+
     private fun getDeviceLocale(context: Context): Locale {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales.get(0)
@@ -38,21 +39,23 @@ internal class SettingInfoProvider(
         }
     }
 
-    override  fun getDeviceLanguageDisplayName(context: Context): String{
+    override fun getDeviceLanguageDisplayName(context: Context): String{
         return safeException({
             getDeviceLocale(context).getDisplayLanguage(getDeviceLocale(context))
         }, UNKNOWN_VALUE)
     }
 
     override fun getSystemLanguage(): String {
+
+        Locale.getDefault()
         return safeException({
-            getDeviceLocale(context).language
+            getDeviceLocale(context).isO3Language
         }, UNKNOWN_VALUE)
     }
 
     override fun getCountry(): String {
         return safeException({
-            context.resources.configuration.locale.country
+            getDeviceLocale(context).country
         }, UNKNOWN_VALUE)
     }
 }

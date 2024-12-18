@@ -9,11 +9,13 @@ import com.fps.android.sdk.FPS
 import com.fps.demoapp.services.FpsService
 import com.fps.demoapp.ui.theme.DemoAppTheme
 import com.fps.demoapp.ui.viewModel.LoginViewModel
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Locale.setDefault(Locale("ru"))
         setContent {
             DemoAppTheme {
                 DemoApp()
