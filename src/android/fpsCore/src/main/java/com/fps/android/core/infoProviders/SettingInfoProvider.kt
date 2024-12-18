@@ -1,6 +1,7 @@
 package com.fps.android.core.infoProviders
 
 import android.content.Context
+import android.os.Build
 import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.safeException
 import java.util.Locale
@@ -11,6 +12,7 @@ internal interface ISettingInfoProvider {
     fun getTimezone(): String
     fun getSystemLanguage(): String
     fun getCountry(): String
+    fun getDeviceLanguageDisplayName(context: Context): String
 }
 
 internal class SettingInfoProvider(
@@ -27,10 +29,24 @@ internal class SettingInfoProvider(
             return@safeException String.format(Locale.getDefault(), "%s%02d:%02d", if (hours >= 0) "+" else "-", abs(hours), minutes)
         }, UNKNOWN_VALUE)
     }
+    private fun getDeviceLocale(context: Context): Locale {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.resources.configuration.locales.get(0)
+        } else {
+            @Suppress("DEPRECATION")
+            context.resources.configuration.locale
+        }
+    }
+
+    override  fun getDeviceLanguageDisplayName(context: Context): String{
+        return safeException({
+            getDeviceLocale(context).getDisplayLanguage(getDeviceLocale(context))
+        }, UNKNOWN_VALUE)
+    }
 
     override fun getSystemLanguage(): String {
         return safeException({
-            Locale.getDefault().isO3Language
+            getDeviceLocale(context).language
         }, UNKNOWN_VALUE)
     }
 
