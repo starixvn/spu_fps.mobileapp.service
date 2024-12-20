@@ -1,6 +1,7 @@
 package com.fps.android.core.infoProviders
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Build
 import com.fps.android.core.constants.UNKNOWN_VALUE
 import com.fps.android.core.utils.safeException
@@ -33,6 +34,15 @@ internal class SettingInfoProvider(
         }
     }
 
+    private fun getLocale():Locale{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Resources.getSystem().configuration.locales.get(0)
+        } else {
+            @Suppress("DEPRECATION")
+            Resources.getSystem().configuration.locale
+        }
+    }
+
     override fun getDeviceLanguageDisplayName(context: Context): String{
         return safeException({
             getDeviceLocale(context).getDisplayLanguage(getDeviceLocale(context))
@@ -43,7 +53,7 @@ internal class SettingInfoProvider(
 
         Locale.getDefault()
         return safeException({
-            getDeviceLocale(context).isO3Language
+            getLocale().isO3Language
         }, UNKNOWN_VALUE)
     }
 
