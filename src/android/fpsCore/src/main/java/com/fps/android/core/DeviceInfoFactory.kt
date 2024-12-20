@@ -162,7 +162,7 @@ internal  class DeviceInfoFactory(
     init {
         osBuildInfoProvider = OsBuildInfoProvider()
         inputDeviceInfoProvider = InputDeviceInfoProvider(context)
-        settingInfoProvider = SettingInfoProvider(context)
+        settingInfoProvider = SettingInfoProvider()
 
         deviceInfoProvider = DeviceInfoProvider(context)
     }
