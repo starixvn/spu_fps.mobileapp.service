@@ -22,6 +22,10 @@ internal class ThrowableHandler {
             exceptions.add("${e.message} at ${e.stackTrace.firstOrNull().toString()}")
         }
 
+        fun add(e: String) {
+            exceptions.add(e)
+        }
+
         fun get(): String {
             val result = exceptions.joinToString(";")
             exceptions.clear()
