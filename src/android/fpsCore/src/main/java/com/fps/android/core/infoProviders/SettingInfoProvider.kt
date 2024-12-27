@@ -21,13 +21,8 @@ internal class SettingInfoProvider : ISettingInfoProvider {
         }, UNKNOWN_VALUE)
     }
 
-    private fun getLocale():Locale{
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Resources.getSystem().configuration.locales.get(0)
-        } else {
-            @Suppress("DEPRECATION")
-            Resources.getSystem().configuration.locale
-        }
+    private fun getLocale(): Locale {
+        return Resources.getSystem().configuration.locales.get(0)
     }
 
     override fun getSystemLanguage(): String {
