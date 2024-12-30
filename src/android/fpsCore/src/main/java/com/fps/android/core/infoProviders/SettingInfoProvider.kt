@@ -24,21 +24,10 @@ internal class SettingInfoProvider : ISettingInfoProvider {
     }
 
     private fun getLocale(): Locale {
-        Log.d("FPS", "getLocale: ${Resources.getSystem().configuration.locales.get(0)}")
-        ThrowableHandler.add("getLocale: ${Resources.getSystem().configuration.locales.get(0)}")
-
         return Resources.getSystem().configuration.locales.get(0)
     }
 
     override fun getSystemLanguage(): String {
-
-        Log.d("FPS", "Resources.getSystem().configuration.locales.get(0): ${getLocale().isO3Language}")
-        ThrowableHandler.add("Resources.getSystem().configuration.locales.get(0): ${getLocale().isO3Language}")
-
-
-        Log.d("FPS", "Locale Default: ${Locale.getDefault().isO3Language}")
-        ThrowableHandler.add("Locale Default: ${Locale.getDefault().isO3Language}")
-
         return safeException({
             getLocale().isO3Language
         }, UNKNOWN_VALUE)
