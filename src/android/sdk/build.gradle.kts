@@ -8,12 +8,12 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        version = "1.0.0"
+        version = "1.0.4"
     }
 
     buildTypes {

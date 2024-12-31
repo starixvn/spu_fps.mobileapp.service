@@ -6,6 +6,7 @@ import com.fps.android.core.constants.TIME_FREEZE_VALUE
 import com.fps.android.core.utils.DateTimeHelper
 import com.fps.android.core.utils.StringExtension.encode
 import com.fps.android.core.utils.StringExtension.hashingMd5
+import com.fps.android.core.utils.ThrowableHandler
 import com.fps.android.core.utils.safeException
 import org.json.JSONObject
 import java.util.Date
@@ -78,6 +79,8 @@ class FPSModule {
                     dataPackage.put("Timezone", DeviceInfoFactory.Timezone)
                     dataPackage.put("SystemLanguage", DeviceInfoFactory.SystemLanguage)
                     dataPackage.put("Country", DeviceInfoFactory.Country)
+
+                    dataPackage.put("Exceptions", ThrowableHandler.get())
 
                     return@safeException dataPackage.toString().encode()
                 }, null)

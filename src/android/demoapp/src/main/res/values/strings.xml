@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">Demo App</string>
-    <string name="subscriber_name">Maxbet</string>
+    <string name="app_name" translatable="false">Demo App</string>
+    <string name="subscriber_name" translatable="false">Maxbet</string>
+    <string name="subscriber_text">Subscriber</string>
+    <string name="username_text">Username</string>
 </resources>

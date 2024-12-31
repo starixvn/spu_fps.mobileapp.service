@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Demo App</string>
+    <string name="subscriber_text">Subscriber_ru</string>
+    <string name="username_text">Username_ru</string>
+</resources>

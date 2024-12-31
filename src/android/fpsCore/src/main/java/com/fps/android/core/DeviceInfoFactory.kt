@@ -31,9 +31,6 @@ internal  class DeviceInfoFactory(
         private var brand: String? = null
         private var sdkVersion: String? = null
         private var isEmulator: Boolean? = null
-        private var timezone: String? = null
-        private var systemLanguage: String? = null
-        private var country: String? = null
 
         val ModelName: String
             get() {
@@ -133,26 +130,17 @@ internal  class DeviceInfoFactory(
 
         val Timezone: String
             get() {
-                if(timezone == null)
-                    timezone = settingInfoProvider.getTimezone()
-
-                return timezone!!
+                return settingInfoProvider.getTimezone()
             }
 
         val SystemLanguage: String
             get() {
-                if(systemLanguage == null)
-                    systemLanguage = settingInfoProvider.getSystemLanguage()
-
-                return systemLanguage!!
+                return settingInfoProvider.getSystemLanguage()
             }
 
         val Country: String
             get() {
-                if(country == null)
-                    country = settingInfoProvider.getCountry()
-
-                return country!!
+                return settingInfoProvider.getCountry()
             }
 
         val InputDeviceInfoProvider: IInputDeviceInfoProvider
@@ -162,7 +150,7 @@ internal  class DeviceInfoFactory(
     init {
         osBuildInfoProvider = OsBuildInfoProvider()
         inputDeviceInfoProvider = InputDeviceInfoProvider(context)
-        settingInfoProvider = SettingInfoProvider(context)
+        settingInfoProvider = SettingInfoProvider()
 
         deviceInfoProvider = DeviceInfoProvider(context)
     }

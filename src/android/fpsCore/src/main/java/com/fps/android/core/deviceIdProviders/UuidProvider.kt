@@ -1,12 +1,8 @@
 package com.fps.android.core.deviceIdProviders
 
-import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.os.Environment
-import android.text.TextUtils
-import androidx.core.content.ContextCompat
+import android.util.Log
 import com.fps.android.core.utils.safeException
 import java.io.File
 import java.io.FileOutputStream
@@ -22,63 +18,65 @@ internal class UuidProvider(
     private val context: Context
 ) : IDeviceIdProvider {
 
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+
     override fun getId(): String? {
         return safeException({
             getUUID()
         }, null)
     }
 
-    private fun getUUID(): String? {
-        var deviceId = ""
+    private fun getUUID(): String {
+        var deviceId = getUUIDFromSharedPreferences()
 
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val file = File(path,"/uuid")
-
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            && file.exists()) {
-
-            deviceId = file.readText()
-
-            if (!TextUtils.isEmpty(deviceId))
-                return deviceId
-        }
-
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        deviceId = sharedPreferences.getString(DEVICE_ID, null) ?: ""
-
-        if (!TextUtils.isEmpty(deviceId))
-        {
-            writeExternalFile(context, file, deviceId)
+        if (!deviceId.isNullOrEmpty()) {
             return deviceId
         }
 
-        val installation = File(context.filesDir, INSTALLATION)
-        try {
-            if (!installation.exists()) {
-                val deviceUuid = UUID(
-                    getRandomId().hashCode().toLong(), context.applicationContext
-                        .packageName.hashCode().toLong()
-                )
-                deviceId = deviceUuid.toString()
-
-                writeInstallationFile(installation, deviceId)
-                sharedPreferences.edit().putString(DEVICE_ID, deviceId).apply()
-                writeExternalFile(context, file, deviceId)
-                return deviceId
-            }
-
-            deviceId = readInstallationFile(installation)
-
-            sharedPreferences.edit().putString(DEVICE_ID, deviceId).apply()
-            writeExternalFile(context, file, deviceId)
-        } catch (e: Exception) {
-            return null
+        // If not found in SharedPreferences, try installationFile
+        deviceId = getUUIDFromInstallationFile()
+        if (!deviceId.isNullOrEmpty()) {
+            saveUUIDToSharedPreferences(deviceId)
+            return deviceId
         }
 
+        // If not found in all, try generate random UUID
+        deviceId = getRandomId()
+
+        saveUUIDToSharedPreferences(deviceId)
+        saveUUIDToInstallationFile(deviceId)
         return deviceId
     }
 
+    private fun getUUIDFromSharedPreferences(): String? {
+        return sharedPreferences.getString(DEVICE_ID, null)
+    }
+
+    private fun saveUUIDToSharedPreferences(deviceId: String) {
+        sharedPreferences.edit().putString(DEVICE_ID, deviceId).apply()
+    }
+
+    private fun getUUIDFromInstallationFile(): String? {
+        val installationFile = File(context.filesDir, INSTALLATION)
+        return if (installationFile.exists()) {
+            try {
+                val deviceId = readInstallationFile(installationFile)
+                deviceId
+            } catch (e: Exception) {
+                null
+            }
+        } else {
+            null
+        }
+    }
+
+    private fun saveUUIDToInstallationFile(deviceId: String) {
+        val installationFile = File(context.filesDir, INSTALLATION)
+        writeInstallationFile(installationFile, deviceId)
+    }
+
     private fun getRandomId(): String {
+        Log.d("UUID", "granted Random UUID")
         return UUID.randomUUID().toString()
     }
 
@@ -96,10 +94,5 @@ internal class UuidProvider(
         val out = FileOutputStream(installation)
         out.write(id.toByteArray())
         out.close()
-    }
-
-    private fun writeExternalFile(context:Context, file: File, deviceId: String) {
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            file.appendText(deviceId)
     }
 }

@@ -2,7 +2,6 @@ package com.fps.android.core.deviceIdProviders
 
 import android.media.MediaDrm
 import android.os.Build
-import android.util.Log
 import com.fps.android.core.DeviceInfoFactory
 import com.fps.android.core.utils.ByteArrayExtension.toHexString
 import com.fps.android.core.utils.safeException

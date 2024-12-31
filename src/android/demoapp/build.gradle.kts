@@ -9,10 +9,10 @@ android {
 
     defaultConfig {
         applicationId = "com.fps.demoapp"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
