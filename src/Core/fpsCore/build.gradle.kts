@@ -46,3 +46,29 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
+publishing {
+    publications {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = "com.fps.android"
+                artifactId = "core"
+                version = "1.0.0"
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://gitlab.nexdev.net/api/v4/projects/2742/packages/maven")
+            name = "GitLab"
+            credentials(HttpHeaderCredentials::class) {
+                name = "Private-Token"
+                value = findProperty("gitLabPrivateToken") as String? // the variable resides in $GRADLE_USER_HOME/gradle.properties
+            }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+        }
+    }
+}
+
+
