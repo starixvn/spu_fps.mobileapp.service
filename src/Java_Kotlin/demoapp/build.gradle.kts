@@ -66,9 +66,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.scalars)
     implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.core)
     implementation(project(":sdk"))
-//    implementation(files("libs/com.fps.android.core.aar"))
-//    implementation(files("libs/com.fps.android.sdk.aar"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

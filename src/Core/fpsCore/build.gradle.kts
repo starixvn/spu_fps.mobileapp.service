@@ -1,7 +1,41 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     `maven-publish`
+}
+
+fun libraryOutputName(variantName: String): String {
+    return "fingerprint-android-${project.property("VERSION_NAME")}-${variantName}.aar"
+}
+
+publishing {
+    publications {
+        publications {
+            create<MavenPublication>("fpsRelease") {
+                groupId = "com.fps.android"
+                artifactId = "core"
+                version = project.property("VERSION_NAME") as String
+                afterEvaluate {
+                    from(components["release"])
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://gitlab.nexdev.net/api/v4/projects/2742/packages/maven")
+            name = "GitLab"
+            credentials(HttpHeaderCredentials::class) {
+                name = "Private-Token"
+                value = findProperty("gitLabPrivateToken") as String? // the variable resides in $GRADLE_USER_HOME/gradle.properties
+            }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+        }
+    }
 }
 
 android {
@@ -14,7 +48,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        version = "1.0.0"
+        version = project.property("VERSION_NAME") as String
     }
 
     buildTypes {
@@ -26,6 +60,18 @@ android {
             )
         }
     }
+
+    libraryVariants.all {
+        val variantName = this.name
+        this.outputs.all {
+            (this as? BaseVariantOutputImpl)?.apply {
+                if (this.outputFileName.endsWith(".aar")) {
+                    this.outputFileName = libraryOutputName(variantName)
+                }
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -46,29 +92,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
-publishing {
-    publications {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = "com.fps.android"
-                artifactId = "core"
-                version = "1.0.0"
-            }
-        }
-    }
-    repositories {
-        maven {
-            url = uri("https://gitlab.nexdev.net/api/v4/projects/2742/packages/maven")
-            name = "GitLab"
-            credentials(HttpHeaderCredentials::class) {
-                name = "Private-Token"
-                value = findProperty("gitLabPrivateToken") as String? // the variable resides in $GRADLE_USER_HOME/gradle.properties
-            }
-            authentication {
-                create("header", HttpHeaderAuthentication::class)
-            }
-        }
-    }
-}
 
 
