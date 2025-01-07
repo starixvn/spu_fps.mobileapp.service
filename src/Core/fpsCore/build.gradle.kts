@@ -7,7 +7,7 @@ plugins {
 }
 
 fun libraryOutputName(variantName: String): String {
-    return "fingerprint-android-${project.property("VERSION_NAME")}-${variantName}.aar"
+    return "com.fps.android.core-${project.property("VERSION_NAME")}-${variantName}.aar"
 }
 
 publishing {
@@ -43,7 +43,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

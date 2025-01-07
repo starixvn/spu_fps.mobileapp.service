@@ -1,19 +1,54 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    `maven-publish`
 }
+
+
+fun libraryOutputName(variantName: String): String {
+    return "com.fps.android.sdk-${project.property("VERSION_NAME")}-${variantName}.aar"
+}
+
+publishing {
+    publications {
+        publications {
+            create<MavenPublication>("fpsRelease") {
+                groupId = "com.fps.android"
+                artifactId = "sdk"
+                version = project.property("VERSION_NAME") as String
+                afterEvaluate {
+                    from(components["release"])
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://gitlab.nexdev.net/api/v4/projects/2742/packages/maven")
+            name = "GitLab"
+            credentials(HttpHeaderCredentials::class) {
+                name = "Private-Token"
+                value = findProperty("gitLabPrivateToken") as String? // the variable resides in $GRADLE_USER_HOME/gradle.properties
+            }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+        }
+    }
+}
+
 
 android {
     namespace = "com.fps.android.sdk"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        version = "1.0.0"
+        version = project.property("VERSION_NAME") as String
     }
 
     buildTypes {
@@ -35,7 +70,7 @@ android {
 }
 
 dependencies {
-    implementation("com.fps.android:core:1.0.1")
+    implementation("com.fps.android:core:1.0.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

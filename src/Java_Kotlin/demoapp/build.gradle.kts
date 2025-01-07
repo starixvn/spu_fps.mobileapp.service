@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,14 +11,22 @@ android {
 
     defaultConfig {
         applicationId = "com.fps.demoapp"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+
+        versionCode = Integer.parseInt(project.property("VERSION_CODE") as String)
+        versionName = project.property("VERSION_NAME") as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    applicationVariants.all {
+        val variant = this
+        this.outputs.all {
+            (this as? BaseVariantOutputImpl)?.outputFileName = "demoapp-${variant.name}-${variant.versionName}.apk"
         }
     }
 
@@ -67,8 +77,8 @@ dependencies {
     implementation(libs.converter.scalars)
     implementation(libs.androidx.navigation.compose)
 
-    implementation(libs.core)
-    implementation(project(":sdk"))
+
+    implementation("com.fps.android:sdk:1.0.4")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
