@@ -1,6 +1,6 @@
-# flutter_sdk_example
+# fps_example
 
-Demonstrates how to use the flutter_sdk plugin.
+Demonstrates how to use the fps plugin.
 
 ## Getting Started
 

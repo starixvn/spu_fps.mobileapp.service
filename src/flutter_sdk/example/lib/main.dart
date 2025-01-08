@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
-import 'package:flutter_sdk/flutter_sdk.dart';
+import 'package:fps/fps.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,20 +29,21 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      String email = _emailController.text;
+      String username = _usernameController.text;
       String password = _passwordController.text;
 
-      // For demo purposes, just print the email and password
-      debugPrint('Email: $email, Password: $password');
-      
-      // Perform login action here
+      debugPrint('Username: $username, Password: $password');
+
+      Fps fpsSDK = Fps();
+      String? message = await fpsSDK.onCheckFPSTrans("Maxbet", username, "login");
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logging in as $email')),
+        SnackBar(content: Text('Logging in as $message')),
       );
     }
   }
@@ -64,18 +62,14 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
-                controller: _emailController,
+                controller: _usernameController,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'UserName',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email';
+                    return 'Please enter your username';
                   }
                   return null;
                 },
@@ -91,9 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters long';
                   }
                   return null;
                 },

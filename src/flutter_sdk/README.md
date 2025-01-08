@@ -1,6 +1,6 @@
-# flutter_sdk
+# fps
 
-A new Flutter plugin project.
+FPS Flutter SDK.
 
 ## Getting Started
 

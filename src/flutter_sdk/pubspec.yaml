@@ -1,5 +1,5 @@
-name: flutter_sdk
-description: "A new Flutter plugin project."
+name: fps
+description: "FPS Flutter SDK."
 version: 0.0.1
 homepage:
 
@@ -35,10 +35,8 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.fps.flutter_sdk
-        pluginClass: FlutterSdkPlugin
-      ios:
-        pluginClass: FlutterSdkPlugin
+        package: com.fps.flutter.sdk
+        pluginClass: FpsPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
