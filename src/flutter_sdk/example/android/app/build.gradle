@@ -30,6 +30,16 @@ android {
         versionName = flutter.versionName
     }
 
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (output instanceof com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+                // Customize the APK file name format
+                def newFileName = "flutter-demoapp-${variant.name}-${variant.versionName}.apk"
+                output.outputFileName = newFileName
+            }
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
