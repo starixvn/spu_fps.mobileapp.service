@@ -10,7 +10,7 @@ class FpsService {
 
   FpsService(this.baseUrl, this.endpoint);
 
-  Future<void> checkTransaction(
+  Future<String> checkTransaction(
       String subscriberName,
       String userName,
       String action,
@@ -32,10 +32,11 @@ class FpsService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(requestData),
       );
-      debugPrint("checkTransaction: ${baseUrl} ${response.statusCode}");
+      return "checkTransaction: ${baseUrl} ${response.statusCode}";
     }
     catch (e) {
       debugPrint('FPS Error: $e');
+      return "";
     }
   }
 }

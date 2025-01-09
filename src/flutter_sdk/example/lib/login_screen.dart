@@ -20,7 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _login(BuildContext context) async {
     final viewModel = Provider.of<LoginViewModel>(context, listen: false);
-    viewModel.login(context);
+    String response = await viewModel.login(context);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(response)),
+    );
 
     Navigator.pushReplacement(
       context,

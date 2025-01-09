@@ -72,12 +72,12 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future login(BuildContext context) async {
+  Future<String> login(BuildContext context) async {
     _isAuthenticated = true;
-    FpsService fpsService = FpsService(env, "/FPS/MobileCheckTransaction");
-    fpsService.checkTransaction(subscriber, userName, "login");
-
     notifyListeners();
+
+    FpsService fpsService = FpsService(env, "/FPS/MobileCheckTransaction");
+    return fpsService.checkTransaction(subscriber, userName, "login");
   }
 
   Future logout() async {
