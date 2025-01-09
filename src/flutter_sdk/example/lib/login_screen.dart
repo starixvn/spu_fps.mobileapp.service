@@ -37,70 +37,77 @@ class _LoginScreenState extends State<LoginScreen> {
     final viewModel = Provider.of<LoginViewModel>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Screen'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DropdownButton<Locale>(
-                value: viewModel.locale,
-                items: AppLocalizations.supportedLocales.map((locale) {
-                  return DropdownMenuItem<Locale>(
-                    value: locale,
-                    child: Text(locale.languageCode == 'en' ? 'English' : 'Vietnam'),
-                  );
-                }).toList(),
-                onChanged: (newLocale) {
-                  viewModel.setLocale(newLocale!);
-                },
-              ),
-              const SizedBox(height: 16),
-              DropdownButton<String>(
-                value: viewModel.env,
-                items: Environment.values.map((env) {
-                  return DropdownMenuItem<String>(
-                    value: env.url,
-                    child: Text("${env.displayName}: ${env.url}"),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  viewModel.setEnv(value!);
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                initialValue: viewModel.subscriber,
-                onChanged: viewModel.setSubscriber,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context).subscriber,
-                  border: const OutlineInputBorder(),
-                )
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                initialValue: viewModel.userName,
-                onChanged: viewModel.setUserName,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context).username,
-                  border: const OutlineInputBorder(),
-                )
-              ),
-              const SizedBox(height: 24.0),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => _login(context),
-                  child: Text(AppLocalizations.of(context).login),
+        appBar: AppBar(
+          title: const Text('Login Screen'),
+        ),
+        body: GestureDetector(
+            // Detect taps outside the form to dismiss the keyboard
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SizedBox.expand(
+                child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DropdownButton<Locale>(
+                        value: viewModel.locale,
+                        items: AppLocalizations.supportedLocales.map((locale) {
+                          return DropdownMenuItem<Locale>(
+                            value: locale,
+                            child: Text(locale.languageCode == 'en'
+                                ? 'English'
+                                : 'Vietnam'),
+                          );
+                        }).toList(),
+                        onChanged: (newLocale) {
+                          viewModel.setLocale(newLocale!);
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      DropdownButton<String>(
+                        value: viewModel.env,
+                        items: Environment.values.map((env) {
+                          return DropdownMenuItem<String>(
+                            value: env.url,
+                            child: Text("${env.displayName}: ${env.url}"),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          viewModel.setEnv(value!);
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                          initialValue: viewModel.subscriber,
+                          onChanged: viewModel.setSubscriber,
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context).subscriber,
+                            border: const OutlineInputBorder(),
+                          )),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                          initialValue: viewModel.userName,
+                          onChanged: viewModel.setUserName,
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context).username,
+                            border: const OutlineInputBorder(),
+                          )),
+                      const SizedBox(height: 24.0),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => _login(context),
+                          child: Text(AppLocalizations.of(context).login),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ))));
   }
 }
