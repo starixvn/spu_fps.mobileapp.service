@@ -42,12 +42,14 @@ class LoginViewModel extends ChangeNotifier {
   String _subscriber = 'Alpha';
   bool _isAuthenticated = false;
   String _env = "http://fpt-local.nexdev.net";
+  Locale _locale = const Locale("vi", "VN");
 
   // Getters
   String get userName => _userName;
   String get subscriber => _subscriber;
   bool get isAuthenticated => _isAuthenticated;
   String get env => _env;
+  Locale get locale => _locale;
 
   // Setters
   void setUserName(String value) {
@@ -62,6 +64,11 @@ class LoginViewModel extends ChangeNotifier {
 
   void setEnv(String value) {
     _env = value;
+    notifyListeners();
+  }
+
+  void setLocale(Locale value) {
+    _locale = value;
     notifyListeners();
   }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fps/fps.dart';
 import 'package:fps_example/services/fps_service.dart';
 import 'package:fps_example/viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
 
+import 'l10n/app_localizations.dart';
 import 'login_screen.dart';
 
 
@@ -58,11 +60,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<LoginViewModel>(context);
+
     return MaterialApp(
       title: 'Login Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      locale: viewModel.locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        // Localization delegate
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       home: const LoginScreen(),
     );
   }

@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Welcome to the Main Screen!', style: TextStyle(fontSize: 18)),
+            Text("Welcome ${viewModel.userName}!", style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

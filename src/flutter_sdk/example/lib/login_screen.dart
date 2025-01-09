@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fps_example/viewModel/login_viewModel.dart';
 
+import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<LoginViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login Screen'),
@@ -40,9 +42,21 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              DropdownButton<Locale>(
+                value: viewModel.locale,
+                items: AppLocalizations.supportedLocales.map((locale) {
+                  return DropdownMenuItem<Locale>(
+                    value: locale,
+                    child: Text(locale.languageCode == 'en' ? 'English' : 'Vietnam'),
+                  );
+                }).toList(),
+                onChanged: (newLocale) {
+                  viewModel.setLocale(newLocale!);
+                },
+              ),
+              const SizedBox(height: 16),
               DropdownButton<String>(
                 value: viewModel.env,
-                hint: const Text('Select Environment'),
                 items: Environment.values.map((env) {
                   return DropdownMenuItem<String>(
                     value: env.url,
@@ -57,18 +71,18 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 initialValue: viewModel.subscriber,
                 onChanged: viewModel.setSubscriber,
-                decoration: const InputDecoration(
-                  labelText: 'Subscriber',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context).subscriber,
+                  border: const OutlineInputBorder(),
                 )
               ),
               const SizedBox(height: 16),
               TextFormField(
                 initialValue: viewModel.userName,
                 onChanged: viewModel.setUserName,
-                decoration: const InputDecoration(
-                  labelText: 'UserName',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context).username,
+                  border: const OutlineInputBorder(),
                 )
               ),
               const SizedBox(height: 24.0),
@@ -76,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => _login(context),
-                  child: const Text('Login'),
+                  child: Text(AppLocalizations.of(context).login),
                 ),
               ),
             ],

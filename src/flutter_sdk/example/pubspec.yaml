@@ -16,7 +16,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
   fps:
     # When depending on this package from a real application you should use:
     #   fps: ^x.y.z
