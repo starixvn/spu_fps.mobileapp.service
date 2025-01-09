@@ -23,10 +23,6 @@ abstract class FpsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
-
   Future<String?> onCheckFPSTrans(
       String subscriberName,
       String userName,

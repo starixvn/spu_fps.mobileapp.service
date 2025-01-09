@@ -24,10 +24,7 @@ class FpsPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    }
-    else if (call.method == "onCheckFPSTrans") {
+    if (call.method == "onCheckFPSTrans") {
       val subscriberName = call.argument<String>("subscriberName")!!
       val userName = call.argument<String>("userName")!!
       val action = call.argument<String>("action")!!
@@ -35,7 +32,8 @@ class FpsPlugin: FlutterPlugin, MethodCallHandler {
       result.success(FPSModule.onCheckFPSTrans(applicationContext, subscriberName, userName, action, isOnStart))
     }
     else if (call.method == "onResetFPSLastLiveTime") {
-      result.success(FPSModule.onResetFPSLastLiveTime())
+      FPSModule.onResetFPSLastLiveTime()
+      result.success(null)
     } else {
       result.notImplemented()
     }

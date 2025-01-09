@@ -1,12 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:fps/fps.dart';
+import 'package:fps_example/services/fps_service.dart';
+import 'package:fps_example/viewModel/login_viewModel.dart';
+import 'package:provider/provider.dart';
+
+import 'login_screen.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final viewModel = Provider.of<LoginViewModel>(context, listen: false);
+
+    super.didChangeAppLifecycleState(state);
+    if (state case AppLifecycleState.resumed) {
+      if(viewModel.isAuthenticated) {
+        String userName = viewModel.userName;
+        String subscriber = viewModel.subscriber;
+
+        FpsService fpsService = FpsService(viewModel.env, "/FPS/MobileCheckTransaction");
+        fpsService.checkTransaction(subscriber, userName, "resumeapp", isOnStart: true);
+      }
+    } else if (state case AppLifecycleState.paused) {
+      Fps fpsSDK = Fps();
+      fpsSDK.onResetFPSLastLiveTime();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,91 +64,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const LoginScreen(),
-    );
-  }
-}
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  Future<void> _login() async {
-    if (_formKey.currentState!.validate()) {
-      String username = _usernameController.text;
-      String password = _passwordController.text;
-
-      debugPrint('Username: $username, Password: $password');
-
-      Fps fpsSDK = Fps();
-      String? message = await fpsSDK.onCheckFPSTrans("Maxbet", username, "login");
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logging in as $message')),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Screen'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'UserName',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24.0),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _login,
-                  child: const Text('Login'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
