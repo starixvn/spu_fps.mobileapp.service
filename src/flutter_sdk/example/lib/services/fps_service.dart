@@ -32,7 +32,7 @@ class FpsService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(requestData),
       );
-      return "checkTransaction: ${baseUrl} ${response.statusCode}";
+      return "checkTransaction: $baseUrl ${response.statusCode}";
     }
     catch (e) {
       debugPrint('FPS Error: $e');

@@ -7,9 +7,17 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockFpsPlatform
     with MockPlatformInterfaceMixin
     implements FpsPlatform {
+  @override
+  Future<String?> onCheckFPSTrans(String subscriberName, String userName, String action, bool isOnStart) {
+    // TODO: implement onCheckFPSTrans
+    throw UnimplementedError();
+  }
 
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
+  Future onResetFPSLastLiveTime() {
+    // TODO: implement onResetFPSLastLiveTime
+    throw UnimplementedError();
+  }
 }
 
 void main() {
@@ -17,13 +25,5 @@ void main() {
 
   test('$MethodChannelFps is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelFps>());
-  });
-
-  test('getPlatformVersion', () async {
-    Fps fpsPlugin = Fps();
-    MockFpsPlatform fakePlatform = MockFpsPlatform();
-    FpsPlatform.instance = fakePlatform;
-
-    expect(await fpsPlugin.getPlatformVersion(), '42');
   });
 }

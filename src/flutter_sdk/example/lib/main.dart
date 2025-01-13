@@ -15,12 +15,14 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }

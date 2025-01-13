@@ -68,5 +68,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.fps.android:core:1.0.4'
+    api 'com.fps.android:core:1.0.4'
 }
