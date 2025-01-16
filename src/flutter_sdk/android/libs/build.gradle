@@ -1,0 +1,2 @@
+configurations.maybeCreate("fps-lib")
+artifacts.add("fps-lib", file('com.fps.android.core-1.0.4.aar'))

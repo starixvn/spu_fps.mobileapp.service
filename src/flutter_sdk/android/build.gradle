@@ -76,6 +76,5 @@ android {
 }
 
 dependencies {
-    //api 'com.fps.android:core:1.0.4'
-    api files('libs/com.fps.android.core-1.0.4.aar')
+    implementation (name: 'com.fps.android.core-1.0.4', ext: 'aar')
 }
