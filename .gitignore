@@ -3,7 +3,7 @@
 .gradle
 .idea
 .DS_Store
-build
+src/build
 captures
 .externalNativeBuild
 .cxx

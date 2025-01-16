@@ -1,0 +1,90 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.fps.flutter.sdk",
+    "module": "fps_release",
+    "version": "1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.9"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.flutter",
+          "module": "flutter_embedding_release",
+          "version": {
+            "requires": "1.0.0-a6bd3f1de158bb61090e0c8053df93a10cb548e1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "fps_release-1.0.aar",
+          "url": "fps_release-1.0.aar",
+          "size": 5651,
+          "sha512": "7b7137d88c774305fb9d44ffb05a8502a2d0daa54ab9d56dc19aace53e08064324b188e4670705a4f3ee708693ecfbdf710b97fc4e0d54fbd4fd3756502edeac",
+          "sha256": "0f7f45ac620376c742892504b60fca85edc63ea4e748d59bb7b9ea07f0fb9070",
+          "sha1": "4b86164339100087862c7476c303e97c8fe11161",
+          "md5": "d378103e7b61cb99350a6001e9124a48"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.flutter",
+          "module": "flutter_embedding_release",
+          "version": {
+            "requires": "1.0.0-a6bd3f1de158bb61090e0c8053df93a10cb548e1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "fps_release-1.0.aar",
+          "url": "fps_release-1.0.aar",
+          "size": 5651,
+          "sha512": "7b7137d88c774305fb9d44ffb05a8502a2d0daa54ab9d56dc19aace53e08064324b188e4670705a4f3ee708693ecfbdf710b97fc4e0d54fbd4fd3756502edeac",
+          "sha256": "0f7f45ac620376c742892504b60fca85edc63ea4e748d59bb7b9ea07f0fb9070",
+          "sha1": "4b86164339100087862c7476c303e97c8fe11161",
+          "md5": "d378103e7b61cb99350a6001e9124a48"
+        }
+      ]
+    }
+  ]
+}

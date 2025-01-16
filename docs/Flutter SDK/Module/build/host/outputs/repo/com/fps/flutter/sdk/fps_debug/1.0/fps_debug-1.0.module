@@ -1,0 +1,90 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.fps.flutter.sdk",
+    "module": "fps_debug",
+    "version": "1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.9"
+    }
+  },
+  "variants": [
+    {
+      "name": "debugVariantDebugApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.flutter",
+          "module": "flutter_embedding_debug",
+          "version": {
+            "requires": "1.0.0-a6bd3f1de158bb61090e0c8053df93a10cb548e1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "fps_debug-1.0.aar",
+          "url": "fps_debug-1.0.aar",
+          "size": 5821,
+          "sha512": "f2d42181a86610d2c649ca7c6401ad458fd822750a4b46eb472590ddb9a9f2341e3d74dda8f44941b7f0bd2be681e7b1889f80f2a50e4851f646bd3e9eed8712",
+          "sha256": "efae05b80215f47b8d8d70739fbba85b32a33adafae9a25bf5cabbb112431722",
+          "sha1": "a9ed6f9be92a20935b0452cb9040c97415c0e621",
+          "md5": "c1d95648572b1248ba52d7e6f07f391b"
+        }
+      ]
+    },
+    {
+      "name": "debugVariantDebugRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.flutter",
+          "module": "flutter_embedding_debug",
+          "version": {
+            "requires": "1.0.0-a6bd3f1de158bb61090e0c8053df93a10cb548e1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "fps_debug-1.0.aar",
+          "url": "fps_debug-1.0.aar",
+          "size": 5821,
+          "sha512": "f2d42181a86610d2c649ca7c6401ad458fd822750a4b46eb472590ddb9a9f2341e3d74dda8f44941b7f0bd2be681e7b1889f80f2a50e4851f646bd3e9eed8712",
+          "sha256": "efae05b80215f47b8d8d70739fbba85b32a33adafae9a25bf5cabbb112431722",
+          "sha1": "a9ed6f9be92a20935b0452cb9040c97415c0e621",
+          "md5": "c1d95648572b1248ba52d7e6f07f391b"
+        }
+      ]
+    }
+  ]
+}
