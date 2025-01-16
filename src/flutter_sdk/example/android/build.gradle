@@ -3,6 +3,10 @@ allprojects {
         google()
         mavenCentral()
 
+        flatDir {
+            dirs 'libs'
+        }
+
         maven {
             url = uri("https://gitlab.nexdev.net/api/v4/projects/2742/packages/maven")
             name = "GitLab"

@@ -6,6 +6,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+
+        flatDir {
+            dirs 'libs'
+        }
     }
 
     dependencies {
@@ -18,6 +22,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -68,5 +76,6 @@ android {
 }
 
 dependencies {
-    api 'com.fps.android:core:1.0.4'
+    //api 'com.fps.android:core:1.0.4'
+    api files('libs/com.fps.android.core-1.0.4.aar')
 }
