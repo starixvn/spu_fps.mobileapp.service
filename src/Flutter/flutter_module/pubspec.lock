@@ -78,7 +78,7 @@ packages:
   fps:
     dependency: "direct main"
     description:
-      path: fps_flutter_sdk
+      path: "../flutter_sdk"
       relative: true
     source: path
     version: "1.0.0"

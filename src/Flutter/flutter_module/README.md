@@ -1,6 +1,6 @@
 # flutter_module
 
-A new Flutter project.
+The FPS Flutter Module
 
 ## Getting Started
 

@@ -1,5 +1,5 @@
 name: flutter_module
-description: "A new Flutter project."
+description: "The FPS Flutter Module"
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -17,6 +17,8 @@ description: "A new Flutter project."
 # on any other native host app that you embed your Flutter project into.
 version: 1.0.0+1
 
+publish_to: none
+
 environment:
   sdk: ^3.5.2
 
@@ -24,11 +26,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  fps:
+    path: ../flutter_sdk
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  fps:
-    path: ./fps_flutter_sdk
 
 dev_dependencies:
   flutter_test:
@@ -85,5 +88,5 @@ flutter:
   # identifiers, which may be completely independent or the same as these.
   module:
     androidX: true
-    androidPackage: com.example.flutter_module
-    iosBundleIdentifier: com.example.flutterModule
+    androidPackage: com.fps.flutter_module
+    iosBundleIdentifier: com.fps.flutterModule
