@@ -33,3 +33,4 @@ dependencyResolutionManagement {
 rootProject.name = "FPS Mobile"
 include(":demoapp")
 include(":sdk")
+include(":fpscore")
