@@ -14,6 +14,7 @@ public class FlutterSdkPlugin: NSObject, FlutterPlugin {
       result("iOS " + UIDevice.current.systemVersion)
     default:
       result(FlutterMethodNotImplemented)
+
     }
   }
 }
