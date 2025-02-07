@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  UUIDProvider.swift
 //
 //
 //  Created by SPU on 03/02/2025.
@@ -8,7 +8,7 @@
 import Foundation
 import Security
 
-public class UUIDProvider {
+public class UUIDProvider: IDeviceIdProvider {
     private let keychainKey = "com.fps.ios.deviceUUID"
 
     public init() {}
