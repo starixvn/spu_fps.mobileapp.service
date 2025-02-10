@@ -26,9 +26,10 @@ struct DataPackage: Codable {
     var Exceptions: String
 }
 
-class FPSModule {
+public class FPSModule {
     private static var lastLiveTime: Date? = nil
 
+    public init() {}
     public static func onCheckFPSTrans() -> String? {
         return nil
     }
@@ -37,14 +38,15 @@ class FPSModule {
         lastLiveTime = Date()
     }
 
-    private static func getDataPackage(
+    public static func getDataPackage(
         subscriberName: String,
         userName: String,
         action: String
     ) -> String? {
         let machineCodeProvider = MachineCodeProvider()
         let uuidProvider = UUIDProvider()
-
+        let deviceInfoProvider = DeviceInfoProvider()
+        let settingInfoProvider = SettingInfoProvider()
         let dataPackage: DataPackage = DataPackage(
             Account: userName,
             Subscriber: subscriberName,
@@ -55,13 +57,13 @@ class FPSModule {
             CustomCode: uuidProvider.getId()!,
             MediaDRMCode: "N/A",
             IsEmulator: false,
-            ModelName: "",
-            Manufacturer: "",
-            SdkVersion: "",
+            ModelName: deviceInfoProvider.getModelName(),
+            Manufacturer: deviceInfoProvider.getManufacturer(),
+            SdkVersion: deviceInfoProvider.getSdkVersion(),
             OS: Constants.OS_VALUE,
-            Timezone: "",
-            SystemLanguage: "",
-            Country: "",
+            Timezone: settingInfoProvider.getTimezone(),
+            SystemLanguage: settingInfoProvider.getSystemLanguage() ?? "N/A",
+            Country: settingInfoProvider.getCountry() ?? "N/A",
             Exceptions: ""
         )
         do {

@@ -6,12 +6,16 @@
 //
 import UIKit
 
-class DeviceInfoProvider {
+public class DeviceInfoProvider {
     public func getModelName() -> String {
         return UIDevice().name
     }
 
     public func getSdkVersion() -> String {
         return UIDevice().systemVersion
+    }
+
+    public func getManufacturer() -> String {
+        return Constants.MANUFACTURER
     }
 }
