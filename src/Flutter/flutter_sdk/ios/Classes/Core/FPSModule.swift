@@ -30,8 +30,12 @@ public class FPSModule {
     private static var lastLiveTime: Date? = nil
 
     public init() {}
-    public static func onCheckFPSTrans() -> String? {
-        return nil
+    public static func onCheckFPSTrans(
+        subscriberName: String,
+        userName: String,
+        action: String,
+        isOnStart: Bool) -> String? {
+        return getDataPackage(subscriberName: subscriberName, userName: userName, action: action)
     }
 
     public static func onResetFPSLastLiveTime() {

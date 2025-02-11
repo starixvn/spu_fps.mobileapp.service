@@ -3,8 +3,8 @@ import UIKit
 
 public class FpsPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "flutter_sdk", binaryMessenger: registrar.messenger())
-    let instance = FlutterSdkPlugin()
+    let channel = FlutterMethodChannel(name: "fps", binaryMessenger: registrar.messenger())
+    let instance = FpsPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
@@ -18,7 +18,6 @@ public class FpsPlugin: NSObject, FlutterPlugin {
             result(FlutterError(code: "INVALID_ARGUMENTS", message: "Invalid arguments", details: nil))
             return
         }
-
         result(FPSModule.onCheckFPSTrans(subscriberName: subscriberName, userName: userName, action: action, isOnStart: isOnStart))
     } else if call.method == "onResetFPSLastLiveTime" {
         FPSModule.onResetFPSLastLiveTime()
