@@ -36,7 +36,19 @@ public class FPSModule {
         userName: String,
         action: String,
         isOnStart: Bool) -> String? {
-        return getDataPackage(subscriberName: subscriberName, userName: userName, action: action)
+        return safeException({
+            if isOnStart, let lastLiveTime = lastLiveTime {
+                let freezeTimeInSeconds = Int(Date().timeIntervalSince(lastLiveTime))
+
+                if freezeTimeInSeconds > Constants.TIME_FREEZE_VALUE {
+                    return getDataPackage(subscriberName: subscriberName, userName: userName, action: action)
+                }
+                
+                return nil
+            }
+            
+            return getDataPackage(subscriberName: subscriberName, userName: userName, action: action)
+        }, defaultValue: nil)
     }
 
     public static func onResetFPSLastLiveTime() {
