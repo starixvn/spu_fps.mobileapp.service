@@ -66,7 +66,7 @@ public class FPSModule {
                 IsEmulator: deviceInfoProvider.isEmulator(),
                 ModelName: deviceInfoProvider.getModelName(),
                 Manufacturer: deviceInfoProvider.getManufacturer(),
-                Brand: deviceInfoProvider.getManufacturer(),
+                Brand: deviceInfoProvider.getBrand(),
                 SdkVersion: deviceInfoProvider.getSdkVersion(),
                 OS: Constants.OS_VALUE,
                 Timezone: settingInfoProvider.getTimezone(),
