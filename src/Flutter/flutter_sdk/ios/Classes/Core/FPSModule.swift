@@ -53,15 +53,16 @@ public class FPSModule {
             let uuidProvider = UUIDProvider()
             let deviceInfoProvider = DeviceInfoProvider()
             let settingInfoProvider = SettingInfoProvider()
+
             let dataPackage: DataPackage = DataPackage(
                 Account: userName,
                 Subscriber: subscriberName,
                 LoginTime: DateTimeHelper.getCurrent(),
                 Action: action,
                 ActionResult: "Successfully",
-                MachineCode: machineCodeProvider.getId()!,
-                CustomCode: uuidProvider.getId()!,
-                MediaDRMCode: "N/A",
+                MachineCode: machineCodeProvider.getId()?.hashingMd5(),
+                CustomCode: uuidProvider.getId()?.hashingMd5(),
+                MediaDRMCode: nil,
                 IsEmulator: deviceInfoProvider.isEmulator(),
                 ModelName: deviceInfoProvider.getModelName(),
                 Manufacturer: deviceInfoProvider.getManufacturer(),
