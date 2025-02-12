@@ -14,8 +14,10 @@ public class UUIDProvider: IDeviceIdProvider {
     public init() {}
 
     public func getId() -> String? {
-        let uuid = getDeviceUUID()
-        return uuid.uuidString
+        return safeException({
+            let uuid = getDeviceUUID()
+            return uuid.uuidString
+        }, defaultValue: nil)
     }
 
     public func getDeviceUUID() -> UUID {

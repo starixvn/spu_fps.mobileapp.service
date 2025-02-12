@@ -13,6 +13,8 @@ public class MachineCodeProvider : IDeviceIdProvider {
     public init() {}
 
     public func getId() -> String? {
-        return UIDevice.current.identifierForVendor!.uuidString
+        return safeException({
+            return UIDevice.current.identifierForVendor!.uuidString
+        }, defaultValue: nil)
     }
 }
