@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         String subscriber = viewModel.subscriber;
 
         FpsService fpsService = FpsService(viewModel.env, "/FPS/MobileCheckTransaction");
-        fpsService.checkTransaction(subscriber, userName, "resumeapp", isOnStart: true);
+        fpsService.checkTransaction(subscriber, userName, "resume app", isOnStart: true);
       }
     } else if (state case AppLifecycleState.paused) {
       Fps fpsSDK = Fps();
