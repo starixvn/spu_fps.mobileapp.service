@@ -26,7 +26,9 @@ class FpsService {
       final Map<String, dynamic> requestData = {
         'transaction': fpsTrans
       };
-
+      if(isOnStart) {
+        Future.delayed(const Duration(seconds: 3));
+      }
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
