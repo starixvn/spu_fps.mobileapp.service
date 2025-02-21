@@ -22,7 +22,7 @@ class FpsService {
     try {
       Fps fpsSDK = Fps();
       String? fpsTrans = await fpsSDK.onCheckFPSTrans(subscriberName, userName, action, isOnStart: isOnStart);
-
+      debugPrint(fpsTrans);
       final Map<String, dynamic> requestData = {
         'transaction': fpsTrans
       };

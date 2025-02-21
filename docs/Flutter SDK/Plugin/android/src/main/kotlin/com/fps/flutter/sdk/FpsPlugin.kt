@@ -1,7 +1,7 @@
 package com.fps.flutter.sdk
 
 import android.content.Context
-import com.fps.android.core.FPSModule
+import com.fps.flutter.core.FPSModule
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
