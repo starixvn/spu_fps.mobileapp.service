@@ -29,6 +29,7 @@ class MyApp extends StatefulWidget {
 
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  AppLifecycleState? _lastState;
   @override
   void initState() {
     super.initState();
@@ -54,10 +55,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         FpsService fpsService = FpsService(viewModel.env, "/FPS/MobileCheckTransaction");
         fpsService.checkTransaction(subscriber, userName, "resume app", isOnStart: true);
       }
-    } else if (state case AppLifecycleState.inactive) {
+    } else if (state == AppLifecycleState.inactive && _lastState == AppLifecycleState.resumed) {
       Fps fpsSDK = Fps();
       fpsSDK.onResetFPSLastLiveTime();
     }
+
+    _lastState = state;
   }
 
   @override
