@@ -1,6 +1,6 @@
 buildscript {
   ext.getExtOrDefault = {name ->
-    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['FpsSdk_' + name]
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['Fps_' + name]
   }
 
   repositories {
@@ -42,7 +42,7 @@ def supportsNamespace() {
 
 android {
   if (supportsNamespace()) {
-    namespace "com.fpssdk"
+    namespace "com.fps.reactNative.sdk"
 
     sourceSets {
       main {
@@ -105,7 +105,7 @@ dependencies {
 if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
-    libraryName = "FpsSdk"
-    codegenJavaPackageName = "com.fpssdk"
+    libraryName = "Fps"
+    codegenJavaPackageName = "com.fps.reactNative.sdk"
   }
 }

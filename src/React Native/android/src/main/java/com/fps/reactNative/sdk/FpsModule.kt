@@ -1,11 +1,11 @@
-package com.fpssdk
+package com.fps.reactNative.sdk
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.annotations.ReactModule
 
-@ReactModule(name = FpsSdkModule.NAME)
-class FpsSdkModule(reactContext: ReactApplicationContext) :
-  NativeFpsSdkSpec(reactContext) {
+@ReactModule(name = FpsModule.NAME)
+class FpsModule(reactContext: ReactApplicationContext) :
+  NativeFpsSpec(reactContext) {
 
   override fun getName(): String {
     return NAME
@@ -18,6 +18,6 @@ class FpsSdkModule(reactContext: ReactApplicationContext) :
   }
 
   companion object {
-    const val NAME = "FpsSdk"
+    const val NAME = "Fps"
   }
 }

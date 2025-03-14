@@ -1,4 +1,4 @@
-package com.fpssdk
+package com.fps.reactNative.sdk
 
 import com.facebook.react.BaseReactPackage
 import com.facebook.react.bridge.NativeModule
@@ -7,10 +7,10 @@ import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import java.util.HashMap
 
-class FpsSdkPackage : BaseReactPackage() {
+class FpsPackage : BaseReactPackage() {
   override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
-    return if (name == FpsSdkModule.NAME) {
-      FpsSdkModule(reactContext)
+    return if (name == FpsModule.NAME) {
+      FpsModule(reactContext)
     } else {
       null
     }
@@ -19,9 +19,9 @@ class FpsSdkPackage : BaseReactPackage() {
   override fun getReactModuleInfoProvider(): ReactModuleInfoProvider {
     return ReactModuleInfoProvider {
       val moduleInfos: MutableMap<String, ReactModuleInfo> = HashMap()
-      moduleInfos[FpsSdkModule.NAME] = ReactModuleInfo(
-        FpsSdkModule.NAME,
-        FpsSdkModule.NAME,
+      moduleInfos[FpsModule.NAME] = ReactModuleInfo(
+        FpsModule.NAME,
+        FpsModule.NAME,
         false,  // canOverrideExistingModule
         false,  // needsEagerInit
         false,  // isCxxModule
