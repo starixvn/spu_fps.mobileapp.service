@@ -43,15 +43,14 @@ class KeychainIdentifierStorage {
             let updateQuery = [kSecValueData: stringData] as CFDictionary
             let updateStatus = SecItemUpdate(storeQuery, updateQuery)
             if updateStatus == errSecSuccess {
-                print("FingerprintJS: Updated item in the keychain")
+                ThrowableHandler.add("Updated item in the keychain")
             } else {
-                print("FingerprintJS: Cannot save identifier into keychain because error \(updateStatus) occured")
+                ThrowableHandler.add("Cannot save identifier into keychain because error \(updateStatus) occured")
             }
         } else if addStatus == errSecSuccess {
-            print("Saved item in the keychain")
+            ThrowableHandler.add("Add item in the keychain")
         } else {
-            print("FingerprintJS: Cannot save identifier into keychain because error \(addStatus) occured")
-
+            ThrowableHandler.add("Cannot save identifier into keychain because error \(addStatus) occured")
         }
     }
 }
