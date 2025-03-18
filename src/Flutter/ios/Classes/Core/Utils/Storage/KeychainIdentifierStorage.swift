@@ -43,12 +43,12 @@ class KeychainIdentifierStorage {
             let updateQuery = [kSecValueData: stringData] as CFDictionary
             let updateStatus = SecItemUpdate(storeQuery, updateQuery)
             if updateStatus == errSecSuccess {
-                ThrowableHandler.add("Updated item in the keychain")
+                // ThrowableHandler.add("Updated item in the keychain")
             } else {
                 ThrowableHandler.add("Cannot save identifier into keychain because error \(updateStatus) occured")
             }
         } else if addStatus == errSecSuccess {
-            ThrowableHandler.add("Add item in the keychain")
+            // ThrowableHandler.add("Add item in the keychain")
         } else {
             ThrowableHandler.add("Cannot save identifier into keychain because error \(addStatus) occured")
         }
