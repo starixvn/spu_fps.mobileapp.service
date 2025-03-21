@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fps/fps.dart';
@@ -7,7 +9,6 @@ import 'package:provider/provider.dart';
 
 import 'l10n/app_localizations.dart';
 import 'login_screen.dart';
-
 
 void main() {
   runApp(
@@ -26,7 +27,6 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
-
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   AppLifecycleState? _lastState;
@@ -47,20 +47,49 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     final viewModel = Provider.of<LoginViewModel>(context, listen: false);
 
     super.didChangeAppLifecycleState(state);
-    if (state case AppLifecycleState.resumed) {
-      if(viewModel.isAuthenticated) {
-        String userName = viewModel.userName;
-        String subscriber = viewModel.subscriber;
 
-        FpsService fpsService = FpsService(viewModel.env, "/FPS/MobileCheckTransaction");
-        fpsService.checkTransaction(subscriber, userName, "resume app", isOnStart: true);
-      }
-    } else if (state == AppLifecycleState.inactive && _lastState == AppLifecycleState.resumed) {
-      Fps fpsSDK = Fps();
-      fpsSDK.onResetFPSLastLiveTime();
+    if (Platform.isAndroid) {
+      _handleAndroidLifecycle(state, viewModel);
+    } else if (Platform.isIOS) {
+      _handleIOSLifecycle(state, viewModel);
+    }
+  }
+
+  void _handleAndroidLifecycle(
+      AppLifecycleState state, LoginViewModel viewModel) {
+    if (state == AppLifecycleState.resumed) {
+      _handleResumedState(viewModel, "resume app");
+    } else if (state == AppLifecycleState.paused) {
+      _resetFpsLastLiveTime();
+    }
+  }
+
+  void _handleIOSLifecycle(AppLifecycleState state, LoginViewModel viewModel) {
+    if (state == AppLifecycleState.resumed) {
+      _handleResumedState(viewModel, "resume app");
+    } else if (state == AppLifecycleState.inactive &&
+        _lastState == AppLifecycleState.resumed) {
+      _resetFpsLastLiveTime();
     }
 
     _lastState = state;
+  }
+
+  void _handleResumedState(LoginViewModel viewModel, String action) {
+    if (viewModel.isAuthenticated) {
+      String userName = viewModel.userName;
+      String subscriber = viewModel.subscriber;
+
+      FpsService fpsService =
+          FpsService(viewModel.env, "/FPS/MobileCheckTransaction");
+      fpsService.checkTransaction(subscriber, userName, action,
+          isOnStart: true);
+    }
+  }
+
+  void _resetFpsLastLiveTime() {
+    Fps fpsSDK = Fps();
+    fpsSDK.onResetFPSLastLiveTime();
   }
 
   @override
