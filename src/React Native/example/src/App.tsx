@@ -1,7 +1,8 @@
 import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'fps';
+import { multiply, onResetFPSLastLiveTime } from 'fps';
 
 const result = multiply(3, 7);
+onResetFPSLastLiveTime();
 
 export default function App() {
   return (

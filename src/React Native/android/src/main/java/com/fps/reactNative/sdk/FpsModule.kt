@@ -17,6 +17,20 @@ class FpsModule(reactContext: ReactApplicationContext) :
     return a * b
   }
 
+  override fun onCheckFPSTrans(
+    subscriberName: String,
+    userName: String,
+    action: String,
+    isOnStart: Boolean
+  ): String? {
+    // Implement your logic here
+    return null
+  }
+
+  override fun onResetFPSLastLiveTime() {
+    // Implement your logic here
+  }
+  
   companion object {
     const val NAME = "Fps"
   }
