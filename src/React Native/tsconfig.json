@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "fps-sdk": ["./src/index"]
+      "fps": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

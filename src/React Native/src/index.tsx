@@ -1,5 +1,5 @@
-import FpsSdk from './NativeFpsSdk';
+import Fps from './NativeFps';
 
 export function multiply(a: number, b: number): number {
-  return FpsSdk.multiply(a, b);
+  return Fps.multiply(a, b);
 }

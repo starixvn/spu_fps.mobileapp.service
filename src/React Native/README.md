@@ -1,18 +1,18 @@
-# fps-sdk
+# fps
 
-The FPS React Native Library
+The FPS SDK Package
 
 ## Installation
 
 ```sh
-npm install fps-sdk
+npm install fps
 ```
 
 ## Usage
 
 
 ```js
-import { multiply } from 'fps-sdk';
+import { multiply } from 'fps';
 
 // ...
 

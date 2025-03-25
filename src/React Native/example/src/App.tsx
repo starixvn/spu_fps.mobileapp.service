@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'fps-sdk';
+import { multiply } from 'fps';
 
 const result = multiply(3, 7);
 

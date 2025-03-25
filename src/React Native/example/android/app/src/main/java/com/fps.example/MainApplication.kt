@@ -1,4 +1,4 @@
-package fpssdk.example
+package fps.example
 
 import android.app.Application
 import com.facebook.react.PackageList
