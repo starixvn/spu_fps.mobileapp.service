@@ -16,7 +16,7 @@ class SettingInfoProvider {
 
      public func getSystemLanguage() -> String? {
         return safeException({
-            if #available(iOS 16, *) {
+            if #available(iOS 8, *) {
                 var languageCode = Locale.preferredLanguages.first
                 var locale = languageCode?.components(separatedBy: "-").first
                 return convertLanguageToISO(languageCode: locale!)

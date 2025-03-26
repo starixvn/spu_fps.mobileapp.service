@@ -10,3 +10,5 @@ captures
 local.properties
 deploymentTargetSelector.xml
 release
+
+*.zip
