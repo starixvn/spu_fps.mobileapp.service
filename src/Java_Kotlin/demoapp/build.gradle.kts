@@ -71,14 +71,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
-    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.retrofit)
     implementation(libs.converter.scalars)
     implementation(libs.androidx.navigation.compose)
-
-
-    implementation("com.fps.android:sdk:1.0.4")
+    implementation(project(":sdk"))
+    implementation(project(":fpscore"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

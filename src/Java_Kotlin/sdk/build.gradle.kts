@@ -70,7 +70,7 @@ android {
 }
 
 dependencies {
-    implementation("com.fps.android:core:1.0.4")
+    implementation(project(":fpscore"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
