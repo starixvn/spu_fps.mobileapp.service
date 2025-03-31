@@ -68,4 +68,25 @@
             // [ThrowableHandler addWithMessage:[NSString stringWithFormat:@"Cannot save identifier into keychain because error %d occurred", (int)updateStatus]];
         }
     } else if (addStatus != errSecSuccess) {
-        NSLog(@"Cannot save identifier into keychain because error
+        NSLog(@"Cannot save identifier into keychain because error %d occurred", (int)addStatus);
+        // [ThrowableHandler addWithMessage:[NSString stringWithFormat:@"Cannot save identifier into keychain because error %d occurred", (int)addStatus]];
+    }
+}
+
+#pragma mark - IdentifierStorable Protocol
+
+- (void)storeIdentifier:(NSUUID *)identifier for:(NSString *)key {
+    NSString *identifierString = [identifier UUIDString];
+    [self storeStringIntoKeychain:identifierString for:key];
+}
+
+- (nullable NSUUID *)loadIdentifierFor:(NSString *)key {
+    NSString *identifierString = [self getStringFromKeychain:key];
+    if (!identifierString) {
+        return nil;
+    }
+    
+    return [[NSUUID alloc] initWithUUIDString:identifierString];
+}
+
+@end

@@ -1,24 +1,26 @@
 #import "Fps.h"
+#import "Module/FPSModule.h"
 
 @implementation Fps
 RCT_EXPORT_MODULE()
 
 - (NSNumber *)multiply:(double)a b:(double)b {
     NSNumber *result = @(a * b);
-
     return result;
 }
 
 - (void)onResetFPSLastLiveTime {
-    // Function implementation goes here
+    [FPSModule onResetFPSLastLiveTime];
 }
 
 - (NSString *)onCheckFPSTransWithSubscriberName:(NSString *)subscriberName
                                        userName:(NSString *)userName
                                          action:(NSString *)action
                                       isOnStart:(BOOL)isOnStart {
-    // Implement your logic here
-    return nil;
+    return [FPSModule onCheckFPSTransWithSubscriberName:subscriberName
+                                              userName:userName
+                                                action:action
+                                             isOnStart:isOnStart];
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
