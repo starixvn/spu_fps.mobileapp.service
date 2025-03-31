@@ -9,6 +9,18 @@ RCT_EXPORT_MODULE()
     return result;
 }
 
+- (void)onResetFPSLastLiveTime {
+    // Function implementation goes here
+}
+
+- (NSString *)onCheckFPSTransWithSubscriberName:(NSString *)subscriberName
+                                       userName:(NSString *)userName
+                                         action:(NSString *)action
+                                      isOnStart:(BOOL)isOnStart {
+    // Implement your logic here
+    return nil;
+}
+
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params
 {
