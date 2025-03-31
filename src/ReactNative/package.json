@@ -50,19 +50,6 @@
     "ios",
     "android"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+http://google.com.git"
-  },
-  "author": "FPS <lando.vu@starixsoft.com> (http://google.com)",
-  "license": "MIT",
-  "bugs": {
-    "url": "http://google.com/issues"
-  },
-  "homepage": "http://google.com#readme",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.6.0",
     "@evilmartians/lefthook": "^1.5.0",
