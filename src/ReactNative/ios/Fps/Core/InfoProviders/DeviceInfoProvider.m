@@ -5,11 +5,11 @@
 @implementation DeviceInfoProvider
 
 - (BOOL)isEmulator {
-    #if TARGET_IPHONE_SIMULATOR
-        return YES;
-    #else
-        return NO;
-    #endif
+#if TARGET_IPHONE_SIMULATOR
+    return YES;
+#else
+    return NO;
+#endif
 }
 
 - (NSString *)getModelName {

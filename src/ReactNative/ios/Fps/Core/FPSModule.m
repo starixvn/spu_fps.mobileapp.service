@@ -9,6 +9,7 @@
 #import "Utils/NSString+Extensions.h"
 
 @interface DataPackage : NSObject
+
 @property (nonatomic, strong) NSString *Account;
 @property (nonatomic, strong) NSString *Subscriber;
 @property (nonatomic, strong) NSString *LoginTime;
@@ -27,6 +28,9 @@
 @property (nonatomic, strong) NSString *SystemLanguage;
 @property (nonatomic, strong) NSString *Country;
 @property (nonatomic, strong) NSString *Exceptions;
+
+- (NSDictionary *)toDictionary;
+
 @end
 
 @implementation DataPackage
@@ -63,9 +67,9 @@
 static NSDate *lastLiveTime = nil;
 
 + (NSString *)onCheckFPSTransWithSubscriberName:(NSString *)subscriberName
-                                     userName:(NSString *)userName
-                                       action:(NSString *)action
-                                    isOnStart:(BOOL)isOnStart {
+                                      userName:(NSString *)userName
+                                        action:(NSString *)action
+                                     isOnStart:(BOOL)isOnStart {
     @try {
         if (isOnStart && lastLiveTime) {
             NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:lastLiveTime];
@@ -84,6 +88,7 @@ static NSDate *lastLiveTime = nil;
                                            userName:userName
                                              action:action];
     } @catch (NSException *exception) {
+        [ThrowableHandler addMessage:[exception description]];
         return nil;
     }
 }
@@ -127,12 +132,14 @@ static NSDate *lastLiveTime = nil;
                                                             error:&error];
         
         if (error) {
+            [ThrowableHandler addMessage:[error localizedDescription]];
             return nil;
         }
         
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         return [jsonString toBase64];
     } @catch (NSException *exception) {
+        [ThrowableHandler addMessage:[exception description]];
         return nil;
     }
 }

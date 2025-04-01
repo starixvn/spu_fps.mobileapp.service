@@ -4,5 +4,6 @@
 
 + (NSInteger)TIME_FREEZE_VALUE;
 + (NSString *)OS_VALUE;
++ (NSString *)DATETIME_FORMAT;
 
 @end

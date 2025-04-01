@@ -4,7 +4,7 @@
 @implementation MachineCodeProvider
 
 - (NSString *)getId {
-    return [UIDevice currentDevice].identifierForVendor.UUIDString;
+    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 }
 
 @end

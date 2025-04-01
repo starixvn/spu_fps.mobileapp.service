@@ -1,5 +1,6 @@
-#import "generated/RNFpsSpec/RNFpsSpec.h"
+#import <React/RCTBridgeModule.h>
+#import <Foundation/Foundation.h>
 
-@interface Fps : NSObject <NativeFpsSpec>
+@interface RNFps : NSObject <RCTBridgeModule>
 
 @end

@@ -4,7 +4,7 @@
 
 - (NSString *)getTimezone {
     NSTimeZone *timeZone = [NSTimeZone localTimeZone];
-    return timeZone.name;
+    return [timeZone name];
 }
 
 - (NSString *)getSystemLanguage {
