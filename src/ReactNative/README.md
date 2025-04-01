@@ -10,15 +10,13 @@ npm install fps
 
 ## Usage
 
-
 ```js
-import { multiply } from 'fps';
+import { onCheckFPSTrans } from 'fps';
 
 // ...
 
-const result = multiply(3, 7);
+const transactionData = onCheckFPSTrans('subscriberName', 'username', 'login', false);
 ```
-
 
 ## Contributing
 

@@ -5,15 +5,6 @@
 
 RCT_EXPORT_MODULE(Fps)
 
-RCT_EXPORT_METHOD(multiply:(double)a 
-                  b:(double)b
-                  resolve:(RCTPromiseResolveBlock)resolve 
-                  reject:(RCTPromiseRejectBlock)reject)
-{
-  NSNumber *result = @(a * b);
-  resolve(result);
-}
-
 RCT_EXPORT_METHOD(onResetFPSLastLiveTime)
 {
   [FPSModule onResetFPSLastLiveTime];

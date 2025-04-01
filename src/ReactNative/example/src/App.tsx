@@ -1,21 +1,43 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply, onResetFPSLastLiveTime } from 'fps';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'react-native';
 
-const result = multiply(3, 7);
-onResetFPSLastLiveTime();
+// Import screens
+import LoginScreen from './screens/LoginScreen';
+import MainScreen from './screens/MainScreen';
+
+// Import language provider
+import { LanguageProvider } from './contexts/LanguageContext';
+
+// Define types for our navigation stack
+export type RootStackParamList = {
+  Login: undefined;
+  Main: {
+    username: string;
+    subscriberName: string;
+    language: string;
+  };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <LanguageProvider initialLanguage="en">
+      <NavigationContainer>
+        <StatusBar barStyle="dark-content" backgroundColor="#f5f5f5" />
+        <Stack.Navigator 
+          initialRouteName="Login" 
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: '#f5f5f5' }
+          }}
+        >
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Main" component={MainScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LanguageProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

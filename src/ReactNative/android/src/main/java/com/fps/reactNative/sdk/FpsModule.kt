@@ -1,20 +1,18 @@
 package com.fps.reactNative.sdk
 
+import android.content.Context
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.annotations.ReactModule
+import com.fps.reactNative.core.FPSModule
 
 @ReactModule(name = FpsModule.NAME)
 class FpsModule(reactContext: ReactApplicationContext) :
   NativeFpsSpec(reactContext) {
 
+  private lateinit var applicationContext : Context
+
   override fun getName(): String {
     return NAME
-  }
-
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  override fun multiply(a: Double, b: Double): Double {
-    return a * b
   }
 
   override fun onCheckFPSTrans(
@@ -23,12 +21,15 @@ class FpsModule(reactContext: ReactApplicationContext) :
     action: String,
     isOnStart: Boolean
   ): String? {
-    // Implement your logic here
-    return null
+    
+    if (!this::applicationContext.isInitialized) {
+      applicationContext = reactApplicationContext.applicationContext
+    }
+    return FPSModule.onCheckFPSTrans(applicationContext, subscriberName, userName, action, isOnStart);
   }
 
   override fun onResetFPSLastLiveTime() {
-    // Implement your logic here
+    FPSModule.onResetFPSLastLiveTime()
   }
   
   companion object {
