@@ -15,6 +15,7 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import useLoginViewModel from '../viewModels/LoginViewModel';
 import EnvironmentSelector from '../components/EnvironmentSelector';
+import { useUser } from '../contexts/UserContext';
 
 interface LoginScreenProps {
   navigation: any;
@@ -23,6 +24,8 @@ interface LoginScreenProps {
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   // Use the view model to handle state and logic
   const viewModel = useLoginViewModel();
+  // Access the user context to store credentials
+  const { setUserCredentials } = useUser();
   
   const handleLogin = async () => {
     if (viewModel.validateForm()) {
@@ -37,6 +40,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         
         // Get form data from view model
         const formData = viewModel.getFormData();
+        
+        // Save user credentials to context
+        setUserCredentials(formData.username, formData.subscriberName);
         
         // Navigate to Main screen passing user data
         navigation.navigate('Main', formData);

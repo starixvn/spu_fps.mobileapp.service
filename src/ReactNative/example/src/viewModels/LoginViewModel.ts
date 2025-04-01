@@ -65,7 +65,7 @@ export const useLoginViewModel = () => {
       setIsProcessing(true);
       
       // Use the FPSService to process the login transaction
-      return await fpsService.processLoginTransaction(username, subscriberName);
+      return await fpsService.processLoginTransaction(username, subscriberName, "login", false);
     } catch (error) {
       console.error('FPS transaction error:', error);
       return false;

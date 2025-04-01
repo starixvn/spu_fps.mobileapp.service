@@ -1,4 +1,4 @@
-import { onCheckFPSTrans } from 'fps';
+import { onResetFPSLastLiveTime, onCheckFPSTrans } from 'fps';
 import { Environment, EnvironmentService, DEFAULT_ENVIRONMENT } from './EnvironmentService';
 
 /**
@@ -32,19 +32,33 @@ export class FPSService {
   }
   
   /**
+   * Resets the FPS last live time
+   * Should be called when the app moves to the background
+   */
+  public resetFPSLastLiveTime(): void {
+    try {
+      onResetFPSLastLiveTime();
+      console.log('FPS last live time has been reset');
+    } catch (error) {
+      console.error('Error resetting FPS last live time:', error);
+    }
+  }
+  
+  /**
    * Processes an FPS transaction for the specified user during login
    * 
    * @param username - The username attempting to login
    * @param subscriberName - The subscriber name
    * @returns A promise resolving to a boolean indicating success or failure
    */
-  public async processLoginTransaction(username: string, subscriberName: string): Promise<boolean> {
+  public async processLoginTransaction(username: string, subscriberName: string, action: string, isOnStart: boolean): Promise<boolean> {
     try {
       // Call FPS library to get transaction data
-      const fpsTransactionData = await this.generateTransactionData(
+      const fpsTransactionData = await onCheckFPSTrans(
         subscriberName,
         username,
-        'login'
+        action,
+        isOnStart
       );
       
       if (!fpsTransactionData) {
@@ -58,27 +72,6 @@ export class FPSService {
       console.error('FPS transaction error:', error);
       return false;
     }
-  }
-
-  /**
-   * Generates FPS transaction data using the native FPS library
-   * 
-   * @param subscriberName - The subscriber name
-   * @param username - The username
-   * @param action - The action being performed (e.g., 'login')
-   * @returns The generated FPS transaction data string or null
-   */
-  private async generateTransactionData(
-    subscriberName: string, 
-    username: string, 
-    action: string
-  ): Promise<string | null> {
-    return await onCheckFPSTrans(
-      subscriberName,
-      username,
-      action,
-      false // isOnStart is false for login actions
-    );
   }
 
   /**
