@@ -3,7 +3,7 @@
 @implementation Constants
 
 + (NSInteger)TIME_FREEZE_VALUE {
-    return 300; // 5 minutes in seconds
+    return 60;
 }
 
 + (NSString *)OS_VALUE {
@@ -11,7 +11,7 @@
 }
 
 + (NSString *)DATETIME_FORMAT {
-    return @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    return @"MM-dd-yyyy hh:mm:ss";
 }
 
 @end
