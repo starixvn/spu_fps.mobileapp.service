@@ -20,7 +20,7 @@ export class EnvironmentService {
   public static getHostname(environment: Environment): string {
     switch (environment) {
       case Environment.local:
-        return 'http://fpt-local.nexdev.net';
+        return 'https://fpt-local.nexdev.net';
       case Environment.uat:
         return 'https://fpt-uat.starixuat.com:6012';
       case Environment.prod:

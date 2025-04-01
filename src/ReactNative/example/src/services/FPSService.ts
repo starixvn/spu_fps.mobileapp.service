@@ -41,7 +41,7 @@ export class FPSService {
   public async processLoginTransaction(username: string, subscriberName: string): Promise<boolean> {
     try {
       // Call FPS library to get transaction data
-      const fpsTransactionData = this.generateTransactionData(
+      const fpsTransactionData = await this.generateTransactionData(
         subscriberName,
         username,
         'login'
@@ -68,12 +68,12 @@ export class FPSService {
    * @param action - The action being performed (e.g., 'login')
    * @returns The generated FPS transaction data string or null
    */
-  private generateTransactionData(
+  private async generateTransactionData(
     subscriberName: string, 
     username: string, 
     action: string
-  ): string | null {
-    return onCheckFPSTrans(
+  ): Promise<string | null> {
+    return await onCheckFPSTrans(
       subscriberName,
       username,
       action,
@@ -92,6 +92,8 @@ export class FPSService {
       const apiEndpoint = this.getApiEndpoint() + "/FPS/MobileCheckTransaction";
       console.log(`Sending FPS transaction to: ${apiEndpoint}`);
       
+      console.log(`FPS transaction data: ${JSON.stringify({ transaction: transactionData })}`);
+
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
@@ -103,6 +105,7 @@ export class FPSService {
       // Display HTTP status code
       console.log(`FPS API response status: ${response.status} (${response.statusText})`);
       
+
       if (!response.ok) {
         console.error(`FPS transaction API error: ${response.status} - ${response.statusText}`);
         return false;
