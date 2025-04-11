@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar, AppState } from 'react-native';
@@ -14,6 +14,8 @@ import MainScreen from './screens/MainScreen';
 // Import providers
 import { LanguageProvider } from './contexts/LanguageContext';
 import { UserProvider, useUser } from './contexts/UserContext';
+
+import NetInfo from '@react-native-community/netinfo';
 
 // Define types for our navigation stack
 export type RootStackParamList = {
@@ -31,7 +33,43 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function AppContent() {
   const appState = useRef(AppState.currentState);
   const { username, subscriberName } = useUser();
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
   
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(async state => {
+      // Check for reconnection to WiFi
+      if (state.isConnected && state.type === 'wifi' && isConnected === false) {
+        console.log('WiFi reconnected!');
+        
+        // Add delay to ensure connection is stable
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Process login transaction on WiFi reconnection
+        if (username && subscriberName) {
+          const result = await fpsService.processLoginTransaction(
+            username, 
+            subscriberName, 
+            "resume app", 
+            true
+          );
+          
+          if (result) {
+            console.log('WiFi reconnection check completed');
+          }
+        }
+      }
+      
+      // Update connection state
+      setIsConnected(state.isConnected);
+    });
+
+    // Clean up subscription on unmount
+    return () => {
+      unsubscribe();
+    };
+  }, [username, subscriberName, isConnected]);
+  
+
   // Handle app state changes
   useEffect(() => {
     const subscription = AppState.addEventListener('change', async (nextAppState: AppStateStatus) => {

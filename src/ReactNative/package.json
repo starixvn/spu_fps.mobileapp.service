@@ -201,5 +201,8 @@
     "type": "turbo-module",
     "languages": "kotlin-objc",
     "version": "0.48.5"
+  },
+  "dependencies": {
+    "@react-native-community/netinfo": "^11.4.1"
   }
 }
