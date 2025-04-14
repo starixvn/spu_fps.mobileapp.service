@@ -63,9 +63,7 @@ fun StartScreen(
         mutableIntStateOf(0)
     }
 
-    val subscriberText = context.getString(R.string.subscriber_text)
-    Log.d("Language", Locale.getDefault().isO3Language)
-    Column(
+   Column(
         modifier = Modifier
             .fillMaxSize(),
     ) {
@@ -172,7 +170,6 @@ private fun updateLanguage(
     context: Context,
     selectedLanguage: String,
 ) {
-    Log.d("updateLanguage", selectedLanguage)
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     sharedPreferences.edit().putString("CURRENT_LANGUAGE", selectedLanguage).apply()
     context.startActivity(Intent.makeRestartActivityTask((context as Activity).intent?.component))

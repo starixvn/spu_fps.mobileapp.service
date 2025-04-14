@@ -76,7 +76,6 @@ internal class UuidProvider(
     }
 
     private fun getRandomId(): String {
-        Log.d("UUID", "granted Random UUID")
         return UUID.randomUUID().toString()
     }
 
