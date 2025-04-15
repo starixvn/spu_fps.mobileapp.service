@@ -1,6 +1,6 @@
 name: fps
 description: "FPS Flutter SDK."
-version: 1.0.0
+version: 1.0.5
 homepage: https://api.detecas.com
 publish_to: none
 environment:
