@@ -26,6 +26,9 @@
 }
 
 - (NSString *)convertLanguageToISO:(NSString *)languageCode {
+    if (languageCode.length == 3) {
+        return languageCode;
+    }
     // Map of ISO 639-1 (2-letter) to ISO 639-2 (3-letter) language codes
     NSDictionary *iso639Map = @{
         @"aa": @"aar", @"ab": @"abk", @"ae": @"ave", @"af": @"afr", @"ak": @"aka",
