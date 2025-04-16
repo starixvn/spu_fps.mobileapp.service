@@ -39,7 +39,7 @@ function AppContent() {
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
         console.log('App has come to the foreground!');
-        await processLoginTransaction();
+        await processLoginTransaction(true);
       } else if (nextAppState === 'background' || nextAppState === 'inactive') {
         fpsService.resetFPSLastLiveTime();
       }
@@ -49,15 +49,15 @@ function AppContent() {
     const handleNetworkChange = async (state: NetInfo.NetInfoState) => {
       if (state.isConnected && state.type === 'wifi' && isConnected === false) {
         console.log('WiFi reconnected!');
-        await processLoginTransaction();
+        await processLoginTransaction(false);
       }
       setIsConnected(state.isConnected);
     };
 
-    const processLoginTransaction = async () => {
+    const processLoginTransaction = async (isOnStart: boolean) => {
       if (username && subscriberName) {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        const result = await fpsService.processLoginTransaction(username, subscriberName, "resume app", true);
+        const result = await fpsService.processLoginTransaction(username, subscriberName, "resume app", isOnStart);
         if (result) {
           console.log('Transaction processed successfully');
         }

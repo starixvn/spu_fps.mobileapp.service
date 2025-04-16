@@ -61,67 +61,62 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <ScrollView 
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-        >
-          <Text style={styles.title}>{viewModel.t('login', 'title')}</Text>
-          <Text style={styles.subtitle}>{viewModel.t('login', 'subtitle')}</Text>
+        <Text style={styles.title}>{viewModel.t('login', 'title')}</Text>
+        <Text style={styles.subtitle}>{viewModel.t('login', 'subtitle')}</Text>
+        
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>{viewModel.t('login', 'usernameLabel')}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={viewModel.t('login', 'usernameLabel')}
+            value={viewModel.username}
+            onChangeText={viewModel.setUsername}
+            autoCapitalize="none"
+          />
           
-          <View style={styles.formContainer}>
-            <Text style={styles.label}>{viewModel.t('login', 'usernameLabel')}</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={viewModel.t('login', 'usernameLabel')}
-              value={viewModel.username}
-              onChangeText={viewModel.setUsername}
-              autoCapitalize="none"
+          <Text style={styles.label}>{viewModel.t('login', 'subscriberLabel')}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={viewModel.t('login', 'subscriberLabel')}
+            value={viewModel.subscriberName}
+            onChangeText={viewModel.setSubscriberName}
+          />
+          
+          <Text style={styles.label}>{viewModel.t('login', 'languageLabel')}</Text>
+          <View style={styles.dropdownContainer}>
+            <DropDownPicker
+              open={viewModel.open}
+              value={viewModel.language}
+              items={viewModel.languages}
+              setOpen={viewModel.setOpen}
+              setValue={(callback) => {
+                const value = typeof callback === 'function' ? callback(viewModel.language) : callback;
+                viewModel.setLanguage(value);
+              }}
+              style={styles.dropdown}
+              dropDownContainerStyle={styles.dropdownList}
+              placeholder={viewModel.t('login', 'languageLabel')}
             />
-            
-            <Text style={styles.label}>{viewModel.t('login', 'subscriberLabel')}</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={viewModel.t('login', 'subscriberLabel')}
-              value={viewModel.subscriberName}
-              onChangeText={viewModel.setSubscriberName}
-            />
-            
-            <Text style={styles.label}>{viewModel.t('login', 'languageLabel')}</Text>
-            <View style={styles.dropdownContainer}>
-              <DropDownPicker
-                open={viewModel.open}
-                value={viewModel.language}
-                items={viewModel.languages}
-                setOpen={viewModel.setOpen}
-                setValue={(callback) => {
-                  const value = typeof callback === 'function' ? callback(viewModel.language) : callback;
-                  viewModel.setLanguage(value);
-                }}
-                style={styles.dropdown}
-                dropDownContainerStyle={styles.dropdownList}
-                placeholder={viewModel.t('login', 'languageLabel')}
-              />
-            </View>
-            
-            <EnvironmentSelector
-              selectedEnvironment={viewModel.environment}
-              setSelectedEnvironment={viewModel.setEnvironment}
-              label="API Environment"
-            />
-            
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={handleLogin}
-              disabled={viewModel.isProcessing}
-            >
-              {viewModel.isProcessing ? (
-                <ActivityIndicator size="small" color="#ffffff" />
-              ) : (
-                <Text style={styles.loginButtonText}>{viewModel.t('login', 'loginButton')}</Text>
-              )}
-            </TouchableOpacity>
           </View>
-        </ScrollView>
+          
+          <EnvironmentSelector
+            selectedEnvironment={viewModel.environment}
+            setSelectedEnvironment={viewModel.setEnvironment}
+            label="API Environment"
+          />
+          
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={handleLogin}
+            disabled={viewModel.isProcessing}
+          >
+            {viewModel.isProcessing ? (
+              <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+              <Text style={styles.loginButtonText}>{viewModel.t('login', 'loginButton')}</Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -179,7 +174,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     marginBottom: 20,
-    zIndex: 1000 // Required for dropdown to show above other elements
+    zIndex: 9999 // Required for dropdown to show above other elements
   },
   dropdown: {
     borderColor: '#dcdde1',
