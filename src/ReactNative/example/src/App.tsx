@@ -36,6 +36,7 @@ function AppContent() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
   
   useEffect(() => {
+    var isProcess = false;
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (nextAppState === 'active') {
         console.log('App has come to the foreground!');
@@ -47,7 +48,7 @@ function AppContent() {
     };
 
     const handleNetworkChange = async (state: NetInfo.NetInfoState) => {
-      if (state.isConnected && state.type === 'wifi' && isConnected === false) {
+      if (state.isConnected && isConnected === false) {
         console.log('WiFi reconnected!');
         await processLoginTransaction(false);
       }
@@ -56,11 +57,15 @@ function AppContent() {
 
     const processLoginTransaction = async (isOnStart: boolean) => {
       if (username && subscriberName) {
+        if(isProcess)
+          return;
+        isProcess = true;
         await new Promise(resolve => setTimeout(resolve, 10000));
         const result = await fpsService.processLoginTransaction(username, subscriberName, "resume app", isOnStart);
         if (result) {
           console.log('Transaction processed successfully');
         }
+        isProcess = false;
       }
     };
 
