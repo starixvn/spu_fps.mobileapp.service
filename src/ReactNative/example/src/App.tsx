@@ -56,7 +56,7 @@ function AppContent() {
 
     const processLoginTransaction = async (isOnStart: boolean) => {
       if (username && subscriberName) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 10000));
         const result = await fpsService.processLoginTransaction(username, subscriberName, "resume app", isOnStart);
         if (result) {
           console.log('Transaction processed successfully');
