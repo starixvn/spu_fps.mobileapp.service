@@ -3,10 +3,12 @@
 .gradle
 .idea
 .DS_Store
-build
+src/build
 captures
 .externalNativeBuild
 .cxx
 local.properties
 deploymentTargetSelector.xml
 release
+
+*.zip
