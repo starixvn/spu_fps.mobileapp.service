@@ -52,14 +52,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+http://google.com.git"
+    "url": "git+https://api.detecas.com"
   },
-  "author": "FPS <lando.vu@starixsoft.com> (http://google.com)",
+  "author": "FPS <fps@starixsoft.com> (https://api.detecas.com)",
   "license": "MIT",
   "bugs": {
-    "url": "http://google.com/issues"
+    "url": "https://api.detecas.com"
   },
-  "homepage": "http://google.com#readme",
+  "homepage": "https://api.detecas.com",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
