@@ -37,7 +37,7 @@ function AppContent() {
   
   useEffect(() => {
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      if (nextAppState === 'active') {
         console.log('App has come to the foreground!');
         await processLoginTransaction(true);
       } else if (nextAppState === 'background' || nextAppState === 'inactive') {
