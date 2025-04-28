@@ -1,6 +1,6 @@
-#import <React/RCTBridgeModule.h>
-#import <Foundation/Foundation.h>
 
-@interface RNFps : NSObject <RCTBridgeModule>
+#import <React/RCTBridgeModule.h>
+
+@interface Fps : NSObject <RCTBridgeModule>
 
 @end
