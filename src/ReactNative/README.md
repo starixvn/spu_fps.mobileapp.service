@@ -1,22 +1,24 @@
-# fps
+# react-native-fps
 
-The FPS SDK Package
+The FPS SDK for react native library.
 
 ## Installation
 
 ```sh
-npm install fps
+npm install react-native-fps
 ```
 
 ## Usage
 
+
 ```js
-import { onCheckFPSTrans } from 'fps';
+import { multiply } from 'react-native-fps';
 
 // ...
 
-const transactionData = onCheckFPSTrans('subscriberName', 'username', 'login', false);
+const result = await multiply(3, 7);
 ```
+
 
 ## Contributing
 

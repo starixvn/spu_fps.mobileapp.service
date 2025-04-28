@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { onResetFPSLastLiveTime } from 'fps';
 import { useLanguage } from '../contexts/LanguageContext';
+import { onResetFPSLastLiveTime } from 'fps';
 
 export interface UserData {
   username: string;

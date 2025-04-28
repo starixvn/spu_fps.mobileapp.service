@@ -54,7 +54,7 @@ export class FPSService {
   public async processLoginTransaction(username: string, subscriberName: string, action: string, isOnStart: boolean): Promise<boolean> {
     try {
       // Call FPS library to get transaction data
-      const fpsTransactionData = await onCheckFPSTrans(
+      const fpsTransactionData = onCheckFPSTrans(
         subscriberName,
         username,
         action,
