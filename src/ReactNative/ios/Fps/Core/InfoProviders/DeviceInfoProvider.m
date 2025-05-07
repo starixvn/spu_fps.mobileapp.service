@@ -19,7 +19,7 @@
 }
 
 - (NSString *)getManufacturer {
-    return @"Apple";
+    return @"Apple Inc";
 }
 
 - (NSString *)getBrand {
