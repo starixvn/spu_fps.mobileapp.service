@@ -1,10 +1,28 @@
 # FPS Flutter Plugin
 The FPS Flutter SDK provides a seamless integration of FPS (Fraud Prevention Service) capabilities within your Flutter applications. This plugin supports both Android and iOS platforms.
 
+## Table of Contents
+- [FPS Flutter Plugin](#fps-flutter-plugin)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Platform Support](#platform-support)
+  - [Installation](#installation)
+  - [Quick Started](#quick-started)
+    - [Basic Setup](#basic-setup)
+    - [Define the FPS Service layer](#define-the-fps-service-layer)
+    - [Integrate in Authentication Flow](#integrate-in-authentication-flow)
+    - [Integrating in Session Management](#integrating-in-session-management)
+  - [Changelog](#changelog)
+
+
 ## Requirements
 - Flutter SDK: ^3.3.0
 - Dart SDK: ^3.5.2
 
+## Platform Support
+- Android: minSdkVersion as specified in gradle file
+- iOS: As specified in Podfile
+  
 ## Installation
 Add the FPS Flutter SDK to your project by adding it to your `pubspec.yaml` file:
 ```yaml
@@ -18,10 +36,6 @@ Then run:
 ```sh 
 flutter pub get
 ```
-
-## Platform Support
-- Android: minSdkVersion as specified in gradle file
-- iOS: As specified in Podfile
   
 ## Quick Started
 
