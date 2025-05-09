@@ -101,3 +101,5 @@ android/generated
 nitrogen/
 
 .github
+
+!docs/Flutter SDK/*

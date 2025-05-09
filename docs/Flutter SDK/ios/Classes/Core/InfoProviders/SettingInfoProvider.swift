@@ -28,6 +28,11 @@ class SettingInfoProvider {
     }
 
     private func convertLanguageToISO(languageCode: String) -> String? {
+        // If the language code already has 3 letters, return it as is
+        if languageCode.count == 3 {
+            return languageCode
+        }
+
         // Map of ISO 639-1 (2-letter) to ISO 639-2 (3-letter) language codes
         let iso639Map: [String: String] = [
             "aa": "aar", "ab": "abk", "ae": "ave", "af": "afr", "ak": "aka",
@@ -69,7 +74,7 @@ class SettingInfoProvider {
             "yo": "yor", "za": "zha", "zh": "zho", "zu": "zul"
         ]
         
-        return iso639Map[languageCode]
+        return iso639Map[languageCode] ?? "Unknown"
     }
 
     public func getCountry() -> String? {
