@@ -180,4 +180,4 @@ Handle app lifecycle states to properly manage FPS sessions:
 * 1.0.1
     * Various bug fixes and optimizations
 * 1.0.0
-    * Initial Release for Flutter Plugin
+    * Initial Release for Android SDK
