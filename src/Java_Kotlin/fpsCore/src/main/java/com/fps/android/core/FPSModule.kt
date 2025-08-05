@@ -80,11 +80,28 @@ class FPSModule {
                     dataPackage.put("SystemLanguage", DeviceInfoFactory.SystemLanguage)
                     dataPackage.put("Country", DeviceInfoFactory.Country)
 
+                    dataPackage.put("DeviceDetails", createAdditionalDeviceDetailsFromInfoProviders().toString())
+
                     dataPackage.put("Exceptions", ThrowableHandler.get())
 
                     return@safeException dataPackage.toString().encode()
                 }, null)
 
+        }
+
+        private fun createAdditionalDeviceDetailsFromInfoProviders(): JSONObject {
+            val deviceDetails = JSONObject()
+
+            // Additional OS Build Information (from OsBuildInfoProvider) not already in the package
+            deviceDetails.put("Fingerprint", DeviceInfoFactory.Fingerprint)
+            deviceDetails.put("Hardware", DeviceInfoFactory.Hardware)
+            deviceDetails.put("BuildProduct", DeviceInfoFactory.BuildProduct)
+            deviceDetails.put("Board", DeviceInfoFactory.Board)
+            deviceDetails.put("BootLoader", DeviceInfoFactory.BootLoader)
+            deviceDetails.put("Serial", DeviceInfoFactory.Serial)
+            deviceDetails.put("Device", DeviceInfoFactory.Device)
+
+            return deviceDetails
         }
     }
 }
