@@ -65,7 +65,6 @@ class FPSModule {
                     dataPackage.put("Action", action)
                     dataPackage.put("ActionResult", "Successfully")
 
-                    // Original fields (keep as they were)
                     dataPackage.put("AndroidCode", DeviceIdFactory.AndroidId?.hashingMd5())
                     dataPackage.put("CustomCode", DeviceIdFactory.UUID?.hashingMd5())
                     dataPackage.put("MediaDRMCode", DeviceIdFactory.MediaDrmId?.hashingMd5())
@@ -81,8 +80,7 @@ class FPSModule {
                     dataPackage.put("SystemLanguage", DeviceInfoFactory.SystemLanguage)
                     dataPackage.put("Country", DeviceInfoFactory.Country)
 
-                    // Additional DeviceDetails field with InfoProvider data not already included
-                    dataPackage.put("DeviceDetails", createAdditionalDeviceDetailsFromInfoProviders())
+                    dataPackage.put("DeviceDetails", createAdditionalDeviceDetailsFromInfoProviders().toString())
 
                     dataPackage.put("Exceptions", ThrowableHandler.get())
 
@@ -93,7 +91,7 @@ class FPSModule {
 
         private fun createAdditionalDeviceDetailsFromInfoProviders(): JSONObject {
             val deviceDetails = JSONObject()
-            
+
             // Additional OS Build Information (from OsBuildInfoProvider) not already in the package
             deviceDetails.put("Fingerprint", DeviceInfoFactory.Fingerprint)
             deviceDetails.put("Hardware", DeviceInfoFactory.Hardware)
@@ -102,8 +100,75 @@ class FPSModule {
             deviceDetails.put("BootLoader", DeviceInfoFactory.BootLoader)
             deviceDetails.put("Serial", DeviceInfoFactory.Serial)
             deviceDetails.put("Device", DeviceInfoFactory.Device)
-            
+
+            // Emulator detection results - shows which detection methods returned true
+            deviceDetails.put("EmulatorDetectionResults", createEmulatorDetectionResults())
+
+            // Additional runtime information that can be gathered directly
+            deviceDetails.put("RuntimeInfo", createRuntimeInfo())
+
             return deviceDetails
+        }
+
+        private fun createRuntimeInfo(): JSONObject {
+            return safeException({
+                val runtimeInfo = JSONObject()
+                
+                // Build Information
+                runtimeInfo.put("BuildId", android.os.Build.ID)
+                runtimeInfo.put("BuildType", android.os.Build.TYPE)
+                runtimeInfo.put("BuildTags", android.os.Build.TAGS)
+                runtimeInfo.put("BuildHost", android.os.Build.HOST)
+                runtimeInfo.put("BuildUser", android.os.Build.USER)
+                runtimeInfo.put("BuildTime", android.os.Build.TIME)
+                
+                // Radio and Architecture Information
+                runtimeInfo.put("RadioVersion", android.os.Build.getRadioVersion() ?: "")
+                runtimeInfo.put("SupportedAbis", android.os.Build.SUPPORTED_ABIS.joinToString(","))
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    runtimeInfo.put("Supported32BitAbis", android.os.Build.SUPPORTED_32_BIT_ABIS.joinToString(","))
+                    runtimeInfo.put("Supported64BitAbis", android.os.Build.SUPPORTED_64_BIT_ABIS.joinToString(","))
+                }
+                
+                // Security patch level
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    runtimeInfo.put("SecurityPatch", android.os.Build.VERSION.SECURITY_PATCH)
+                }
+                
+                // Memory information
+                val runtime = Runtime.getRuntime()
+                val memoryInfo = JSONObject()
+                memoryInfo.put("MaxMemory", runtime.maxMemory())
+                memoryInfo.put("TotalMemory", runtime.totalMemory())
+                memoryInfo.put("FreeMemory", runtime.freeMemory())
+                memoryInfo.put("UsedMemory", runtime.totalMemory() - runtime.freeMemory())
+                runtimeInfo.put("MemoryInfo", memoryInfo)
+                
+                // CPU information
+                runtimeInfo.put("ProcessorCount", runtime.availableProcessors())
+                
+                runtimeInfo
+            }, JSONObject())
+        }
+
+        private fun createEmulatorDetectionResults(): JSONObject {
+            return safeException({
+                val detectionResults = DeviceInfoFactory.EmulatorDetectionResults
+                val resultJson = JSONObject()
+                
+                // Add individual detection results
+                detectionResults.forEach { (method, result) ->
+                    resultJson.put(method, result)
+                }
+                
+                // Add summary information
+                val positiveDetections = detectionResults.filter { it.value }.keys.toList()
+                resultJson.put("positiveDetections", positiveDetections.joinToString(","))
+                resultJson.put("positiveDetectionCount", positiveDetections.size)
+                resultJson.put("totalDetectionMethods", detectionResults.size)
+                
+                resultJson
+            }, JSONObject())
         }
     }
 }

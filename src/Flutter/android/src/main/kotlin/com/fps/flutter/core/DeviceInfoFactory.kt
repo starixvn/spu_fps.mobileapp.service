@@ -128,6 +128,11 @@ internal  class DeviceInfoFactory(
                 return isEmulator!!
             }
 
+        val EmulatorDetectionResults: Map<String, Boolean>
+            get() {
+                return deviceInfoProvider.getEmulatorDetectionResults()
+            }
+
         val Timezone: String
             get() {
                 return settingInfoProvider.getTimezone()

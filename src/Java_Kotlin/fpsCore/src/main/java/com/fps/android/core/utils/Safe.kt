@@ -8,7 +8,8 @@ internal fun <T> safeException(
         return block()
     }
     catch (e: Throwable) {
-        ThrowableHandler.add(e)
+        if(!e.message?.contains("DRM")!!)
+            ThrowableHandler.add(e)
     }
 
     return defaultValue
