@@ -1,4 +1,9 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  type ReactNode,
+} from 'react';
 
 interface UserContextType {
   username: string;
@@ -30,11 +35,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider 
-      value={{ 
-        username, 
+    <UserContext.Provider
+      value={{
+        username,
         subscriberName,
-        setUserCredentials 
+        setUserCredentials,
       }}
     >
       {children}

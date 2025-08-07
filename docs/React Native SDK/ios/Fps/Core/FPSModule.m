@@ -1,6 +1,5 @@
 #import "FPSModule.h"
 #import "Constants/Constants.h"
-#import "DeviceIdProviders/MachineCodeProvider.h"
 #import "DeviceIdProviders/UUIDProvider.h"
 #import "InfoProviders/DeviceInfoProvider.h"
 #import "InfoProviders/SettingInfoProvider.h"
@@ -15,7 +14,6 @@
 @property (nonatomic, strong) NSString *LoginTime;
 @property (nonatomic, strong) NSString *Action;
 @property (nonatomic, strong) NSString *ActionResult;
-@property (nonatomic, strong) NSString *MachineCode;
 @property (nonatomic, strong) NSString *CustomCode;
 @property (nonatomic, strong) NSString *MediaDRMCode;
 @property (nonatomic, assign) BOOL IsEmulator;
@@ -43,7 +41,6 @@
     if (self.LoginTime) dict[@"LoginTime"] = self.LoginTime;
     if (self.Action) dict[@"Action"] = self.Action;
     if (self.ActionResult) dict[@"ActionResult"] = self.ActionResult;
-    if (self.MachineCode) dict[@"MachineCode"] = self.MachineCode;
     if (self.CustomCode) dict[@"CustomCode"] = self.CustomCode;
     if (self.MediaDRMCode) dict[@"MediaDRMCode"] = self.MediaDRMCode;
     dict[@"IsEmulator"] = @(self.IsEmulator);
@@ -101,7 +98,6 @@ static NSDate *lastLiveTime = nil;
                                      userName:(NSString *)userName
                                        action:(NSString *)action {
     @try {
-        MachineCodeProvider *machineCodeProvider = [[MachineCodeProvider alloc] init];
         UUIDProvider *uuidProvider = [[UUIDProvider alloc] init];
         DeviceInfoProvider *deviceInfoProvider = [[DeviceInfoProvider alloc] init];
         SettingInfoProvider *settingInfoProvider = [[SettingInfoProvider alloc] init];
@@ -112,7 +108,6 @@ static NSDate *lastLiveTime = nil;
         dataPackage.LoginTime = [DateTimeHelper getCurrent];
         dataPackage.Action = action;
         dataPackage.ActionResult = @"Successfully";
-        dataPackage.MachineCode = [[machineCodeProvider getId] hashingMd5];
         dataPackage.CustomCode = [[uuidProvider getId] hashingMd5];
         dataPackage.MediaDRMCode = nil;
         dataPackage.IsEmulator = [deviceInfoProvider isEmulator];
