@@ -6,15 +6,16 @@ image: cimg/android:2024.01
 
 variables:
     # GitLab instance configuration
-    GITLAB_HOST: "gitlab.nexdev.net"
-    GITLAB_PROTOCOL: "https"
-    
+    GITLAB_HOST: 'gitlab.nexdev.net'
+    GITLAB_PROTOCOL: 'https'
+
     # Android/Gradle variables
     GRADLE_OPTS: '-Dorg.gradle.daemon=false'
     GRADLE_USER_HOME: '$CI_PROJECT_DIR/.gradle'
 
-    # Flutter variables
+    # Flutter variables - Updated to use more reliable image
     FLUTTER_VERSION: '3.24.1'
+    FLUTTER_IMAGE: 'instrumentisto/flutter:3.24.1' # More reliable than cirrusci/flutter
     PUB_CACHE: '$CI_PROJECT_DIR/.pub-cache'
 
     # Node.js/React Native variables
@@ -64,7 +65,7 @@ setup:android:
 
 setup:flutter:
     stage: setup
-    image: cirrusci/flutter:${FLUTTER_VERSION}
+    image: ${FLUTTER_IMAGE}
     script:
         - echo "Setting up Flutter environment"
         - flutter --version
@@ -122,7 +123,7 @@ lint:android:
 
 lint:flutter:
     stage: lint
-    image: cirrusci/flutter:${FLUTTER_VERSION}
+    image: ${FLUTTER_IMAGE}
     dependencies:
         - setup:flutter
     script:
@@ -170,7 +171,7 @@ test:android:
 
 test:flutter:
     stage: test
-    image: cirrusci/flutter:${FLUTTER_VERSION}
+    image: ${FLUTTER_IMAGE}
     dependencies:
         - setup:flutter
     script:
@@ -220,7 +221,7 @@ build:android:
 
 build:flutter:
     stage: build
-    image: cirrusci/flutter:${FLUTTER_VERSION}
+    image: ${FLUTTER_IMAGE}
     dependencies:
         - setup:flutter
     script:
@@ -281,7 +282,7 @@ package:android:
 
 package:flutter:
     stage: package
-    image: cirrusci/flutter:${FLUTTER_VERSION}
+    image: ${FLUTTER_IMAGE}
     dependencies:
         - build:flutter
     script:
@@ -337,7 +338,7 @@ deploy:android:staging:
 
 deploy:flutter:staging:
     stage: deploy
-    image: cirrusci/flutter:${FLUTTER_VERSION}
+    image: ${FLUTTER_IMAGE}
     dependencies:
         - package:flutter
     script:
@@ -382,7 +383,7 @@ deploy:android:production:
 
 deploy:flutter:production:
     stage: deploy
-    image: cirrusci/flutter:${FLUTTER_VERSION}
+    image: ${FLUTTER_IMAGE}
     dependencies:
         - package:flutter
     script:
