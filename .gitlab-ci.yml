@@ -1,0 +1,470 @@
+# GitLab CI/CD Pipeline for FPS Multi-Platform SDK
+# Supports: Android (Kotlin/Java), Flutter, and React Native
+# Self-hosted GitLab: https://gitlab.nexdev.net/
+
+image: cimg/android:2024.01
+
+variables:
+    # GitLab instance configuration
+    GITLAB_HOST: "gitlab.nexdev.net"
+    GITLAB_PROTOCOL: "https"
+    
+    # Android/Gradle variables
+    GRADLE_OPTS: '-Dorg.gradle.daemon=false'
+    GRADLE_USER_HOME: '$CI_PROJECT_DIR/.gradle'
+
+    # Flutter variables
+    FLUTTER_VERSION: '3.24.1'
+    PUB_CACHE: '$CI_PROJECT_DIR/.pub-cache'
+
+    # Node.js/React Native variables
+    NODE_VERSION: '20'
+    NPM_CONFIG_CACHE: '$CI_PROJECT_DIR/.npm'
+    YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn'
+
+# Cache configuration for faster builds
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - .gradle/wrapper
+        - .gradle/caches
+        - .pub-cache/
+        - .npm/
+        - .yarn/
+        - node_modules/
+
+stages:
+    - setup
+    - lint
+    - test
+    - build
+    - package
+    - deploy
+
+# ==============================================
+# SETUP STAGE
+# ==============================================
+
+setup:android:
+    stage: setup
+    script:
+        - echo "Setting up Android SDK environment"
+        - cd src/Java_Kotlin
+        - chmod +x gradlew
+        - ./gradlew --version
+    cache:
+        key: android-${CI_COMMIT_REF_SLUG}
+        paths:
+            - .gradle/wrapper
+            - .gradle/caches
+    artifacts:
+        expire_in: 1 hour
+        paths:
+            - src/Java_Kotlin/.gradle/
+
+setup:flutter:
+    stage: setup
+    image: cirrusci/flutter:${FLUTTER_VERSION}
+    script:
+        - echo "Setting up Flutter environment"
+        - flutter --version
+        - cd src/Flutter
+        - flutter pub get
+    cache:
+        key: flutter-${CI_COMMIT_REF_SLUG}
+        paths:
+            - .pub-cache/
+    artifacts:
+        expire_in: 1 hour
+        paths:
+            - src/Flutter/.dart_tool/
+            - src/Flutter/pubspec.lock
+
+setup:react-native:
+    stage: setup
+    image: node:${NODE_VERSION}
+    script:
+        - echo "Setting up React Native environment"
+        - node --version
+        - npm --version
+        - cd src/ReactNative
+        - npm ci
+    cache:
+        key: react-native-${CI_COMMIT_REF_SLUG}
+        paths:
+            - .npm/
+            - src/ReactNative/node_modules/
+    artifacts:
+        expire_in: 1 hour
+        paths:
+            - src/ReactNative/node_modules/
+
+# ==============================================
+# LINT STAGE
+# ==============================================
+
+lint:android:
+    stage: lint
+    dependencies:
+        - setup:android
+    script:
+        - cd src/Java_Kotlin
+        - ./gradlew ktlintCheck
+        - ./gradlew detekt
+    artifacts:
+        reports:
+            junit:
+                - src/Java_Kotlin/**/build/test-results/test/TEST-*.xml
+        when: always
+        expire_in: 1 week
+        paths:
+            - src/Java_Kotlin/**/build/reports/
+
+lint:flutter:
+    stage: lint
+    image: cirrusci/flutter:${FLUTTER_VERSION}
+    dependencies:
+        - setup:flutter
+    script:
+        - cd src/Flutter
+        - flutter analyze
+        - dart format --output=none --set-exit-if-changed .
+    artifacts:
+        when: always
+        expire_in: 1 week
+
+lint:react-native:
+    stage: lint
+    image: node:${NODE_VERSION}
+    dependencies:
+        - setup:react-native
+    script:
+        - cd src/ReactNative
+        - npm run lint
+        - npm run typecheck
+    artifacts:
+        when: always
+        expire_in: 1 week
+
+# ==============================================
+# TEST STAGE
+# ==============================================
+
+test:android:
+    stage: test
+    dependencies:
+        - setup:android
+    script:
+        - cd src/Java_Kotlin
+        - ./gradlew test
+        - ./gradlew connectedAndroidTest || true # Optional: requires emulator
+    artifacts:
+        reports:
+            junit:
+                - src/Java_Kotlin/**/build/test-results/test/TEST-*.xml
+                - src/Java_Kotlin/**/build/test-results/testDebugUnitTest/TEST-*.xml
+        when: always
+        expire_in: 1 week
+        paths:
+            - src/Java_Kotlin/**/build/reports/tests/
+
+test:flutter:
+    stage: test
+    image: cirrusci/flutter:${FLUTTER_VERSION}
+    dependencies:
+        - setup:flutter
+    script:
+        - cd src/Flutter
+        - flutter test
+    artifacts:
+        reports:
+            junit:
+                - src/Flutter/test-results.xml
+        when: always
+        expire_in: 1 week
+
+test:react-native:
+    stage: test
+    image: node:${NODE_VERSION}
+    dependencies:
+        - setup:react-native
+    script:
+        - cd src/ReactNative
+        - npm test
+    artifacts:
+        when: always
+        expire_in: 1 week
+
+# ==============================================
+# BUILD STAGE
+# ==============================================
+
+build:android:
+    stage: build
+    dependencies:
+        - setup:android
+    script:
+        - cd src/Java_Kotlin
+        - ./gradlew assembleRelease
+        - ./gradlew assembleDebug
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - src/Java_Kotlin/**/build/outputs/aar/
+            - src/Java_Kotlin/**/build/libs/
+    only:
+        - main
+        - develop
+        - merge_requests
+        - tags
+
+build:flutter:
+    stage: build
+    image: cirrusci/flutter:${FLUTTER_VERSION}
+    dependencies:
+        - setup:flutter
+    script:
+        - cd src/Flutter
+        - flutter packages get
+        - flutter build aar --no-debug --no-profile
+        - flutter build aar --debug --no-profile --no-release
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - src/Flutter/build/host/outputs/
+    only:
+        - main
+        - develop
+        - merge_requests
+        - tags
+
+build:react-native:
+    stage: build
+    image: node:${NODE_VERSION}
+    dependencies:
+        - setup:react-native
+    script:
+        - cd src/ReactNative
+        - npm run prepare
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - src/ReactNative/lib/
+    only:
+        - main
+        - develop
+        - merge_requests
+        - tags
+
+# ==============================================
+# PACKAGE STAGE
+# ==============================================
+
+package:android:
+    stage: package
+    dependencies:
+        - build:android
+    script:
+        - cd src/Java_Kotlin
+        - ./gradlew publishToMavenLocal
+        - mkdir -p ../artifacts/android
+        - find . -name "*.aar" -exec cp {} ../artifacts/android/ \;
+        - find . -name "*.jar" -exec cp {} ../artifacts/android/ \; || true
+    artifacts:
+        expire_in: 1 month
+        paths:
+            - src/artifacts/android/
+    only:
+        - main
+        - develop
+        - tags
+
+package:flutter:
+    stage: package
+    image: cirrusci/flutter:${FLUTTER_VERSION}
+    dependencies:
+        - build:flutter
+    script:
+        - cd src/Flutter
+        - mkdir -p ../artifacts/flutter
+        - tar -czf ../artifacts/flutter/fps-flutter-sdk-${CI_COMMIT_SHORT_SHA}.tar.gz .
+        # Create pub package
+        - flutter pub publish --dry-run
+    artifacts:
+        expire_in: 1 month
+        paths:
+            - src/artifacts/flutter/
+    only:
+        - main
+        - develop
+        - tags
+
+package:react-native:
+    stage: package
+    image: node:${NODE_VERSION}
+    dependencies:
+        - build:react-native
+    script:
+        - cd src/ReactNative
+        - npm pack
+        - mkdir -p ../artifacts/react-native
+        - mv *.tgz ../artifacts/react-native/
+    artifacts:
+        expire_in: 1 month
+        paths:
+            - src/artifacts/react-native/
+    only:
+        - main
+        - develop
+        - tags
+
+# ==============================================
+# DEPLOY STAGE
+# ==============================================
+
+deploy:android:staging:
+    stage: deploy
+    dependencies:
+        - package:android
+    script:
+        - cd src/Java_Kotlin
+        - echo "Deploying Android SDK to staging repository"
+        - ./gradlew publish
+    environment:
+        name: staging
+    only:
+        - develop
+
+deploy:flutter:staging:
+    stage: deploy
+    image: cirrusci/flutter:${FLUTTER_VERSION}
+    dependencies:
+        - package:flutter
+    script:
+        - cd src/Flutter
+        - echo "Deploying Flutter SDK to staging"
+        # Add your staging deployment commands here
+        - echo "Flutter package ready for staging deployment"
+    environment:
+        name: staging
+    only:
+        - develop
+
+deploy:react-native:staging:
+    stage: deploy
+    image: node:${NODE_VERSION}
+    dependencies:
+        - package:react-native
+    script:
+        - cd src/ReactNative
+        - echo "Deploying React Native SDK to staging npm registry"
+        # Configure npm for staging registry if needed
+        - npm publish --tag staging --dry-run
+    environment:
+        name: staging
+    only:
+        - develop
+
+# Production deployments (triggered by tags)
+deploy:android:production:
+    stage: deploy
+    dependencies:
+        - package:android
+    script:
+        - cd src/Java_Kotlin
+        - echo "Deploying Android SDK to production repository"
+        - ./gradlew publish
+    environment:
+        name: production
+    only:
+        - tags
+    when: manual
+
+deploy:flutter:production:
+    stage: deploy
+    image: cirrusci/flutter:${FLUTTER_VERSION}
+    dependencies:
+        - package:flutter
+    script:
+        - cd src/Flutter
+        - echo "Publishing Flutter SDK to pub.dev"
+        # Uncomment when ready for production
+        # - flutter pub publish --force
+    environment:
+        name: production
+    only:
+        - tags
+    when: manual
+
+deploy:react-native:production:
+    stage: deploy
+    image: node:${NODE_VERSION}
+    dependencies:
+        - package:react-native
+    script:
+        - cd src/ReactNative
+        - echo "Publishing React Native SDK to npm"
+        # Uncomment when ready for production
+        # - npm publish
+    environment:
+        name: production
+    only:
+        - tags
+    when: manual
+
+# ==============================================
+# RELEASE STAGE
+# ==============================================
+
+create:release:
+    stage: deploy
+    image: ${GITLAB_PROTOCOL}://${GITLAB_HOST}/gitlab-org/release-cli:latest
+    dependencies:
+        - package:android
+        - package:flutter
+        - package:react-native
+    script:
+        - echo "Creating release for tag $CI_COMMIT_TAG on ${GITLAB_HOST}"
+    release:
+        tag_name: '$CI_COMMIT_TAG'
+        name: 'Release $CI_COMMIT_TAG'
+        description: 'FPS SDK Release $CI_COMMIT_TAG for self-hosted GitLab'
+        assets:
+            links:
+                - name: 'Android SDK Artifacts'
+                  url: '$CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/browse/src/artifacts/android'
+                - name: 'Flutter SDK Artifacts'
+                  url: '$CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/browse/src/artifacts/flutter'
+                - name: 'React Native SDK Artifacts'
+                  url: '$CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/browse/src/artifacts/react-native'
+    only:
+        - tags
+
+# ==============================================
+# MANUAL JOBS
+# ==============================================
+
+# Manual job to clean caches
+clean:cache:
+    stage: setup
+    script:
+        - rm -rf .gradle .pub-cache .npm .yarn node_modules
+        - echo "All caches cleaned"
+    when: manual
+    allow_failure: true
+
+# Manual job to run security scan
+security:scan:
+    stage: test
+    script:
+        - echo "Running security scans"
+        - cd src/Java_Kotlin && ./gradlew dependencyCheckAnalyze || true
+        - cd ../ReactNative && npm audit || true
+        - cd ../Flutter && flutter pub deps --json | grep -i "vulnerabilit" || true
+    artifacts:
+        reports:
+            dependency_scanning: src/Java_Kotlin/build/reports/dependency-check-report.json
+        when: always
+        expire_in: 1 week
+    when: manual
+    allow_failure: true
