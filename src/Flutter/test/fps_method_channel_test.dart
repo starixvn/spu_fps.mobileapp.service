@@ -5,7 +5,6 @@ import 'package:fps/fps_method_channel.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelFps platform = MethodChannelFps();
   const MethodChannel channel = MethodChannel('fps');
 
   setUp(() {
@@ -19,5 +18,11 @@ void main() {
 
   tearDown(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, null);
+  });
+
+  test('onCheckFPSTrans', () async {
+    MethodChannelFps platform = MethodChannelFps();
+    final result = await platform.onCheckFPSTrans('test', 'test', 'test', false);
+    expect(result, '42');
   });
 }

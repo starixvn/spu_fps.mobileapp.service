@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:fps_example/viewModel/login_viewModel.dart';
+import 'package:fps_example/viewModel/login_view_model.dart';
 import 'package:provider/provider.dart';
 import 'login_screen.dart';
 
@@ -8,7 +8,7 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {

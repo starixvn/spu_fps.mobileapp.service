@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fps/fps.dart';
 import 'package:fps/fps_platform_interface.dart';
 import 'package:fps/fps_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';

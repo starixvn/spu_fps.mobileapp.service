@@ -1,29 +1,32 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_sdk/flutter_sdk.dart';
-import 'package:flutter_sdk/flutter_sdk_platform_interface.dart';
-import 'package:flutter_sdk/flutter_sdk_method_channel.dart';
+import 'package:fps/fps.dart';
+import 'package:fps/fps_platform_interface.dart';
+import 'package:fps/fps_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockFlutterSdkPlatform
+class MockFpsPlatform
     with MockPlatformInterfaceMixin
-    implements FlutterSdkPlatform {
+    implements FpsPlatform {
 
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
+  Future<String?> onCheckFPSTrans(String subscriberName, String userName, String action, bool isOnStart) => Future.value('test');
+
+  @override
+  Future onResetFPSLastLiveTime() => Future.value();
 }
 
 void main() {
-  final FlutterSdkPlatform initialPlatform = FlutterSdkPlatform.instance;
+  final FpsPlatform initialPlatform = FpsPlatform.instance;
 
-  test('$MethodChannelFlutterSdk is the default instance', () {
-    expect(initialPlatform, isInstanceOf<MethodChannelFlutterSdk>());
+  test('$MethodChannelFps is the default instance', () {
+    expect(initialPlatform, isInstanceOf<MethodChannelFps>());
   });
 
-  test('getPlatformVersion', () async {
-    FlutterSdk flutterSdkPlugin = FlutterSdk();
-    MockFlutterSdkPlatform fakePlatform = MockFlutterSdkPlatform();
-    FlutterSdkPlatform.instance = fakePlatform;
+  test('onCheckFPSTrans', () async {
+    Fps fpsPlugin = Fps();
+    MockFpsPlatform fakePlatform = MockFpsPlatform();
+    FpsPlatform.instance = fakePlatform;
 
-    expect(await flutterSdkPlugin.getPlatformVersion(), '42');
+    expect(await fpsPlugin.onCheckFPSTrans('test', 'test', 'test'), 'test');
   });
 }

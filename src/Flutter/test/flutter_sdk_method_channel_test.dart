@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_sdk/flutter_sdk_method_channel.dart';
+import 'package:fps/fps_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelFlutterSdk platform = MethodChannelFlutterSdk();
-  const MethodChannel channel = MethodChannel('flutter_sdk');
+  MethodChannelFps platform = MethodChannelFps();
+  const MethodChannel channel = MethodChannel('fps');
 
   setUp(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
@@ -21,7 +21,8 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await platform.getPlatformVersion(), '42');
+  test('onCheckFPSTrans', () async {
+    final result = await platform.onCheckFPSTrans('test', 'test', 'test', false);
+    expect(result, '42');
   });
 }

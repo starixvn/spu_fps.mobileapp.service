@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fps_example/viewModel/login_viewModel.dart';
+import 'package:fps_example/viewModel/login_view_model.dart';
 
 import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
@@ -9,7 +9,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -18,18 +18,20 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  Future<void> _login(BuildContext context) async {
+  Future<void> _login() async {
     final viewModel = Provider.of<LoginViewModel>(context, listen: false);
     String response = await viewModel.login(context);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(response)),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response)),
+      );
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
+    }
   }
 
   @override
@@ -100,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () => _login(context),
+                          onPressed: _login,
                           child: Text(AppLocalizations.of(context).login),
                         ),
                       ),
