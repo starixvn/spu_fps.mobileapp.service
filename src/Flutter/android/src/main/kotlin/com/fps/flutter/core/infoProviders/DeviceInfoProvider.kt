@@ -153,8 +153,6 @@ internal class DeviceInfoProvider (
                 "cpuArchitecture" to checkCPUArchitecture(),
                 "mounts" to checkMounts(),
                 "files" to checkFiles(),
-                "telephony" to checkTelephony(),
-                "operatorName" to checkOperatorName(),
                 "deviceId" to checkDeviceId(),
                 "qemuDrivers" to checkQEmuDrivers(),
                 "qemuProps" to checkQEmuProps(),
