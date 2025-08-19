@@ -13,9 +13,8 @@ variables:
     GRADLE_OPTS: '-Dorg.gradle.daemon=false'
     GRADLE_USER_HOME: '$CI_PROJECT_DIR/.gradle'
 
-    # Flutter variables - Updated to use more reliable image
-    FLUTTER_VERSION: '3.24.1'
-    FLUTTER_IMAGE: 'instrumentisto/flutter:3.24.1' # More reliable than cirrusci/flutter
+    # Flutter variables - Updated to use more reliable image with Dart 3.5.2+
+    FLUTTER_IMAGE: 'instrumentisto/flutter:latest' # Includes Dart 3.5.2+ required by pubspec.yaml
     PUB_CACHE: '$CI_PROJECT_DIR/.pub-cache'
 
     # Node.js/React Native variables
@@ -68,8 +67,15 @@ setup:flutter:
     image: ${FLUTTER_IMAGE}
     script:
         - echo "Setting up Flutter environment"
+        - echo "Checking Flutter and Dart versions..."
         - flutter --version
+        - dart --version
+        - echo "Required Dart SDK version: ^3.5.2 (from pubspec.yaml)"
+        - echo "Checking if Dart version meets requirements..."
+        - dart --version | grep -E "3\.(5\.[2-9]|[6-9]\.|[1-9][0-9]\.)" || (echo "❌ Dart version does not meet ^3.5.2 requirement" && exit 1)
+        - echo "✅ Dart version check passed"
         - cd src/Flutter
+        - echo "Getting Flutter dependencies..."
         - flutter pub get
     cache:
         key: flutter-${CI_COMMIT_REF_SLUG}
