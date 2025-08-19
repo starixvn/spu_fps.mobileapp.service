@@ -26,8 +26,8 @@ variables:
 cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
-        - .gradle/wrapper
-        - .gradle/caches
+        - src/Java_Kotlin/.gradle/wrapper
+        - src/Java_Kotlin/.gradle/caches
         - .pub-cache/
         - .npm/
         - .yarn/
@@ -55,12 +55,8 @@ setup:android:
     cache:
         key: android-${CI_COMMIT_REF_SLUG}
         paths:
-            - .gradle/wrapper
-            - .gradle/caches
-    artifacts:
-        expire_in: 1 hour
-        paths:
-            - src/Java_Kotlin/.gradle/
+            - src/Java_Kotlin/.gradle/wrapper
+            - src/Java_Kotlin/.gradle/caches
 
 setup:flutter:
     stage: setup
