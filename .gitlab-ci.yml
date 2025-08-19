@@ -50,8 +50,8 @@ setup:android:
     script:
         - echo "Setting up Android SDK environment"
         - cd src/Java_Kotlin
-        - chmod +x gradlew || echo "chmod failed, gradlew might already have correct permissions"
-        - ./gradlew --version
+        - chmod +x gradlew || echo "chmod failed, trying alternative approach"
+        - ./gradlew --version || sh gradlew --version || bash gradlew --version
     cache:
         key: android-${CI_COMMIT_REF_SLUG}
         paths:
@@ -109,8 +109,8 @@ lint:android:
         - setup:android
     script:
         - cd src/Java_Kotlin
-        - ./gradlew ktlintCheck
-        - ./gradlew detekt
+        - ./gradlew ktlintCheck || sh gradlew ktlintCheck
+        - ./gradlew detekt || sh gradlew detekt
     artifacts:
         reports:
             junit:
@@ -156,8 +156,8 @@ test:android:
         - setup:android
     script:
         - cd src/Java_Kotlin
-        - ./gradlew test
-        - ./gradlew connectedAndroidTest || true # Optional: requires emulator
+        - ./gradlew test || sh gradlew test
+        - ./gradlew connectedAndroidTest || sh gradlew connectedAndroidTest || true # Optional: requires emulator
     artifacts:
         reports:
             junit:
@@ -205,8 +205,8 @@ build:android:
         - setup:android
     script:
         - cd src/Java_Kotlin
-        - ./gradlew assembleRelease
-        - ./gradlew assembleDebug
+        - ./gradlew assembleRelease || sh gradlew assembleRelease
+        - ./gradlew assembleDebug || sh gradlew assembleDebug
     artifacts:
         expire_in: 1 week
         paths:
@@ -266,7 +266,7 @@ package:android:
         - build:android
     script:
         - cd src/Java_Kotlin
-        - ./gradlew publishToMavenLocal
+        - ./gradlew publishToMavenLocal || sh gradlew publishToMavenLocal
         - mkdir -p ../artifacts/android
         - find . -name "*.aar" -exec cp {} ../artifacts/android/ \;
         - find . -name "*.jar" -exec cp {} ../artifacts/android/ \; || true
@@ -329,7 +329,7 @@ deploy:android:staging:
     script:
         - cd src/Java_Kotlin
         - echo "Deploying Android SDK to staging repository"
-        - ./gradlew publish
+        - ./gradlew publish || sh gradlew publish
     environment:
         name: staging
     only:
@@ -373,7 +373,7 @@ deploy:android:production:
     script:
         - cd src/Java_Kotlin
         - echo "Deploying Android SDK to production repository"
-        - ./gradlew publish
+        - ./gradlew publish || sh gradlew publish
     environment:
         name: production
     only:
@@ -458,7 +458,7 @@ security:scan:
     stage: test
     script:
         - echo "Running security scans"
-        - cd src/Java_Kotlin && ./gradlew dependencyCheckAnalyze || true
+        - cd src/Java_Kotlin && (./gradlew dependencyCheckAnalyze || sh gradlew dependencyCheckAnalyze) || true
         - cd ../ReactNative && npm audit || true
         - cd ../Flutter && flutter pub deps --json | grep -i "vulnerabilit" || true
     artifacts:
