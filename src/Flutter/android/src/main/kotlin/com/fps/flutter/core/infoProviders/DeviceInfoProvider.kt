@@ -136,8 +136,6 @@ internal class DeviceInfoProvider (
                 || checkCPUArchitecture()
                 || checkMounts()
                 || checkFiles()
-                || checkTelephony()
-                || checkOperatorName()
                 || checkDeviceId()
                 || checkQEmuDrivers()
                 || checkQEmuProps()
@@ -214,31 +212,6 @@ internal class DeviceInfoProvider (
                 || KNOWN_GENY_FILES.any { File(it).exists() }
                 || KNOWN_ANDY_FILES.any { File(it).exists() }
                 || KNOWN_NOX_FILES.any { File(it).exists() }
-    }
-
-    private fun checkTelephony(): Boolean {
-        return safeException({
-            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
-            telephonyManager?.let { tm ->
-                val networkOperator = tm.networkOperatorName?.lowercase() ?: ""
-                val simOperator = tm.simOperatorName?.lowercase() ?: ""
-                
-                // Emulators often have specific operator names or empty values
-                networkOperator.contains("android") || 
-                simOperator.contains("android") ||
-                (networkOperator.isEmpty() && simOperator.isEmpty())
-            } ?: false
-        }, false)
-    }
-
-    private fun checkOperatorName(): Boolean {
-        return safeException({
-            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
-            telephonyManager?.let { tm ->
-                val operatorName = tm.networkOperatorName?.lowercase() ?: ""
-                operatorName == "android" || operatorName.isEmpty()
-            } ?: false
-        }, false)
     }
 
     private fun checkDeviceId(): Boolean {
