@@ -50,7 +50,7 @@ setup:android:
     script:
         - echo "Setting up Android SDK environment"
         - cd src/Java_Kotlin
-        - chmod +x gradlew
+        - chmod +x gradlew || echo "chmod failed, gradlew might already have correct permissions"
         - ./gradlew --version
     cache:
         key: android-${CI_COMMIT_REF_SLUG}
