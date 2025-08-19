@@ -107,11 +107,6 @@ lint:android:
         - cd src/Java_Kotlin
         - ./gradlew ktlintCheck || sh gradlew ktlintCheck || echo "ktlint check failed or not configured"
         - ./gradlew detekt || sh gradlew detekt || echo "detekt check failed or not configured"
-    artifacts:
-        when: always
-        expire_in: 1 week
-        paths:
-            - src/Java_Kotlin/**/build/reports/
     allow_failure: true
 
 lint:flutter:
